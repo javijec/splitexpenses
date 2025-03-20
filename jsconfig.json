@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"] // Asegúrate de que este alias esté correcto
-    }
-  }
+      "@/*": ["./src/*"] // Asegúrate de que este alias esté correcto
+    },
+  },
+  "include": ["src"]
 }
