@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import { AppBar, Box, Toolbar, IconButton, Fab } from "@mui/material";
-import { Menu, Add, Search, More } from "@mui/icons-material";
+import { AppBar, Box, Toolbar, IconButton, Fab, Avatar } from "@mui/material";
+import { Menu, Add } from "@mui/icons-material";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -24,11 +24,9 @@ export default function BottomAppBar() {
             <Add />
           </StyledFab>
           <Box sx={{ flexGrow: 1 }} />
+
           <IconButton color="inherit">
-            <Search />
-          </IconButton>
-          <IconButton color="inherit">
-            <More />
+            <Avatar />
           </IconButton>
         </Toolbar>
       </AppBar>

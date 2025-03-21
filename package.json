@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "base": "cd firebase && firebase emulators:start --import data --export-on-exit data",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
