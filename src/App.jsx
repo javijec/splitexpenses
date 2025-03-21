@@ -1,16 +1,37 @@
 import React from "react";
+import { Box, CircularProgress } from "@mui/material";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import { AuthProvider } from "@/application/contexts/AuthContext";
-import Login from "@/presentation/screens/LoginSceen";
-import Main from "@/presentation/screens/MainScreen";
+import Login from "@/presentation/screens/auth/LoginSceen";
+import Main from "@/presentation/screens/dashboard/MainScreen";
 import ProtectedRoute from "@/presentation/navigation/ProtectedRoute";
-import Profile from "@/presentation/screens/ProfileScreen";
+import Profile from "@/presentation/screens/profile/ProfileScreen";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/presentation/theme/theme";
 import BottomAppBar from "@/presentation/components/BottomAppBar";
 import CssBaseline from "@mui/material/CssBaseline";
+import { useAuthStatus } from "@/application/hooks/useAuthStatus";
 
 function App() {
+  const { loading } = useAuthStatus();
+
+  if (loading) {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </ThemeProvider>
+    );
+  }
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
