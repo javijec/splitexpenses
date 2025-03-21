@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
       const redirectUser = await handleRedirectResult();
       if (redirectUser) {
         setUser(redirectUser);
-        navigate("/dashboard"); // Redirect to dashboard
+        navigate("/"); // Redirect to dashboard
       }
     };
 

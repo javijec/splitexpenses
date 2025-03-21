@@ -6,7 +6,7 @@ import Main from "@/presentation/screens/MainScreen";
 import ProtectedRoute from "@/presentation/navigation/ProtectedRoute";
 import Profile from "@/presentation/screens/ProfileScreen";
 import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "@/presentation/theme/theme";
+import theme from "@/presentation/theme/theme";
 import BottomAppBar from "@/presentation/components/BottomAppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -29,7 +29,6 @@ function AppRoutes() {
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
-
         <Route
           path="/profile"
           element={
