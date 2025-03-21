@@ -60,7 +60,7 @@ export default function BottomAppBar() {
           >
             <Home />
           </IconButton>
-          <StyledFab color="secondary" aria-label="add">
+          <StyledFab aria-label="add">
             <Add />
           </StyledFab>
           <Box sx={{ flexGrow: 1 }} />

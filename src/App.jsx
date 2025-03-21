@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import { AuthProvider } from "@/application/contexts/AuthContext";
 import Login from "@/presentation/screens/LoginSceen";
-import Dashboard from "@/presentation/screens/DashboardScreen";
+import Main from "@/presentation/screens/MainScreen";
 import ProtectedRoute from "@/presentation/navigation/ProtectedRoute";
 import Profile from "@/presentation/screens/ProfileScreen";
 import { ThemeProvider } from "@mui/material/styles";
@@ -29,19 +29,20 @@ function AppRoutes() {
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+
         <Route
           path="/profile"
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <Main />
             </ProtectedRoute>
           }
         />
