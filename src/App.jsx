@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Container } from "@mui/material";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import { AuthProvider } from "@/application/contexts/AuthContext";
 import Login from "@/presentation/screens/auth/LoginSceen";
@@ -11,6 +11,10 @@ import theme from "@/presentation/theme/theme";
 import BottomAppBar from "@/presentation/components/BottomAppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useAuthStatus } from "@/application/hooks/useAuthStatus";
+import NotFound from "@/presentation/screens/NotFound";
+import { Navigate } from "react-router";
+import GroupDetail from "@/presentation/screens/groups/GroupDetail";
+import { ExpenseModalProvider } from "@/application/contexts/ExpenseModalContext";
 
 function App() {
   const { loading } = useAuthStatus();
@@ -37,7 +41,9 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <AuthProvider>
-          <AppRoutes />
+          <ExpenseModalProvider>
+            <AppRoutes />
+          </ExpenseModalProvider>
         </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>
@@ -48,27 +54,39 @@ function AppRoutes() {
   const location = useLocation();
   return (
     <>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <Main />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <Container component="main" sx={{ flexGrow: 1, py: 3 }}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Main />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/group/:groupId"
+            element={
+              <ProtectedRoute>
+                <GroupDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/404" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/404" replace />} />
+        </Routes>
 
-      {location.pathname !== "/login" && <BottomAppBar />}
+        {location.pathname !== "/login" && <BottomAppBar />}
+      </Container>
     </>
   );
 }
