@@ -13,7 +13,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { Menu as MenuIcon, Add } from "@mui/icons-material";
+import { Home, Add } from "@mui/icons-material";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -37,6 +37,10 @@ export default function BottomAppBar() {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const handleDashboard = async () => {
+    navigate("/");
+  };
   const handleLogout = async () => {
     await logout();
     navigate("/");
@@ -49,8 +53,12 @@ export default function BottomAppBar() {
     <React.Fragment>
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar>
-          <IconButton color="inherit" aria-label="open drawer">
-            <MenuIcon />
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDashboard}
+          >
+            <Home />
           </IconButton>
           <StyledFab color="secondary" aria-label="add">
             <Add />
