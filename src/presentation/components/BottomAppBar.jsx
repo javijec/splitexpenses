@@ -1,5 +1,6 @@
-import * as React from "react";
-import { useNavigate } from "react-router";
+import React from "react";
+import { useExpenseModal } from "@/application/contexts/ExpenseModalContext";
+import { useNavigate, useLocation } from "react-router"; // Importa useLocation
 import { useAuth } from "@/application/contexts/AuthContext";
 
 import { styled } from "@mui/material/styles";
@@ -29,6 +30,7 @@ export default function BottomAppBar() {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); // Obtén el path actual
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -49,20 +51,37 @@ export default function BottomAppBar() {
     navigate("/profile");
   };
 
+  const { openExpenseModal } = useExpenseModal();
+
+  const handleAddButtonClick = () => {
+    if (location.pathname.startsWith("/group")) {
+      openExpenseModal(); // Abre el modal usando el contexto
+    } else if (location.pathname === "/") {
+      console.log("Create Group");
+    } else {
+      console.log("Open Default Modal");
+    }
+  };
+
   return (
     <React.Fragment>
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDashboard}
-          >
-            <Home />
-          </IconButton>
-          <StyledFab aria-label="add">
-            <Add />
-          </StyledFab>
+          {location.pathname !== "/" && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDashboard}
+            >
+              <Home />
+            </IconButton>
+          )}
+          {!location.pathname.startsWith("/profile") && (
+            <StyledFab aria-label="add" onClick={handleAddButtonClick}>
+              <Add />
+            </StyledFab>
+          )}
+
           <Box sx={{ flexGrow: 1 }} />
 
           <IconButton color="inherit" onClick={handleMenuOpen}>
