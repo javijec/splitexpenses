@@ -8,32 +8,48 @@ El sistema sigue el enfoque de **Clean Architecture Modular**, separando respons
 
 ```
 ├── src/
-│   ├── presentation/      # Capa de presentación (UI y componentes visuales)
-│   │   ├── components/    # Componentes reutilizables
-│   │   ├── screens/       # Páginas de la aplicación
-│   │   ├── navigation/    # Configuración de rutas y navegación
-│   │   └── theme/        # Configuración de estilos y temas
+│   ├── presentation/
+│   │   ├── components/
+│   │   ├── screens/
+│   │   ├── navigation/
+│   │   ├── theme/
 │   │
-│   ├── application/      # Capa de lógica de aplicación
-│   │   ├── contexts/     # Contextos globales de React
-│   │   ├── hooks/        # Hooks personalizados
-│   │   └── utils/        # Funciones auxiliares
+│   ├── application/
+│   │   ├── contexts/
+│   │   ├── hooks/
+│   │   └── utils/
 │   │
-│   ├── domain/           # Capa de dominio (Reglas de negocio)
-│   │   ├── models/       # Definición de entidades y modelos de datos
-│   │   ├── usecases/     # Casos de uso de la aplicación
-│   │   └── repositories/ # Interfaces para acceder a los datos
+│   ├── domain/
+│   │   ├── models/
+│   │   │   ├── User.js
+│   │   │   ├── Balance.js
+│   │   │   ├── Group.js
+│   │   │   └── Expense.js
+│   │   ├── usecases/
+│   │   │   ├── CreateUser.js
+│   │   │   ├── UpdateBalance.js
+│   │   │   ├── GetGroups.js
+│   │   │   └── DeleteExpense.js
+│   │   └── repositories/
+│   │       ├── UserRepository.js
+│   │       ├── BalanceRepository.js
+│   │       ├── GroupRepository.js
+│   │       └── ExpenseRepository.js
 │   │
-│   ├── infrastructure/   # Capa de infraestructura
-│   │   ├── api/          # Servicios de comunicación con APIs externas
-│   │   ├── database/     # Configuración y acceso a Firestore
-│   │   ├── services/     # Servicios concretos (autenticación, pagos, etc.)
-│   │   ├── config/       # Configuraciones generales
-│   │   └── adapters/     # Adaptadores para convertir datos entre capas
+│   ├── infrastructure/
+│   │   ├── api/
+│   │   ├── database/
+│   │   │   ├── FirestoreUser.js
+│   │   │   ├── FirestoreBalance.js
+│   │   │   ├── FirestoreGroup.js
+│   │   │   └── FirestoreExpense.js
+│   │   ├── services/
+│   │   ├── config/
+│   │   └── adapters/
 │   │
-│   └── App.jsx           # Punto de entrada principal
+│   └── App.jsx
 │
-└── firebase/             # Configuración y reglas de seguridad de Firebase
+└── firebase/
 ```
 
 ### Principios Claves:
@@ -109,6 +125,98 @@ async function deleteExpense(id) {
   } catch (e) {
     console.error("Error eliminando documento: ", e);
   }
+}
+```
+
+## Estructura de Datos
+
+El esquema de la base de datos sigue el modelo documentado en la sección de **infraestructura**:
+
+### 1. Colección `users`
+
+Almacena la información de los usuarios registrados mediante Google
+
+```
+{
+  uid: string (ID de Firebase),
+  displayName: string,
+  email: string,
+  photoURL: string,
+  providerData: array (datos del proveedor Google),
+  createdAt: timestamp
+}
+```
+
+### 2. Colección `invitations`
+
+Almacena las invitaciones pendientes para unirse a grupos.
+
+```
+{
+  id: string (automático),
+  groupId: string (referencia al grupo),
+  invitedEmail: string (email del invitado),
+  invitedBy: string (ID del usuario que invita),
+  status: string ('pending'),
+  createdAt: timestamp
+}
+```
+
+### 3. Colección `groups`
+
+Almacena la información de los grupos, incluyendo sus miembros.
+
+```
+{
+  id: string (automático),
+  name: string,
+  description: string,
+  createdBy: string (ID del propietario),
+  members: array<string> (IDs de los miembros),
+  createdAt: timestamp,
+  updatedAt: timestamp
+}
+```
+
+### 4. Colección `expenses`
+
+Almacena todos los gastos registrados en la aplicación.
+
+```
+{
+  id: string (automático),
+  description: string,
+  amount: number,
+  groupId: string (referencia al grupo),
+  paidBy: array<{
+    memberId: string,
+    value: number
+  }>,
+  splitType: string ('equal', 'amount', 'percentage'),
+  splits: array<{
+    memberId: string,
+    value: number
+  }>,
+  active: boolean,
+  createdAt: timestamp,
+  updatedAt: timestamp
+}
+```
+
+### 5. Colección `balances`
+
+Guarda los balances calculados para cada grupo.
+
+```
+{
+  id: string (igual al groupId),
+  balances: {
+    [userId]: {
+      toReceive: number,
+      toPay: number
+    }
+  },
+  updatedAt: timestamp
 }
 ```
 
@@ -216,7 +324,7 @@ Para proteger rutas en la aplicación, se utiliza el componente `ProtectedRoute`
 ### Ejemplo de uso
 
 ```javascript
-import ProtectedRoute from '@/presentation/navigation/ProtectedRoute';
+import ProtectedRoute from "@/presentation/navigation/ProtectedRoute";
 
-<ProtectedRoute path="/home" component={Home} />
+<ProtectedRoute path="/home" component={Home} />;
 ```

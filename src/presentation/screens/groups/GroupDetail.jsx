@@ -32,7 +32,7 @@ import {
 
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useExpenseModal } from "@/application/contexts/ExpenseModalContext";
-import { ExpenseModal } from "@/application/components/ExpenseModal";
+import ExpenseModal from "@/presentation/components/ExpenseModal";
 
 function GroupDetail() {
   const { groupId } = useParams();

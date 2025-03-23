@@ -1,5 +1,9 @@
-import { signInWithRedirect, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "@/infrastructure/config/firebase-config";
+import {
+  signInWithRedirect,
+  getRedirectResult,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import { auth } from "@/infrastructure/config/firebaseConfig";
 
 export const signInWithGoogle = async () => {
   const googleProvider = new GoogleAuthProvider();
@@ -22,4 +26,3 @@ export const handleRedirectResult = async () => {
     throw new Error(error.message);
   }
 };
-
