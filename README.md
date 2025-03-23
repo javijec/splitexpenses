@@ -24,7 +24,8 @@ El sistema sigue el enfoque de **Clean Architecture Modular**, separando respons
 │   │   │   ├── User.js
 │   │   │   ├── Balance.js
 │   │   │   ├── Group.js
-│   │   │   └── Expense.js
+│   │   │   ├── Expense.js
+│   │   │   └── Invitation.js
 │   │   ├── usecases/
 │   │   │   ├── CreateUser.js
 │   │   │   ├── UpdateBalance.js
@@ -34,17 +35,16 @@ El sistema sigue el enfoque de **Clean Architecture Modular**, separando respons
 │   │       ├── UserRepository.js
 │   │       ├── BalanceRepository.js
 │   │       ├── GroupRepository.js
-│   │       └── ExpenseRepository.js
+│   │       ├── ExpenseRepository.js
+│   │       └── InvitationRepository.js
 │   │
 │   ├── infrastructure/
 │   │   ├── api/
 │   │   ├── database/
-│   │   │   ├── FirestoreUser.js
-│   │   │   ├── FirestoreBalance.js
-│   │   │   ├── FirestoreGroup.js
-│   │   │   └── FirestoreExpense.js
+│   │   │   └── FirestoreCRUD.js
 │   │   ├── services/
 │   │   ├── config/
+│   │   │   └── firebaseConfig.js
 │   │   └── adapters/
 │   │
 │   └── App.jsx
