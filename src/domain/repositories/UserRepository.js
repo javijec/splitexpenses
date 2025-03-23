@@ -10,7 +10,14 @@ class UserRepository {
   }
 
   async getUsers() {
-    return await this.firestoreCRUD.readDocuments();
+    console.log("getUsers");
+    const Users = await this.firestoreCRUD.readDocuments();
+    console.log(Users);
+    return Users;
+  }
+  async getUser(userId) {
+    console.log(userId);
+    return await this.firestoreCRUD.readDocument(userId);
   }
 
   async updateUser(userId, updatedData) {

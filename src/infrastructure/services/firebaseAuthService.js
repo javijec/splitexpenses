@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "@/infrastructure/config/firebaseConfig";
+import { createUser } from "@/domain/usecases/users";
 
 export const signInWithGoogle = async () => {
   const googleProvider = new GoogleAuthProvider();
@@ -19,6 +20,8 @@ export const handleRedirectResult = async () => {
   try {
     const result = await getRedirectResult(auth);
     if (result) {
+      console.log("Auth");
+      createUser(result.user);
       return result.user;
     }
     return null;

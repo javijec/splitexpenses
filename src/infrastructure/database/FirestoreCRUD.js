@@ -2,6 +2,7 @@ import { db } from "../config/firebaseConfig";
 import {
   collection,
   addDoc,
+  getDoc,
   getDocs,
   doc,
   updateDoc,
