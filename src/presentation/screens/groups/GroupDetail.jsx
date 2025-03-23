@@ -30,8 +30,9 @@ import {
   PersonAdd as PersonAddIcon,
 } from "@mui/icons-material";
 
-import { useAuth } from "../../../application/contexts/AuthContext";
-import { useExpenseModal } from "../../../application/contexts/ExpenseModalContext";
+import { useAuth } from "@/application/contexts/AuthContext";
+import { useExpenseModal } from "@/application/contexts/ExpenseModalContext";
+import { ExpenseModal } from "@/application/components/ExpenseModal";
 
 function GroupDetail() {
   const { groupId } = useParams();
@@ -114,6 +115,7 @@ function GroupDetail() {
     }
   }, [groupId, user, navigate])*/
 
+  const calculateBalances = (expensesList, membersData) => {};
   /*const calculateBalances = (expensesList, membersData) => {
     // Simple balance calculation logic
     // In a real app, this would be more complex
@@ -149,6 +151,7 @@ function GroupDetail() {
     setBalances(balancesArray)
   }*/
 
+  const handleAddExpense = async () => {};
   /*const handleAddExpense = async () => {
     if (!expenseDescription || !expenseAmount) {
       showSnackbar("Por favor completa todos los campos", "error")
@@ -185,7 +188,6 @@ function GroupDetail() {
       setExpenses(expensesList)
       calculateBalances(expensesList, members)
 
-      setExpenseDialogOpen(false)
       setExpenseDescription("")
       setExpenseAmount("")
       showSnackbar("Gasto añadido correctamente", "success")
@@ -193,9 +195,10 @@ function GroupDetail() {
       console.error("Error adding expense:", error)
       showSnackbar("Error al añadir el gasto", "error")
     }
-  }
+  }*/
 
-  const handleInviteMember = async () => {
+  const handleInviteMember = async () => {};
+  /*const handleInviteMember = async () => {
     if (!inviteEmail) {
       showSnackbar("Por favor ingresa un correo electrónico", "error")
       return
@@ -241,9 +244,10 @@ function GroupDetail() {
       console.error("Error inviting member:", error)
       showSnackbar("Error al enviar la invitación", "error")
     }
-  }
+  }*/
 
-  const handleDeleteGroup = async () => {
+  const handleDeleteGroup = async () => {};
+  /*const handleDeleteGroup = async () => {
     try {
       // Delete all expenses
       const expensesQuery = query(collection(db, "expenses"), where("groupId", "==", groupId))
@@ -270,16 +274,23 @@ function GroupDetail() {
       console.error("Error deleting group:", error)
       showSnackbar("Error al eliminar el grupo", "error")
     }
-  }
+  }*/
 
-  if (loading) {
+  /*if (loading) {
     return (
       <AppLayout>
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "50vh",
+          }}
+        >
           <CircularProgress />
         </Box>
       </AppLayout>
-    )
+    );
   }*/
 
   return (
@@ -452,36 +463,11 @@ function GroupDetail() {
           </Card>
         </Grid>
       </Grid>
-      <Dialog open={isExpenseModalOpen} onClose={closeExpenseModal}>
-        <DialogTitle>Añadir Gasto</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Descripción"
-            fullWidth
-            variant="outlined"
-            value={expenseDescription}
-            onChange={(e) => setExpenseDescription(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            label="Monto"
-            fullWidth
-            variant="outlined"
-            value={expenseAmount}
-            onChange={(e) => setExpenseAmount(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeExpenseModal} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={handleAddExpense} color="primary">
-            Añadir
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ExpenseModal
+        isOpen={isExpenseModalOpen}
+        onClose={closeExpenseModal}
+        onAddExpense={handleAddExpense}
+      />
     </>
   );
 }
