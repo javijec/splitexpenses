@@ -31,7 +31,7 @@ import {
 } from "@mui/icons-material";
 
 import { useAuth } from "@/application/contexts/AuthContext";
-import { useExpenseModal } from "@/application/contexts/ExpenseModalContext";
+import { useModal } from "@/application/contexts/ModalContext";
 import ExpenseModal from "@/presentation/components/ExpenseModal";
 
 function GroupDetail() {
@@ -39,7 +39,7 @@ function GroupDetail() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const { isExpenseModalOpen, closeExpenseModal } = useExpenseModal();
+  const { isExpenseModalOpen, closeExpenseModal } = useModal();
 
   const [group, setGroup] = useState(null);
   const [expenses, setExpenses] = useState([]);

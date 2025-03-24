@@ -1,3 +1,4 @@
+import GroupModal from "@/presentation/components/GroupModal";
 import {
   Container,
   Grid2 as Grid,
@@ -14,8 +15,12 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Link } from "react-router";
+import { useModal } from "@/application/contexts/ModalContext";
 
 const Main = () => {
+  const handleAddGroup = async () => {};
+  const { isGroupModalOpen, closeGroupModal } = useModal();
+
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -128,6 +133,11 @@ const Main = () => {
           </Grid>
         </Container>
       </Box>
+      <GroupModal
+        isOpen={isGroupModalOpen}
+        onClose={closeGroupModal}
+        onAddGroup={handleAddGroup}
+      />
     </>
   );
 };

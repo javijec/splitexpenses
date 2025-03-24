@@ -14,7 +14,7 @@ export default function Login() {
       } else {
         console.error("Unsupported provider:", provider);
       }
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error signing in:", error);
     }

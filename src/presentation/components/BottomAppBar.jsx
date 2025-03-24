@@ -1,5 +1,5 @@
-import React from "react";
-import { useExpenseModal } from "@/application/contexts/ExpenseModalContext";
+import { useState, Fragment } from "react";
+import { useModal } from "@/application/contexts/ModalContext";
 import { useNavigate, useLocation } from "react-router"; // Importa useLocation
 import { useAuth } from "@/application/contexts/AuthContext";
 
@@ -28,7 +28,7 @@ const StyledFab = styled(Fab)({
 export default function BottomAppBar() {
   const { user, logoutAccount } = useAuth();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const location = useLocation(); // Obtén el path actual
 
@@ -51,20 +51,20 @@ export default function BottomAppBar() {
     navigate("/profile");
   };
 
-  const { openExpenseModal } = useExpenseModal();
+  const { openExpenseModal, openGroupModal } = useModal();
 
   const handleAddButtonClick = () => {
     if (location.pathname.startsWith("/group")) {
       openExpenseModal(); // Abre el modal usando el contexto
-    } else if (location.pathname === "/") {
-      console.log("Create Group");
+    } else if (location.pathname === "/dashboard") {
+      openGroupModal(); // Abre el modal usando el contexto
     } else {
       console.log("Open Default Modal");
     }
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar>
           {location.pathname !== "/" && (
@@ -98,6 +98,6 @@ export default function BottomAppBar() {
           </Menu>
         </Toolbar>
       </AppBar>
-    </React.Fragment>
+    </Fragment>
   );
 }

@@ -14,7 +14,7 @@ import { useAuthStatus } from "@/application/hooks/useAuthStatus";
 import NotFound from "@/presentation/screens/NotFound";
 import { Navigate } from "react-router";
 import GroupDetail from "@/presentation/screens/groups/GroupDetail";
-import { ExpenseModalProvider } from "@/application/contexts/ExpenseModalContext";
+import { ModalProvider } from "@/application/contexts/ModalContext";
 
 function App() {
   const { loading } = useAuthStatus();
@@ -41,9 +41,9 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <AuthProvider>
-          <ExpenseModalProvider>
+          <ModalProvider>
             <AppRoutes />
-          </ExpenseModalProvider>
+          </ModalProvider>
         </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>
