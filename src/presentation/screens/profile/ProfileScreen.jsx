@@ -20,7 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "@/application/contexts/AuthContext";
 
 const ProfileScreen = () => {
-  const { user, deleteAccount } = useAuth();
+  const { user, deleteAccount, updateAccount } = useAuth();
   const [displayName, setDisplayName] = useState(user?.displayName || "");
   const [loading, setLoading] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -28,6 +28,8 @@ const ProfileScreen = () => {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
+    await updateAccount({ displayName });
+    setLoading(false);
     // Aquí puedes agregar la lógica para actualizar el perfil del usuario
   };
 

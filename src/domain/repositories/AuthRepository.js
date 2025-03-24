@@ -3,7 +3,6 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
-  updateProfile as firebaseUpdateProfile,
   deleteUser as firebaseDeleteUser,
   onAuthStateChanged as firebaseOnAuthStateChanged,
 } from "firebase/auth";
