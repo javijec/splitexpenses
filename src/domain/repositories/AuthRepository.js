@@ -5,6 +5,7 @@ import {
   signOut,
   deleteUser as firebaseDeleteUser,
   onAuthStateChanged as firebaseOnAuthStateChanged,
+  updateProfile as firebaseUpdateProfile,
 } from "firebase/auth";
 
 export class AuthRepository {
@@ -31,10 +32,6 @@ export class AuthRepository {
 
   async deleteAccount() {
     return firebaseDeleteUser(this.auth.currentUser);
-  }
-
-  async updateProfile(user, profileUpdates) {
-    return firebaseUpdateProfile(user, profileUpdates);
   }
 
   onAuthStateChanged(callback) {

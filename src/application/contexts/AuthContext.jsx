@@ -41,11 +41,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateAccount = async (userData) => {
+    console.log(user.uid);
+    console.log(userData);
     try {
-      await authRepository.updateUser(user.uid, userData);
-      console.log("User updated");
-      setUser({ ...user, ...userData });
       await userRepository.updateUser(user.uid, userData);
+      setUser({ ...user, ...userData });
+      console.log("User updated");
     } catch (error) {
       console.error("Error updating user:", error);
     }
