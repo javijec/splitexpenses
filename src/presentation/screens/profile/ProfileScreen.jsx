@@ -20,7 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "@/application/contexts/AuthContext";
 
 const ProfileScreen = () => {
-  const { user } = useAuth();
+  const { user, deleteAccount } = useAuth();
   const [displayName, setDisplayName] = useState(user?.displayName || "");
   const [loading, setLoading] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -32,6 +32,16 @@ const ProfileScreen = () => {
   };
 
   const handleDeleteAccount = async () => {
+    deleteAccount(user)
+      .then(() => {
+        setDeleteLoading(false);
+        setDeleteDialogOpen(false);
+        // Redirigir al usuario a la página de inicio o a otra página
+      })
+      .catch((error) => {
+        console.error("Error deleting account:", error);
+        setDeleteLoading(false);
+      });
     // Aquí puedes agregar la lógica para eliminar la cuenta del usuario
   };
 
@@ -69,7 +79,7 @@ const ProfileScreen = () => {
           </Box>
 
           <Grid container spacing={2}>
-            <Grid xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <Typography variant="subtitle2" gutterBottom>
                 ID de Usuario
               </Typography>
@@ -81,7 +91,7 @@ const ProfileScreen = () => {
                 {user.uid}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <Typography variant="subtitle2" gutterBottom>
                 Email Verificado
               </Typography>

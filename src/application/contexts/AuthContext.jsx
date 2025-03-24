@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { auth } from "@/infrastructure/config/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { UserRepository } from "@/domain/repositories/UserRepository";
@@ -20,7 +19,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const userRepository = new UserRepository();
   const authRepository = new AuthRepository();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -32,9 +30,9 @@ export const AuthProvider = ({ children }) => {
 
   const logoutAccount = async () => authRepository.logout();
 
-  const deleteAccount = async () => {
+  const deleteAccount = async (user) => {
     try {
-      await authRepository.deleteUser(user);
+      await authRepository.deleteAccount();
       await userRepository.deleteUser(user.uid);
       console.log("User deleted");
     } catch (error) {

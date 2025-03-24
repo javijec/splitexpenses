@@ -4,7 +4,7 @@ import {
   GoogleAuthProvider,
   signOut,
   updateProfile as firebaseUpdateProfile,
-  deleteUser,
+  deleteUser as firebaseDeleteUser,
   onAuthStateChanged as firebaseOnAuthStateChanged,
 } from "firebase/auth";
 
@@ -31,7 +31,7 @@ export class AuthRepository {
   }
 
   async deleteAccount() {
-    return deleteUser(this.auth.currentUser);
+    return firebaseDeleteUser(this.auth.currentUser);
   }
 
   async updateProfile(user, profileUpdates) {
