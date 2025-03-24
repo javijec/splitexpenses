@@ -1,6 +1,6 @@
 import FirestoreCRUD from "@/infrastructure/database/FirestoreCRUD";
 
-class UserRepository {
+export class UserRepository {
   constructor() {
     this.firestoreCRUD = new FirestoreCRUD("users");
   }
@@ -16,7 +16,6 @@ class UserRepository {
     return Users;
   }
   async getUser(userId) {
-    console.log(userId);
     return await this.firestoreCRUD.readDocument(userId);
   }
 
@@ -28,5 +27,3 @@ class UserRepository {
     return await this.firestoreCRUD.deleteDocument(userId);
   }
 }
-
-export default UserRepository;

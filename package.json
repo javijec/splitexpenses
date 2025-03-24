@@ -17,6 +17,7 @@
     "@mui/material": "^6.4.8",
     "@toolpad/core": "^0.13.0",
     "firebase": "^11.4.0",
+    "notenv": "^2.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.4.0"

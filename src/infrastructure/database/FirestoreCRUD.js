@@ -1,7 +1,7 @@
 import { db } from "../config/firebaseConfig";
 import {
   collection,
-  addDoc,
+  setDoc,
   getDoc,
   getDocs,
   doc,
@@ -16,9 +16,10 @@ class FirestoreCRUD {
 
   async createDocument(data) {
     try {
-      const docRef = await addDoc(this.collectionRef, data);
-      console.log("Document written with ID: ", docRef.id);
-      return docRef.id;
+      const docRef = doc(this.collectionRef, data.id);
+      await setDoc(docRef, data);
+      console.log("Document written with ID: ", data.id);
+      return data.id;
     } catch (e) {
       console.error("Error adding document: ", e);
       throw e;
@@ -32,6 +33,7 @@ class FirestoreCRUD {
         id: doc.id,
         ...doc.data(),
       }));
+      console.log("Documents: ", documents);
       return documents;
     } catch (e) {
       console.error("Error reading documents: ", e);
@@ -57,6 +59,27 @@ class FirestoreCRUD {
       console.log("Document deleted");
     } catch (e) {
       console.error("Error deleting document: ", e);
+      throw e;
+    }
+  }
+
+  // Add this method to the FirestoreCRUD class if it doesn't exist
+  async readDocument(id) {
+    try {
+      const docRef = doc(this.collectionRef, id);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        return {
+          id: docSnap.id,
+          ...docSnap.data()
+        };
+      } else {
+        console.log("No such document with ID:", id);
+        return null;
+      }
+    } catch (e) {
+      console.error("Error reading document:", e);
       throw e;
     }
   }

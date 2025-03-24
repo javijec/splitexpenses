@@ -1,20 +1,28 @@
 import { SignInPage } from "@toolpad/core/SignInPage";
-import { signIn } from "@/application/services/authManager"; // Updated import
+import { useNavigate } from "react-router";
+import { AuthService } from "@/application/services/AuthService"; // Updated import
 
 export default function Login() {
+  const authService = new AuthService();
   const providers = [{ id: "google", name: "Google" }];
+  const navigate = useNavigate();
+
   const handleSignIn = async (provider) => {
-    const result = await signIn(provider);
-    if (result.user) {
-      console.log("Signed in user:", result.user);
-    } else {
-      console.error("Error signing in:", result.error);
+    try {
+      if (provider.id === "google") {
+        await authService.login();
+      } else {
+        console.error("Unsupported provider:", provider);
+      }
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing in:", error);
     }
   };
 
   return (
     <SignInPage
-      signIn={handleSignIn} // Updated function name
+      signIn={handleSignIn}
       providers={providers}
       slotProps={{ form: { noValidate: true } }}
       sx={{

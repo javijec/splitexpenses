@@ -26,6 +26,9 @@ importers:
       firebase:
         specifier: ^11.4.0
         version: 11.4.0
+      notenv:
+        specifier: ^2.0.3
+        version: 2.0.3
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -1770,6 +1773,10 @@ packages:
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
+
+  notenv@2.0.3:
+    resolution: {integrity: sha512-sxHSLpLEEn9ucShKkw4xI72iyeykacyuH6oqdv8eid1oFgXB0woc+7uvkb1t0CZ6K9NdSRGdVhmoaexwmnvQIA==}
+    engines: {node: '>=10.0.0'}
 
   npm-run-path@5.3.0:
     resolution: {integrity: sha512-ppwTtiJZq0O/ai0z7yfudtBpWIoxM8yE6nHi1X47eFR2EWORqfbu6CnPlNsjeN683eT0qG6H/Pyf9fCcvjnnnQ==}
@@ -3974,6 +3981,10 @@ snapshots:
   node-releases@2.0.19: {}
 
   normalize-path@3.0.0: {}
+
+  notenv@2.0.3:
+    dependencies:
+      tslib: 2.8.1
 
   npm-run-path@5.3.0:
     dependencies:

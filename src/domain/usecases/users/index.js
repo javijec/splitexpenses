@@ -5,9 +5,8 @@ export const createUser = async (user) => {
   console.log("createUser");
   const userRepository = new UserRepository();
   if (user) {
-    console.log("user");
     const existingUsers = await userRepository.getUsers();
-    console.log(existingUsers);
+    console.log("existingUsers");
     const existingUser = existingUsers.find((u) => u.uid === user.uid);
 
     if (existingUser) {

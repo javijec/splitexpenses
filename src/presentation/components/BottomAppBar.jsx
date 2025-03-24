@@ -26,7 +26,7 @@ const StyledFab = styled(Fab)({
 });
 
 export default function BottomAppBar() {
-  const { user, logout } = useAuth();
+  const { user, logoutAccount } = useAuth();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
@@ -41,11 +41,11 @@ export default function BottomAppBar() {
   };
 
   const handleDashboard = async () => {
-    navigate("/");
+    navigate("/dashboard");
   };
   const handleLogout = async () => {
-    await logout();
-    navigate("/");
+    await logoutAccount();
+    navigate("/login");
   };
   const handleProfile = async () => {
     navigate("/profile");
