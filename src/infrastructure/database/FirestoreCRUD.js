@@ -60,7 +60,9 @@ class FirestoreCRUD {
 
   async deleteDocument(id) {
     try {
+      console.log("Deleting document with ID:", id);
       const docRef = doc(this.collectionRef, id);
+      console.log("Document Reference:", docRef);
       await deleteDoc(docRef);
       return { success: true, message: "Document deleted successfully" };
     } catch (error) {

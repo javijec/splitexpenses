@@ -21,12 +21,12 @@ const GroupModal = ({ isOpen, onClose }) => {
     const groupData = {
       name: groupName,
       createdBy: user.uid,
-      members: [user.uid],
+      members: [{ id: user.uid, displayName: user.displayName }],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
-    const group = await createGroup(groupData);
+    await createGroup(groupData);
     onClose();
   };
 

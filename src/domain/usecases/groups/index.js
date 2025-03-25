@@ -21,7 +21,7 @@ export const getGroupByID = async (groupId) => {
   try {
     // Access the FirestoreCRUD directly for this specific operation
     const groupRepository = new GroupRepository();
-    const result = await groupRepository.getGroupById(groupId);
+    const result = await groupRepository.getGroupByID(groupId);
 
     if (result.success) {
       return result.data;
@@ -62,7 +62,12 @@ export const updateGroup = async (groupId, groupData) => {
 };
 
 export const deleteGroup = async (groupId) => {
-  // Implementación pendiente
+  const groupRepository = new GroupRepository();
+  try {
+    await groupRepository.deleteGroup(groupId);
+  } catch (error) {
+    console.error("Error al eliminar el grupo:", error);
+  }
 };
 
 export const addMember = async (groupId, memberId) => {
