@@ -25,19 +25,19 @@ const Main = () => {
   const [groups, setGroups] = useState([]);
   const [invitations, setInvitations] = useState([]);
   const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
 
-  // Fix the useEffect to properly handle the async function
   useEffect(() => {
     // Call the function directly without trying to capture its return value
-    const data = fetchGroups();
-    setGroups(data || []); 
+    const data = fetchGroups(user);
+    setGroups(data || []);
+    setLoading(false);
   }, []);
 
-  const fetchGroups = async () => {
+  const fetchGroups = async (user) => {
     try {
       // Add loading state if needed
-      const data = await getGroupsByUser(user?.id);
-      console.log("Fetched groups:", data);
+      const data = await getGroupsByUser(user.uid);
       setGroups(data || []);
     } catch (error) {
       console.error("Error fetching groups:", error);
@@ -45,57 +45,69 @@ const Main = () => {
     }
   };
 
-  return (
-    <>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Container maxWidth="lg">
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-              Dashboard
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Gestiona tus grupos y revisa invitaciones pendientes
-            </Typography>
-          </Box>
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
+        <CircularProgress />
+      </Box>
+    );
+  } else {
+    return (
+      <>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Container maxWidth="lg">
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="h4" component="h1" gutterBottom>
+                Dashboard
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Gestiona tus grupos y revisa invitaciones pendientes
+              </Typography>
+            </Box>
 
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 8 }}>
-              <Card>
-                <CardHeader title="Mis Grupos" />
-                <Divider />
-                <CardContent>
-                  <List>
-                    {groups.map((group) => (
-                      <Fragment key={group.id}>
-                        <ListItem
-                          button
-                          component={Link}
-                          to={`/groups/${group.id}`}
-                        >
-                          <ListItemText
-                            primary={
-                              <Typography variant="subtitle1" color="primary">
-                                {group.name}
-                              </Typography>
-                            }
-                            secondary={`${group.memberCount || 1} miembros`}
-                          />
-                        </ListItem>
-                        <Divider component="li" />
-                      </Fragment>
-                    ))}
-                  </List>
+            <Grid container spacing={3}>
+              <Grid size={{ xs: 12, md: 8 }}>
+                <Card>
+                  <CardHeader title="Mis Grupos" />
+                  <Divider />
+                  <CardContent>
+                    {groups.length > 0 ? (
+                      <List>
+                        {groups.map((group) => (
+                          <Fragment key={group.id}>
+                            <ListItem
+                              button
+                              component={Link}
+                              to={`/group/${group.id}`}
+                            >
+                              <ListItemText
+                                primary={
+                                  <Typography
+                                    variant="subtitle1"
+                                    color="primary"
+                                  >
+                                    {group.name}
+                                  </Typography>
+                                }
+                                secondary={`${group.memberCount || 1} miembros`}
+                              />
+                            </ListItem>
+                            <Divider component="li" />
+                          </Fragment>
+                        ))}
+                      </List>
+                    ) : (
+                      <Box sx={{ p: 2, textAlign: "center" }}>
+                        <Typography variant="body1" color="text.secondary">
+                          No tienes grupos creados
+                        </Typography>
+                      </Box>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
 
-                  <Box sx={{ p: 2, textAlign: "center" }}>
-                    <Typography variant="body1" color="text.secondary">
-                      No tienes grupos creados
-                    </Typography>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-
-            {/*<Grid size={{ xs: 12, md: 4 }}>
+              {/*<Grid size={{ xs: 12, md: 4 }}>
               <Card>
                 <CardHeader title="Invitaciones Pendientes" />
                 <Divider />
@@ -150,12 +162,13 @@ const Main = () => {
                 </CardContent>
               </Card>
             </Grid>*/}
-          </Grid>
-        </Container>
-      </Box>
-      <GroupModal isOpen={isGroupModalOpen} onClose={closeGroupModal} />
-    </>
-  );
+            </Grid>
+          </Container>
+        </Box>
+        <GroupModal isOpen={isGroupModalOpen} onClose={closeGroupModal} />
+      </>
+    );
+  }
 };
 
 export default Main;

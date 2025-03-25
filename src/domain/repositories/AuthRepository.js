@@ -18,7 +18,6 @@ export class AuthRepository {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
-      console.log("AuthRepository: Popup login result:", result.user);
       return result.user;
     } catch (error) {
       console.error("AuthRepository: Error in popup login:", error);

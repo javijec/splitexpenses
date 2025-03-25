@@ -38,15 +38,13 @@ export const getGroupByID = async (groupId) => {
 export const getGroupsByUser = async (userId) => {
   try {
     const groupRepository = new GroupRepository();
-    // Get all groups
     const result = await groupRepository.getGroups();
 
     if (result.success) {
       // Business logic: Filter groups where the user is a member or the creator
       const userGroups = result.data.filter(
-        (group) =>
-          group.createdBy === userId ||
-          (group.members && group.members.includes(userId))
+        (group) => group.createdBy === userId /*||
+          (group.members && group.members.includes(userId))*/
       );
       return userGroups;
     } else {

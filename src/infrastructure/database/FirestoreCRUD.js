@@ -83,10 +83,7 @@ class FirestoreCRUD {
           },
         };
       } else {
-        return handleError(
-          new Error(`Document with ID ${id} not found`),
-          "FirestoreCRUD.readDocument"
-        );
+        return false;
       }
     } catch (error) {
       return handleError(error, "FirestoreCRUD.readDocument");

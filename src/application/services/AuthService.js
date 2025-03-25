@@ -37,10 +37,8 @@ export class AuthService {
   }
 
   async login() {
-    console.log("AuthService: Starting Google login with popup...");
     try {
       const user = await this.authRepository.login();
-      console.log("AuthService: User authenticated:", user.displayName);
       await this.saveUserToFirestore(user);
       return user;
     } catch (error) {
@@ -51,13 +49,9 @@ export class AuthService {
 
   async saveUserToFirestore(user) {
     try {
-      console.log("AuthService: Checking if user exists in Firestore...");
-      // Check if user already exists in Firestore
       const existingUser = await this.userRepository.getUser(user.uid);
 
       if (!existingUser) {
-        console.log("AuthService: Creating new user in Firestore...");
-        // Create new user document if it doesn't exist
         const userData = {
           id: user.uid,
           displayName: user.displayName,
@@ -68,14 +62,8 @@ export class AuthService {
         };
 
         await this.userRepository.createUser(userData);
-        console.log("AuthService: User saved to Firestore:", user.uid);
-      } else {
-        console.log("AuthService: User already exists in Firestore:", user.uid);
       }
     } catch (error) {
-      console.error("AuthService: Error saving user to Firestore:", error);
-      // Don't throw the error, just log it and return false
-      // This prevents the error from propagating and potentially causing logout
       return false;
     }
   }
