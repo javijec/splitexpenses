@@ -6,6 +6,7 @@ export class AuthService {
     this.authRepository = new AuthRepository();
     this.userRepository = new UserRepository();
     this.initAuthStateListener();
+    this.startSessionTimer();
   }
 
   // Initialize auth state listener
@@ -18,6 +19,21 @@ export class AuthService {
         console.log("User is signed out");
       }
     });
+  }
+
+  // Start a timer to refresh the session token every 30 minutes
+  startSessionTimer() {
+    setInterval(async () => {
+      const user = this.authRepository.getCurrentUser();
+      if (user) {
+        try {
+          await user.getIdToken(true); // Force refresh the token
+          console.log("Session token refreshed");
+        } catch (error) {
+          console.error("Error refreshing session token:", error);
+        }
+      }
+    }, 30 * 60 * 1000); // 30 minutes in milliseconds
   }
 
   async login() {
@@ -58,8 +74,9 @@ export class AuthService {
       }
     } catch (error) {
       console.error("AuthService: Error saving user to Firestore:", error);
-      // Ensure error handling does not affect authentication session
-      throw error;
+      // Don't throw the error, just log it and return false
+      // This prevents the error from propagating and potentially causing logout
+      return false;
     }
   }
 
@@ -86,5 +103,16 @@ export class AuthService {
 
   getCurrentUser() {
     return this.authRepository.getCurrentUser();
+  }
+
+  // Add a general error handler
+  handleError(error, operation = "operation") {
+    console.error(`AuthService: Error during ${operation}:`, error);
+    // Log the error but don't throw it unless necessary
+    // This prevents errors from causing authentication state changes
+    return {
+      success: false,
+      error: error.message || `An error occurred during ${operation}`,
+    };
   }
 }

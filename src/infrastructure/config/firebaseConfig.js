@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
+import {
+  getAuth,
+  connectAuthEmulator,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -15,6 +20,14 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    console.log("Persistence set to browserLocalPersistence");
+  })
+  .catch((error) => {
+    console.error("Error setting persistence:", error);
+  });
 
 // Connect to Firestore emulator
 connectFirestoreEmulator(db, "localhost", 8080);

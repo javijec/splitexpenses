@@ -1,4 +1,5 @@
 import GroupModal from "@/presentation/components/GroupModal";
+import { Fragment, useEffect, useState } from "react";
 import {
   Container,
   Grid2 as Grid,
@@ -16,10 +17,33 @@ import {
 } from "@mui/material";
 import { Link } from "react-router";
 import { useModal } from "@/application/contexts/ModalContext";
+import { getGroupsByUser } from "@/domain/usecases/groups";
+import { useAuth } from "@/application/contexts/AuthContext";
 
 const Main = () => {
-  const handleAddGroup = async () => {};
   const { isGroupModalOpen, closeGroupModal } = useModal();
+  const [groups, setGroups] = useState([]);
+  const [invitations, setInvitations] = useState([]);
+  const { user } = useAuth();
+
+  // Fix the useEffect to properly handle the async function
+  useEffect(() => {
+    // Call the function directly without trying to capture its return value
+    const data = fetchGroups();
+    setGroups(data || []); 
+  }, []);
+
+  const fetchGroups = async () => {
+    try {
+      // Add loading state if needed
+      const data = await getGroupsByUser(user?.id);
+      console.log("Fetched groups:", data);
+      setGroups(data || []);
+    } catch (error) {
+      console.error("Error fetching groups:", error);
+      setGroups([]);
+    }
+  };
 
   return (
     <>
@@ -40,84 +64,81 @@ const Main = () => {
                 <CardHeader title="Mis Grupos" />
                 <Divider />
                 <CardContent>
-                  {
-                    /*loading ? (
-                             <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
-                  <CircularProgress />
-                </Box>
-              ) : groups.length > 0 ? (
-                <List>
-                  {groups.map((group) => (
-                    <React.Fragment key={group.id}>
-                      <ListItem
-                        button
-                        component={Link}
-                        to={`/groups/${group.id}`}
-                      >
-                        <ListItemText
-                          primary={
-                            <Typography variant="subtitle1" color="primary">
-                              {group.name}
-                            </Typography>
-                          }
-                          secondary={`${group.memberCount || 1} miembros`}
-                        />
-                      </ListItem>
-                      <Divider component="li" />
-                    </React.Fragment>
-                  ))}
-                </List>
-                ) : (*/
-                    <Box sx={{ p: 2, textAlign: "center" }}>
-                      <Typography variant="body1" color="text.secondary">
-                        No tienes grupos creados
-                      </Typography>
-                    </Box>
-                    //              )
-                  }
+                  <List>
+                    {groups.map((group) => (
+                      <Fragment key={group.id}>
+                        <ListItem
+                          button
+                          component={Link}
+                          to={`/groups/${group.id}`}
+                        >
+                          <ListItemText
+                            primary={
+                              <Typography variant="subtitle1" color="primary">
+                                {group.name}
+                              </Typography>
+                            }
+                            secondary={`${group.memberCount || 1} miembros`}
+                          />
+                        </ListItem>
+                        <Divider component="li" />
+                      </Fragment>
+                    ))}
+                  </List>
+
+                  <Box sx={{ p: 2, textAlign: "center" }}>
+                    <Typography variant="body1" color="text.secondary">
+                      No tienes grupos creados
+                    </Typography>
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 4 }}>
+            {/*<Grid size={{ xs: 12, md: 4 }}>
               <Card>
                 <CardHeader title="Invitaciones Pendientes" />
                 <Divider />
                 <CardContent>
-                  {
-                    /*loading ? (
-                <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
-                  <CircularProgress />
-                </Box>
-              ) : invitations.length > 0 ? (
-                <List>
-                  {invitations.map((invitation) => (
-                    <ListItem key={invitation.id}>
-                      <ListItemText
-                        primary={`Invitación a ${invitation.groupName}`}
-                        secondary={`De: ${invitation.senderName}`}
-                      />
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        sx={{ mr: 1 }}
-                        onClick={() => handleAcceptInvitation(invitation.id)}
-                      >
-                        Aceptar
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        size="small"
-                        onClick={() => handleRejectInvitation(invitation.id)}
-                      >
-                        Rechazar
-                      </Button>
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (*/
+                  {loading ? (
+                    <Box
+                      sx={{ display: "flex", justifyContent: "center", p: 3 }}
+                    >
+                      <CircularProgress />
+                    </Box>
+                  ) : invitations.length > 0 ? (
+                    <List>
+                      {invitations.map((invitation) => (
+                        <ListItem key={invitation.id}>
+                          <ListItemText
+                            primary={`Invitación a ${invitation.groupName}`}
+                            secondary={`De: ${invitation.senderName}`}
+                          />
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            sx={{ mr: 1 }}
+                            onClick={() =>
+                              handleAcceptInvitation(invitation.id)
+                            }
+                          >
+                            Aceptar
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            size="small"
+                            onClick={() =>
+                              handleRejectInvitation(invitation.id)
+                            }
+                          >
+                            Rechazar
+                          </Button>
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
                     <Typography
                       variant="body1"
                       color="text.secondary"
@@ -125,19 +146,14 @@ const Main = () => {
                     >
                       No tienes invitaciones pendientes.
                     </Typography>
-                    //             )
-                  }
+                  )}
                 </CardContent>
               </Card>
-            </Grid>
+            </Grid>*/}
           </Grid>
         </Container>
       </Box>
-      <GroupModal
-        isOpen={isGroupModalOpen}
-        onClose={closeGroupModal}
-        onAddGroup={handleAddGroup}
-      />
+      <GroupModal isOpen={isGroupModalOpen} onClose={closeGroupModal} />
     </>
   );
 };

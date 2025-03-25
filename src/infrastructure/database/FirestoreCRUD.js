@@ -8,6 +8,7 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
+import { handleError } from "@/utils/errorHandler";
 
 class FirestoreCRUD {
   constructor(collectionName) {
@@ -16,13 +17,21 @@ class FirestoreCRUD {
 
   async createDocument(data) {
     try {
-      const docRef = doc(this.collectionRef, data.id);
-      await setDoc(docRef, data);
-      console.log("Document written with ID: ", data.id);
-      return data.id;
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      throw e;
+      console.log("Data:", data);
+      // Check if data.id exists, if not, use a generated ID
+      const docRef = data.id
+        ? doc(this.collectionRef, data.id)
+        : doc(this.collectionRef);
+      console.log("Document Reference:", docRef);
+
+      // If we're using a generated ID, add it to the data object
+      const documentData = data.id ? data : { ...data, id: docRef.id };
+
+      await setDoc(docRef, documentData);
+      console.log("Document written with ID: ", docRef.id);
+      return { success: true, data: docRef.id };
+    } catch (error) {
+      return handleError(error, "FirestoreCRUD.createDocument");
     }
   }
 
@@ -33,11 +42,9 @@ class FirestoreCRUD {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log("Documents: ", documents);
-      return documents;
-    } catch (e) {
-      console.error("Error reading documents: ", e);
-      throw e;
+      return { success: true, data: documents };
+    } catch (error) {
+      return handleError(error, "FirestoreCRUD.readDocuments");
     }
   }
 
@@ -45,10 +52,9 @@ class FirestoreCRUD {
     try {
       const docRef = doc(this.collectionRef, id);
       await updateDoc(docRef, updatedData);
-      console.log("Document updated");
-    } catch (e) {
-      console.error("Error updating document: ", e);
-      throw e;
+      return { success: true, message: "Document updated successfully" };
+    } catch (error) {
+      return handleError(error, "FirestoreCRUD.updateDocument");
     }
   }
 
@@ -56,10 +62,9 @@ class FirestoreCRUD {
     try {
       const docRef = doc(this.collectionRef, id);
       await deleteDoc(docRef);
-      console.log("Document deleted");
-    } catch (e) {
-      console.error("Error deleting document: ", e);
-      throw e;
+      return { success: true, message: "Document deleted successfully" };
+    } catch (error) {
+      return handleError(error, "FirestoreCRUD.deleteDocument");
     }
   }
 
@@ -68,19 +73,23 @@ class FirestoreCRUD {
     try {
       const docRef = doc(this.collectionRef, id);
       const docSnap = await getDoc(docRef);
-      
+
       if (docSnap.exists()) {
         return {
-          id: docSnap.id,
-          ...docSnap.data()
+          success: true,
+          data: {
+            id: docSnap.id,
+            ...docSnap.data(),
+          },
         };
       } else {
-        console.log("No such document with ID:", id);
-        return null;
+        return handleError(
+          new Error(`Document with ID ${id} not found`),
+          "FirestoreCRUD.readDocument"
+        );
       }
-    } catch (e) {
-      console.error("Error reading document:", e);
-      throw e;
+    } catch (error) {
+      return handleError(error, "FirestoreCRUD.readDocument");
     }
   }
 }
