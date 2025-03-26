@@ -182,7 +182,7 @@ function GroupDetail() {
                   </Button>
                   {isAdmin && (
                     <Button
-                      variant="outlined"
+                      variant="contained"
                       color="error"
                       startIcon={<DeleteIcon />}
                       size="small"
