@@ -113,11 +113,11 @@ const ExpenseModal = ({
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
+    // Validate inputs
+    // Save expense to Firestore
+    // Save balance updates to Firestore
+    // Close modal
 
-    // TODO: Call the appropriate use case to save the expense
-    // const savedExpense = await createExpense(expenseData);
-
-    // Close the modal
     onClose();
   };
 
