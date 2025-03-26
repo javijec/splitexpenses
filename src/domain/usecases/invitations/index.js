@@ -62,6 +62,16 @@ export const getGroupInvitations = async (groupId) => {
   }
 };
 
+export const getInvitationByEmailAndGroup = async (userEmail, groupId) => {
+  try {
+    const invitations = await getInvitationbyEmail(userEmail);
+    return invitations.find((invitation) => invitation.groupId === groupId);
+  } catch (error) {
+    console.error("Error al obtener invitaciones del usuario:", error);
+    return null;
+  }
+};
+
 export const deleteInvitation = async (invitationId) => {
   try {
     const invitationRepository = new InvitationRepository();

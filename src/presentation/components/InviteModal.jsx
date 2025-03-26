@@ -7,12 +7,22 @@ import {
   Button,
   TextField,
   Typography,
+  Alert,
 } from "@mui/material";
-import { createInvitation } from "@/domain/usecases/invitations";
+import {
+  createInvitation,
+  getInvitationByEmailAndGroup,
+} from "@/domain/usecases/invitations";
+import { getMembersMailsGroup } from "@/domain/usecases/groups";
 
 const InviteModal = ({ isOpen, onClose, group }) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
+  const [alertInfo, setAlertInfo] = useState({
+    show: false,
+    message: "",
+    severity: "error",
+  });
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -25,12 +35,47 @@ const InviteModal = ({ isOpen, onClose, group }) => {
     setEmailError(value && !validateEmail(value));
   };
 
+  const handleClose = () => {
+    setEmail("");
+    setEmailError(false);
+    setAlertInfo({
+      show: false,
+      message: "",
+      severity: "error",
+    });
+    onClose();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !validateEmail(email)) {
       setEmailError(true);
       return;
     }
+    const membersId = await getMembersMailsGroup(group.id);
+    console.log(membersId);
+    if (membersId.includes(email)) {
+      setAlertInfo({
+        show: true,
+        message: "El usuario ya es miembro del grupo",
+        severity: "error",
+      });
+      return;
+    }
+
+    const existingInvitation = await getInvitationByEmailAndGroup(
+      email,
+      group.id
+    );
+    if (existingInvitation) {
+      setAlertInfo({
+        show: true,
+        message: "Ya existe una invitación pendiente para este email",
+        severity: "error",
+      });
+      return;
+    }
+
     const invitation = {
       groupId: group.id,
       groupName: group.name,
@@ -40,12 +85,11 @@ const InviteModal = ({ isOpen, onClose, group }) => {
       createdAt: new Date().toISOString(),
     };
     await createInvitation(invitation);
-    setEmail("");
-    onClose();
+    handleClose();
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog open={isOpen} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
         <Typography>Invitar Miembro</Typography>
       </DialogTitle>
@@ -66,6 +110,15 @@ const InviteModal = ({ isOpen, onClose, group }) => {
             helperText={emailError ? "Formato de email inválido" : ""}
             sx={{ mb: 3 }}
           />
+          {alertInfo.show && (
+            <Alert
+              severity={alertInfo.severity}
+              onClose={() => setAlertInfo({ ...alertInfo, show: false })}
+              sx={{ mb: 2 }}
+            >
+              {alertInfo.message}
+            </Alert>
+          )}
           <Box
             sx={{
               display: "flex",
@@ -74,7 +127,7 @@ const InviteModal = ({ isOpen, onClose, group }) => {
               mt: 2,
             }}
           >
-            <Button onClick={onClose} color="inherit">
+            <Button onClick={handleClose} color="inherit">
               CANCELAR
             </Button>
             <Button

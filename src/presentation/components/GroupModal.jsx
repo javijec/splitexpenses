@@ -21,7 +21,9 @@ const GroupModal = ({ isOpen, onClose }) => {
     const groupData = {
       name: groupName,
       createdBy: { id: user.uid, name: user.displayName },
-      members: [{ id: user.uid, displayName: user.displayName }],
+      members: [
+        { id: user.uid, displayName: user.displayName, email: user.email },
+      ],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

@@ -34,6 +34,7 @@ import ExpenseModal from "@/presentation/components/ExpenseModal";
 import InviteModal from "@/presentation/components/InviteModal";
 import DeleteGroupModal from "@/presentation/components/DeleteGroupModal";
 import { getGroupByID } from "@/domain/usecases/groups";
+import { getGroupInvitations } from "@/domain/usecases/invitations";
 
 function GroupDetail() {
   const { groupId } = useParams();
@@ -50,6 +51,7 @@ function GroupDetail() {
   const [group, setGroup] = useState(null);
   const [expenses, setExpenses] = useState([]);
   const [members, setMembers] = useState([]);
+  const [invitations, setInvitations] = useState([]);
   const [balances, setBalances] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -59,11 +61,12 @@ function GroupDetail() {
   const [expenseAmount, setExpenseAmount] = useState("");
 
   useEffect(() => {
-    const loadGroup = async () => {
+    const load = async () => {
       try {
         setLoading(true);
         const data = await getGroupByID(groupId);
-        setGroup(data);
+        const invitation = getGroupInvitations(groupId);
+        setInvitations(invitation);
         setMembers(data.members);
         setIsAdmin(data.createdBy.id === user.uid);
       } catch (error) {
@@ -73,7 +76,7 @@ function GroupDetail() {
       }
     };
     if (groupId) {
-      loadGroup();
+      load();
     }
   }, [groupId]);
 
