@@ -1,3 +1,6 @@
+import ExpenseRepository from "@/domain/repositories/ExpenseRepository";
+import Expense from "@/domain/models/Expense";
+
 // Exporta los casos de uso relacionados con gastos
 
 export const createExpense = async (expenseData) => {
@@ -5,7 +8,8 @@ export const createExpense = async (expenseData) => {
 };
 
 export const getExpense = async (expenseId) => {
-  // Implementación pendiente
+  const data = await ExpenseRepository.getExpenses();
+  return data.find((expense) => expense.id === expenseId);
 };
 
 export const updateExpense = async (expenseId, expenseData) => {
@@ -13,11 +17,18 @@ export const updateExpense = async (expenseId, expenseData) => {
 };
 
 export const deleteExpense = async (expenseId) => {
-  // Implementación pendiente
+  await ExpenseRepository.deleteExpense(expenseId);
+};
+
+export const deleteExpensesByGroup = async (groupId) => {
+  const expenses = await getGroupExpenses(groupId);
+  const deletePromises = expenses.map((expense) => deleteExpense(expense.id));
+  await Promise.all(deletePromises);
 };
 
 export const getGroupExpenses = async (groupId) => {
-  // Implementación pendiente
+  const data = await ExpenseRepository.getExpenses();
+  return data.filter((expense) => expense.groupId === groupId);
 };
 
 export const calculateSplits = async (expenseId) => {
