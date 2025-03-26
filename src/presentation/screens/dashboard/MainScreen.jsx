@@ -59,7 +59,7 @@ const Main = () => {
       loadGroups();
       loadInvitations();
     }
-  }, [user]);
+  }, [user, isGroupModalOpen]); // Add isGroupModalOpen to dependencies to reload when modal closes
 
   const handleAcceptInvitation = async (invitationId) => {
     console.log("Aceptar invitación:", invitationId);

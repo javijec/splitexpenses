@@ -67,7 +67,7 @@ export default function BottomAppBar() {
     <Fragment>
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar>
-          {location.pathname !== "/" && (
+          {location.pathname !== "/dashboard" && (
             <IconButton
               color="inherit"
               aria-label="open drawer"
