@@ -67,6 +67,9 @@ const Main = () => {
   const handleRejectInvitation = async (invitationId) => {
     try {
       await deleteInvitation(invitationId);
+      // Recargar las invitaciones después de rechazar
+      const data = await getInvitationbyEmail(user.email);
+      setInvitations(data || []);
     } catch (error) {
       console.error("Error rejecting invitation:", error);
     }
@@ -74,116 +77,107 @@ const Main = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Container maxWidth="lg">
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-              Dashboard
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Gestiona tus grupos y revisa invitaciones pendientes
-            </Typography>
-          </Box>
-
-          <Grid container spacing={3}>
-            {(loading || invitations.length > 0) && (
-              <Grid size={{ xs: 12, md: 4 }}>
-                <Card>
-                  <CardHeader title="Invitaciones Pendientes" />
-                  <Divider />
-                  <CardContent>
-                    {loading ? (
-                      <Box
-                        sx={{ display: "flex", justifyContent: "center", p: 3 }}
-                      >
-                        <CircularProgress />
-                      </Box>
-                    ) : (
-                      <List>
-                        {invitations.map((invitation) => (
-                          <ListItem key={invitation.id}>
-                            <ListItemText
-                              primary={`Invitación a ${invitation.groupName}`}
-                              secondary={`De: ${invitation.invitedBy}`}
-                            />
-                            <Button
-                              variant="outlined"
-                              color="primary"
-                              size="small"
-                              sx={{ mr: 1 }}
-                              onClick={() =>
-                                handleAcceptInvitation(invitation.id)
-                              }
-                            >
-                              Aceptar
-                            </Button>
-                            <Button
-                              variant="outlined"
-                              color="error"
-                              size="small"
-                              onClick={() =>
-                                handleRejectInvitation(invitation.id)
-                              }
-                            >
-                              Rechazar
-                            </Button>
-                          </ListItem>
-                        ))}
-                      </List>
-                    )}
-                  </CardContent>
-                </Card>
-              </Grid>
-            )}
-
-            <Grid size={{ xs: 12, md: 8 }}>
-              <Card>
-                <CardHeader title="Mis Grupos" />
-                <Divider />
-                <CardContent>
-                  {loading ? (
-                    <Box
-                      sx={{ display: "flex", justifyContent: "center", p: 3 }}
-                    >
-                      <CircularProgress />
-                    </Box>
-                  ) : groups.length > 0 ? (
-                    <List>
-                      {groups.map((group) => (
-                        <Fragment key={group.id}>
-                          <ListItem
-                            button
-                            component={Link}
-                            to={`/group/${group.id}`}
-                          >
-                            <ListItemText
-                              primary={
-                                <Typography variant="subtitle1" color="primary">
-                                  {group.name}
-                                </Typography>
-                              }
-                              secondary={`${
-                                group.members.length || 1
-                              } miembros`}
-                            />
-                          </ListItem>
-                          <Divider component="li" />
-                        </Fragment>
-                      ))}
-                    </List>
-                  ) : (
-                    <Box sx={{ p: 2, textAlign: "center" }}>
-                      <Typography variant="body1" color="text.secondary">
-                        No tienes grupos creados
-                      </Typography>
-                    </Box>
-                  )}
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
+      <Box
+        sx={{
+          mb: 4,
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4" component="h1" gutterBottom>
+          Bienvenido a tu Panel de Control, {user?.displayName}!
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Gestiona tus grupos y revisa invitaciones pendientes
+        </Typography>
       </Box>
+      <Grid container spacing={3}>
+        {(loading || invitations.length > 0) && (
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Card>
+              <CardHeader title="Invitaciones Pendientes" />
+              <Divider />
+              <CardContent>
+                {loading ? (
+                  <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
+                    <CircularProgress />
+                  </Box>
+                ) : (
+                  <List>
+                    {invitations.map((invitation) => (
+                      <ListItem key={invitation.id}>
+                        <ListItemText
+                          primary={`Invitación a ${invitation.groupName}`}
+                          secondary={`De: ${invitation.invitedBy}`}
+                        />
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          size="small"
+                          sx={{ mr: 1 }}
+                          onClick={() => handleAcceptInvitation(invitation.id)}
+                        >
+                          Aceptar
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          size="small"
+                          onClick={() => handleRejectInvitation(invitation.id)}
+                        >
+                          Rechazar
+                        </Button>
+                      </ListItem>
+                    ))}
+                  </List>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
+
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Card>
+            <CardHeader title="Mis Grupos" />
+            <Divider />
+            <CardContent>
+              {loading ? (
+                <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
+                  <CircularProgress />
+                </Box>
+              ) : groups.length > 0 ? (
+                <List>
+                  {groups.map((group) => (
+                    <Fragment key={group.id}>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`/group/${group.id}`}
+                      >
+                        <ListItemText
+                          primary={
+                            <Typography variant="subtitle1" color="primary">
+                              {group.name}
+                            </Typography>
+                          }
+                          secondary={`${group.members.length || 1} miembros`}
+                        />
+                      </ListItem>
+                      <Divider component="li" />
+                    </Fragment>
+                  ))}
+                </List>
+              ) : (
+                <Box sx={{ p: 2, textAlign: "center" }}>
+                  <Typography variant="body1" color="text.secondary">
+                    No tienes grupos creados
+                  </Typography>
+                </Box>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
       <GroupModal isOpen={isGroupModalOpen} onClose={closeGroupModal} />
     </>
   );
