@@ -13,7 +13,8 @@ export const getExpense = async (expenseId) => {
 };
 
 export const getExpenses = async () => {
-  return await ExpenseRepository.getExpenses();
+  const expenseRepository = new ExpenseRepository();
+  return await expenseRepository.getExpenses();
 };
 
 export const updateExpense = async (expenseId, expenseData) => {
@@ -32,7 +33,12 @@ export const deleteGroupExpenses = async (groupId) => {
 
 export const getGroupExpenses = async (groupId) => {
   const data = await getExpenses();
-  return data.filter((expense) => expense.groupId === groupId);
+  // Ensure data is an array before filtering
+  if (!Array.isArray(data)) {
+    return [];
+  }
+  const result = data.filter((expense) => expense.groupId === groupId);
+  return result;
 };
 
 export const calculateSplits = async (expenseId) => {

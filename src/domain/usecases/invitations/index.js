@@ -53,7 +53,7 @@ export const getInvitationbyEmail = async (userEmail) => {
   }
 };
 
-export const getGroupInvitarions = async (groupId) => {
+export const getGroupInvitations = async (groupId) => {
   try {
     const result = await getInvitations();
     return result.filter((invitation) => invitation.groupId === groupId);

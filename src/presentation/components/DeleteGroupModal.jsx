@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { deleteGroup } from "@/domain/usecases/groups";
-import { deleteExpensesByGroup } from "@/domain/usecases/expenses";
-import { deleteInvitationsByGroup } from "@/domain/usecases/invitations";
+import { deleteGroupExpenses } from "@/domain/usecases/expenses";
+import { deleteGroupInvitations } from "@/domain/usecases/invitations";
 import { useAuth } from "@/application/contexts/AuthContext";
 import {
   Dialog,
@@ -14,7 +14,7 @@ import {
   Button,
 } from "@mui/material";
 
-const DeleteGroupModal = ({ isOpen, onClose, groupId }) => {
+const DeleteGroupModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { groupContext } = useAuth();
 
@@ -22,9 +22,9 @@ const DeleteGroupModal = ({ isOpen, onClose, groupId }) => {
     try {
       const groupId = groupContext.id;
       // Delete all expenses
-      await deleteExpensesByGroup(groupId);
+      await deleteGroupExpenses(groupId);
       // Delete all invitations
-      await deleteInvitationsByGroup(groupId);
+      await deleteGroupInvitations(groupId);
       // Delete group
       await deleteGroup(groupId);
       // Close modal
