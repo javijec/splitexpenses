@@ -21,6 +21,17 @@ export const createInvitation = async (invitationData) => {
   }
 };
 
+export const getInvitations = async () => {
+  try {
+    const invitationRepository = new InvitationRepository();
+    const result = await invitationRepository.getInvitations();
+
+    return result.data;
+  } catch (error) {
+    console.error("Error al obtener invitaciones:", error);
+  }
+};
+
 export const getInvitationbyEmail = async (userEmail) => {
   try {
     const invitationRepository = new InvitationRepository();
@@ -42,6 +53,16 @@ export const getInvitationbyEmail = async (userEmail) => {
   }
 };
 
+export const getGroupInvitarions = async (groupId) => {
+  try {
+    const result = await getInvitations();
+    return result.filter((invitation) => invitation.groupId === groupId);
+  } catch (error) {
+    console.error("Error al obtener invitaciones del grupo:", error);
+    return [];
+  }
+};
+
 export const deleteInvitation = async (invitationId) => {
   try {
     const invitationRepository = new InvitationRepository();
@@ -49,4 +70,12 @@ export const deleteInvitation = async (invitationId) => {
   } catch (error) {
     console.error("Error al eliminar la invitación:", error);
   }
+};
+
+export const deleteGroupInvitations = async (groupId) => {
+  const invitations = await getGroupInvitations(groupId);
+  const deletePromises = invitations.map((invitation) => {
+    deleteInvitation(invitation.id);
+  });
+  await Promise.all(deletePromises);
 };
