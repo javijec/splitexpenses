@@ -141,7 +141,7 @@ function GroupDetail() {
 
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 4 }}>
-          <Box sx={{ display: { xs: 'block', md: 'none' }, mb: 3 }}>
+          <Box sx={{ display: { xs: "block", md: "none" }, mb: 3 }}>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -156,7 +156,7 @@ function GroupDetail() {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>Miembros</Typography>
+                  <Typography variant="h5">Miembros</Typography>
                   <Box>
                     <Button
                       variant="contained"
@@ -204,9 +204,9 @@ function GroupDetail() {
             </Accordion>
           </Box>
 
-          <Box sx={{ display: { xs: 'none', md: 'block' }, mb: 3 }}>
+          <Box sx={{ display: { xs: "none", md: "block" }, mb: 3 }}>
             <Card>
-              <CardHeader 
+              <CardHeader
                 title="Miembros"
                 action={
                   <Button
