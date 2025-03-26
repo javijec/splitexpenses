@@ -14,11 +14,9 @@ import {
   Grid2 as Grid,
   CircularProgress,
   IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   Chip,
   Avatar,
   ListItemAvatar,
@@ -27,6 +25,7 @@ import {
   Delete as DeleteIcon,
   Edit as EditIcon,
   PersonAdd as PersonAddIcon,
+  ExpandMore as ExpandMoreIcon,
 } from "@mui/icons-material";
 
 import { useAuth } from "@/application/contexts/AuthContext";
@@ -166,16 +165,30 @@ function GroupDetail() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader
-              title="Miembros del Grupo"
-              action={
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="members-content"
+              id="members-header"
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography>Miembros</Typography>
                 <Box>
                   <Button
                     variant="contained"
                     startIcon={<PersonAddIcon />}
                     size="small"
-                    onClick={handleInviteModal}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleInviteModal();
+                    }}
                     sx={{ mr: 1 }}
                   >
                     Invitar
@@ -186,19 +199,18 @@ function GroupDetail() {
                       color="error"
                       startIcon={<DeleteIcon />}
                       size="small"
-                      onClick={handleDeleteModal}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteModal();
+                      }}
                     >
                       Eliminar
                     </Button>
                   )}
                 </Box>
-              }
-            />
-            <Divider />
-            <CardContent>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                {members.length} {members.length === 1 ? "miembro" : "miembros"}
-              </Typography>
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails>
               <List>
                 {members.map((member) => (
                   <ListItem key={member.id + "a"}>
@@ -225,8 +237,8 @@ function GroupDetail() {
                   </ListItem>
                 ))}
               </List>
-            </CardContent>
-          </Card>
+            </AccordionDetails>
+          </Accordion>
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <Card>
