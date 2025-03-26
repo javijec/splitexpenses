@@ -1,7 +1,6 @@
 import GroupModal from "@/presentation/components/GroupModal";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Container,
   Grid2 as Grid,
   Typography,
   Box,
@@ -21,7 +20,7 @@ import {
 import { Groups as GroupsIcon } from "@mui/icons-material";
 import { Link } from "react-router";
 import { useModal } from "@/application/contexts/ModalContext";
-import { getGroupsByUser } from "@/domain/usecases/groups";
+import { getGroupsByUser, addMember } from "@/domain/usecases/groups";
 import {
   getInvitationbyEmail,
   deleteInvitation,
@@ -35,45 +34,44 @@ const Main = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadGroups = async () => {
-      try {
-        setLoading(true);
-        const data = await getGroupsByUser(user.uid);
-        setGroups(data || []);
-      } catch (error) {
-        console.error("Error fetching groups:", error);
-        setGroups([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    const loadInvitations = async () => {
-      try {
-        const data = await getInvitationbyEmail(user.email);
-        setInvitations(data || []);
-      } catch (error) {
-        console.error("Error fetching invitations:", error);
-        setInvitations([]);
-      }
-    };
+  const loadData = async () => {
+    if (!user?.uid) return;
 
-    if (user?.uid) {
-      loadGroups();
-      loadInvitations();
+    try {
+      setLoading(true);
+      const [groupsData, invitationsData] = await Promise.all([
+        getGroupsByUser(user.uid),
+        user.email ? getInvitationbyEmail(user.email) : Promise.resolve([]),
+      ]);
+      setGroups(groupsData || []);
+      setInvitations(invitationsData || []);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setGroups([]);
+      setInvitations([]);
+    } finally {
+      setLoading(false);
     }
-  }, [user, isGroupModalOpen]); // Add isGroupModalOpen to dependencies to reload when modal closes
+  };
 
-  const handleAcceptInvitation = async (invitationId) => {
-    console.log("Aceptar invitación:", invitationId);
+  useEffect(() => {
+    loadData();
+  }, [user]);
+
+  const handleAcceptInvitation = async (invitationId, groupId) => {
+    try {
+      await addMember(groupId, user);
+      await deleteInvitation(invitationId);
+      await loadData();
+    } catch (error) {
+      console.error("Error accepting invitation:", error);
+    }
   };
 
   const handleRejectInvitation = async (invitationId) => {
     try {
       await deleteInvitation(invitationId);
-      // Recargar las invitaciones después de rechazar
-      const data = await getInvitationbyEmail(user.email);
-      setInvitations(data || []);
+      await loadData();
     } catch (error) {
       console.error("Error rejecting invitation:", error);
     }
@@ -119,7 +117,12 @@ const Main = () => {
                           color="primary"
                           size="small"
                           sx={{ mr: 1 }}
-                          onClick={() => handleAcceptInvitation(invitation.id)}
+                          onClick={() =>
+                            handleAcceptInvitation(
+                              invitation.id,
+                              invitation.groupId
+                            )
+                          }
                         >
                           Aceptar
                         </Button>

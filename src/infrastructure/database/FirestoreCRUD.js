@@ -48,7 +48,12 @@ class FirestoreCRUD {
   async updateDocument(id, updatedData) {
     try {
       const docRef = doc(this.collectionRef, id);
-      await updateDoc(docRef, updatedData);
+      // Convert the updatedData to a plain object if it's not already one
+      const plainData =
+        updatedData && typeof updatedData === "object"
+          ? Object.assign({}, updatedData)
+          : updatedData;
+      await updateDoc(docRef, plainData);
       return { success: true, message: "Document updated successfully" };
     } catch (error) {
       return handleError(error, "FirestoreCRUD.updateDocument");

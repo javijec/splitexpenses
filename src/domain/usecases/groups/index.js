@@ -74,7 +74,19 @@ export const getMembersMailsGroup = async (groupId) => {
 };
 
 export const updateGroup = async (groupId, groupData) => {
-  // Implementación pendiente
+  const groupRepository = new GroupRepository();
+  const data = new Group(
+    groupData.name,
+    groupData.createdBy,
+    groupData.members,
+    groupData.createdAt,
+    groupData.updatedAt
+  );
+  try {
+    await groupRepository.updateGroup(groupId, data);
+  } catch (error) {
+    console.error("Error al actualizar el grupo:", error);
+  }
 };
 
 export const deleteGroup = async (groupId) => {
@@ -86,10 +98,31 @@ export const deleteGroup = async (groupId) => {
   }
 };
 
-export const addMember = async (groupId, memberId) => {
-  // Implementación pendiente
+export const addMember = async (groupId, member) => {
+  const groupRepository = new GroupRepository();
+  const memberData = {
+    id: member.uid,
+    displayName: member.displayName,
+    email: member.email,
+  };
+  try {
+    const group = await groupRepository.getGroupByID(groupId);
+    if (group) {
+      const updatedMembers = [...group.data.members, memberData];
+      const updatedGroup = new Group(
+        group.data.name,
+        group.data.createdBy,
+        updatedMembers,
+        group.data.createdAt,
+        new Date()
+      );
+      await groupRepository.updateGroup(groupId, updatedGroup);
+    }
+  } catch (error) {
+    console.error("Error al agregar el miembro:", error);
+  }
 };
 
-export const removeMember = async (groupId, memberId) => {
+export const removeMember = async (groupId, member) => {
   // Implementación pendiente
 };
