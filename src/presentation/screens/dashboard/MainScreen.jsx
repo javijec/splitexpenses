@@ -1,4 +1,4 @@
-import GroupModal from "@/presentation/components/GroupModal";
+import GroupModal from "@/presentation/components/dashboard/GroupModal";
 import { useEffect, useState } from "react";
 import {
   Grid2 as Grid,

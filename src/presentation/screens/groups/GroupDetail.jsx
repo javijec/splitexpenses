@@ -30,11 +30,12 @@ import {
 
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";
-import ExpenseModal from "@/presentation/components/ExpenseModal";
-import InviteModal from "@/presentation/components/InviteModal";
-import DeleteGroupModal from "@/presentation/components/DeleteGroupModal";
+import ExpenseModal from "@/presentation/components/groups/ExpenseModal";
+import InviteModal from "@/presentation/components/groups/InviteModal";
+import DeleteGroupModal from "@/presentation/components/groups/DeleteGroupModal";
 import { getGroupByID } from "@/domain/usecases/groups";
 import { getGroupInvitations } from "@/domain/usecases/invitations";
+import Loading from "@/presentation/components/common/Loading";
 
 function GroupDetail() {
   const { groupId } = useParams();
@@ -60,13 +61,21 @@ function GroupDetail() {
   const [expenseDescription, setExpenseDescription] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
 
+  const loadInvitations = async () => {
+    try {
+      const invitationData = await getGroupInvitations(groupId);
+      setInvitations(invitationData);
+    } catch (error) {
+      console.error("Error fetching invitations:", error);
+    }
+  };
+
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true);
         const data = await getGroupByID(groupId);
-        const invitationData = await getGroupInvitations(groupId);
-        setInvitations(invitationData);
+        await loadInvitations();
         setMembers(data.members);
         setIsAdmin(data.createdBy.id === user.uid);
         setGroup(data);
@@ -79,7 +88,7 @@ function GroupDetail() {
     if (groupId) {
       load();
     }
-  }, [groupId]);
+  }, [groupId, isInviteModalOpen]);
 
   const calculateBalances = (expensesList, membersData) => {
     // Simple balance calculation logic
@@ -100,18 +109,7 @@ function GroupDetail() {
   };
 
   if (loading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "50vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <Loading />;
   }
 
   return (
