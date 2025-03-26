@@ -77,7 +77,11 @@ export default function BottomAppBar() {
             </IconButton>
           )}
           {!location.pathname.startsWith("/profile") && (
-            <StyledFab aria-label="add" onClick={handleAddButtonClick}>
+            <StyledFab
+              aria-label="add"
+              color="secondary"
+              onClick={handleAddButtonClick}
+            >
               <Add />
             </StyledFab>
           )}
