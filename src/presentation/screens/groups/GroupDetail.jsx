@@ -172,7 +172,7 @@ function GroupDetail() {
               action={
                 <Box>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     startIcon={<PersonAddIcon />}
                     size="small"
                     onClick={handleInviteModal}
