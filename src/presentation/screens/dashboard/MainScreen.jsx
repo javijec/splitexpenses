@@ -18,6 +18,7 @@ import {
 import { Link } from "react-router";
 import { useModal } from "@/application/contexts/ModalContext";
 import { getGroupsByUser } from "@/domain/usecases/groups";
+import { getInvitationbyEmail } from "@/domain/usecases/invitations";
 import { useAuth } from "@/application/contexts/AuthContext";
 
 const Main = () => {
@@ -40,11 +41,30 @@ const Main = () => {
         setLoading(false);
       }
     };
+    const loadInvitations = async () => {
+      try {
+        const data = await getInvitationbyEmail(user.email);
+        console.log("Invitations:", data); // Add this line to log the invitation
+        setInvitations(data || []);
+      } catch (error) {
+        console.error("Error fetching invitations:", error);
+        setInvitations([]);
+      }
+    };
 
     if (user?.uid) {
       loadGroups();
+      loadInvitations();
     }
   }, [user]);
+
+  const handleAcceptInvitation = async (invitationId) => {
+    console.log("Aceptar invitación:", invitationId);
+  };
+
+  const handleRejectInvitation = async (invitationId) => {
+    console.log("Rechazar invitación:", invitationId);
+  };
 
   return (
     <>
@@ -60,6 +80,56 @@ const Main = () => {
           </Box>
 
           <Grid container spacing={3}>
+            {(loading || invitations.length > 0) && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Card>
+                  <CardHeader title="Invitaciones Pendientes" />
+                  <Divider />
+                  <CardContent>
+                    {loading ? (
+                      <Box
+                        sx={{ display: "flex", justifyContent: "center", p: 3 }}
+                      >
+                        <CircularProgress />
+                      </Box>
+                    ) : (
+                      <List>
+                        {invitations.map((invitation) => (
+                          <ListItem key={invitation.id}>
+                            <ListItemText
+                              primary={`Invitación a ${invitation.groupName}`}
+                              secondary={`De: ${invitation.invitedBy}`}
+                            />
+                            <Button
+                              variant="outlined"
+                              color="primary"
+                              size="small"
+                              sx={{ mr: 1 }}
+                              onClick={() =>
+                                handleAcceptInvitation(invitation.id)
+                              }
+                            >
+                              Aceptar
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              color="error"
+                              size="small"
+                              onClick={() =>
+                                handleRejectInvitation(invitation.id)
+                              }
+                            >
+                              Rechazar
+                            </Button>
+                          </ListItem>
+                        ))}
+                      </List>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            )}
+
             <Grid size={{ xs: 12, md: 8 }}>
               <Card>
                 <CardHeader title="Mis Grupos" />
@@ -86,7 +156,9 @@ const Main = () => {
                                   {group.name}
                                 </Typography>
                               }
-                              secondary={`${group.memberCount || 1} miembros`}
+                              secondary={`${
+                                group.members.length || 1
+                              } miembros`}
                             />
                           </ListItem>
                           <Divider component="li" />
@@ -103,62 +175,6 @@ const Main = () => {
                 </CardContent>
               </Card>
             </Grid>
-
-            {/*<Grid size={{ xs: 12, md: 4 }}>
-              <Card>
-                <CardHeader title="Invitaciones Pendientes" />
-                <Divider />
-                <CardContent>
-                  {loading ? (
-                    <Box
-                      sx={{ display: "flex", justifyContent: "center", p: 3 }}
-                    >
-                      <CircularProgress />
-                    </Box>
-                  ) : invitations.length > 0 ? (
-                    <List>
-                      {invitations.map((invitation) => (
-                        <ListItem key={invitation.id}>
-                          <ListItemText
-                            primary={`Invitación a ${invitation.groupName}`}
-                            secondary={`De: ${invitation.senderName}`}
-                          />
-                          <Button
-                            variant="outlined"
-                            color="primary"
-                            size="small"
-                            sx={{ mr: 1 }}
-                            onClick={() =>
-                              handleAcceptInvitation(invitation.id)
-                            }
-                          >
-                            Aceptar
-                          </Button>
-                          <Button
-                            variant="outlined"
-                            color="error"
-                            size="small"
-                            onClick={() =>
-                              handleRejectInvitation(invitation.id)
-                            }
-                          >
-                            Rechazar
-                          </Button>
-                        </ListItem>
-                      ))}
-                    </List>
-                  ) : (
-                    <Typography
-                      variant="body1"
-                      color="text.secondary"
-                      sx={{ p: 2 }}
-                    >
-                      No tienes invitaciones pendientes.
-                    </Typography>
-                  )}
-                </CardContent>
-              </Card>
-            </Grid>*/}
           </Grid>
         </Container>
       </Box>

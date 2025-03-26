@@ -1,9 +1,16 @@
 class Invitation {
-  constructor(id, groupId, invitedEmail, invitedBy, status = 'pending', createdAt) {
-    this.id = id; // Automatically generated ID
+  constructor(
+    groupId,
+    groupName,
+    invitedBy,
+    invitedEmail,
+    status = "pending",
+    createdAt
+  ) {
     this.groupId = groupId; // Reference to the group
+    this.groupName = groupName; // Reference to the group
+    this.invitedBy = invitedBy; // Reference to the user who invited the
     this.invitedEmail = invitedEmail; // Email of the invited person
-    this.invitedBy = invitedBy; // ID of the user who invites
     this.status = status; // Status of the invitation, default is 'pending'
     this.createdAt = createdAt; // Timestamp of when the invitation was created
   }

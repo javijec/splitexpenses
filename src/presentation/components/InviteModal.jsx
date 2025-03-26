@@ -8,8 +8,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { createInvitation } from "@/domain/usecases/invitations";
 
-const InviteModal = ({ isOpen, onClose, onSendInvitation }) => {
+const InviteModal = ({ isOpen, onClose, group }) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
 
@@ -24,13 +25,22 @@ const InviteModal = ({ isOpen, onClose, onSendInvitation }) => {
     setEmailError(value && !validateEmail(value));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !validateEmail(email)) {
       setEmailError(true);
       return;
     }
-    onSendInvitation(email);
+    const invitation = {
+      groupId: group.id,
+      groupName: group.name,
+      invitedBy: group.createdBy.name,
+      invitedEmail: email,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+    };
+    console.log("Invitation data:", invitation);
+    await createInvitation(invitation);
     setEmail("");
     onClose();
   };

@@ -43,8 +43,9 @@ export const getGroupsByUser = async (userId) => {
     if (result.success) {
       // Business logic: Filter groups where the user is a member or the creator
       const userGroups = result.data.filter(
-        (group) => group.createdBy === userId /*||
-          (group.members && group.members.includes(userId))*/
+        (group) =>
+          group.createdBy === userId ||
+          group.members.some((member) => member.id === userId)
       );
       return userGroups;
     } else {

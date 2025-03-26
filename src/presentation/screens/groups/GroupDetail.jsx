@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
 import {
   Typography,
   Box,
@@ -38,7 +38,6 @@ import { getGroupByID } from "@/domain/usecases/groups";
 
 function GroupDetail() {
   const { groupId } = useParams();
-  const navigate = useNavigate();
   const { user } = useAuth();
 
   const { isExpenseModalOpen, closeExpenseModal } = useModal();
@@ -94,7 +93,7 @@ function GroupDetail() {
   };
 
   const handleDeleteModal = () => {
-    openDeleteGroupModal(groupId);
+    openDeleteGroupModal(group);
   };
 
   if (loading) {
@@ -211,7 +210,7 @@ function GroupDetail() {
                           {member.id === user.uid && (
                             <Chip size="small" label="Tú" sx={{ mr: 1 }} />
                           )}
-                          {isAdmin && (
+                          {member.id == group.createdBy && (
                             <Chip
                               size="small"
                               color="primary"
@@ -282,7 +281,11 @@ function GroupDetail() {
         </Grid>
       </Grid>
       <ExpenseModal isOpen={isExpenseModalOpen} onClose={closeExpenseModal} />
-      <InviteModal isOpen={isInviteModalOpen} onClose={closeInviteModal} />
+      <InviteModal
+        isOpen={isInviteModalOpen}
+        onClose={closeInviteModal}
+        group={group}
+      />
       <DeleteGroupModal
         isOpen={isDeleteGroupModalOpen}
         onClose={closeDeleteGroupModal}
