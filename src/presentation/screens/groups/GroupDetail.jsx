@@ -65,10 +65,11 @@ function GroupDetail() {
       try {
         setLoading(true);
         const data = await getGroupByID(groupId);
-        const invitation = getGroupInvitations(groupId);
-        setInvitations(invitation);
+        const invitationData = await getGroupInvitations(groupId);
+        setInvitations(invitationData);
         setMembers(data.members);
         setIsAdmin(data.createdBy.id === user.uid);
+        setGroup(data);
       } catch (error) {
         console.error("Error fetching group data:", error);
       } finally {
@@ -203,6 +204,31 @@ function GroupDetail() {
                     </ListItem>
                   ))}
                 </List>
+
+                {invitations && invitations.length > 0 && (
+                  <>
+                    <Divider sx={{ my: 2 }} />
+                    <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                      Invitaciones Pendientes
+                    </Typography>
+                    <List>
+                      {invitations.map((invitation) => (
+                        <ListItem key={invitation.id}>
+                          <ListItemText
+                            primary={invitation.invitedEmail}
+                            secondary={
+                              <>
+                                <Typography variant="body2" component="span">
+                                  Invitado por {invitation.invitedBy}
+                                </Typography>
+                              </>
+                            }
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </>
+                )}
               </AccordionDetails>
             </Accordion>
           </Box>
@@ -250,6 +276,31 @@ function GroupDetail() {
                     </ListItem>
                   ))}
                 </List>
+
+                {invitations && invitations.length > 0 && (
+                  <>
+                    <Divider sx={{ my: 2 }} />
+                    <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                      Invitaciones Pendientes
+                    </Typography>
+                    <List>
+                      {invitations.map((invitation) => (
+                        <ListItem key={invitation.id}>
+                          <ListItemText
+                            primary={invitation.invitedEmail}
+                            secondary={
+                              <>
+                                <Typography variant="body2" component="span">
+                                  Invitado por {invitation.invitedBy}
+                                </Typography>
+                              </>
+                            }
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </>
+                )}
               </CardContent>
             </Card>
           </Box>
