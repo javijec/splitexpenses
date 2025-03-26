@@ -13,10 +13,6 @@ class InvitationRepository {
     return await this.firestoreCRUD.readDocuments();
   }
 
-  async updateInvitation(invitationId, updatedData) {
-    return await this.firestoreCRUD.updateDocument(invitationId, updatedData);
-  }
-
   async deleteInvitation(invitationId) {
     return await this.firestoreCRUD.deleteDocument(invitationId);
   }

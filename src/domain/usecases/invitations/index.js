@@ -43,5 +43,10 @@ export const getInvitationbyEmail = async (userEmail) => {
 };
 
 export const deleteInvitation = async (invitationId) => {
-  // Implementación pendiente
+  try {
+    const invitationRepository = new InvitationRepository();
+    await invitationRepository.deleteInvitation(invitationId);
+  } catch (error) {
+    console.error("Error al eliminar la invitación:", error);
+  }
 };

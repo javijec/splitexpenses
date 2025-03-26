@@ -18,7 +18,10 @@ import {
 import { Link } from "react-router";
 import { useModal } from "@/application/contexts/ModalContext";
 import { getGroupsByUser } from "@/domain/usecases/groups";
-import { getInvitationbyEmail } from "@/domain/usecases/invitations";
+import {
+  getInvitationbyEmail,
+  deleteInvitation,
+} from "@/domain/usecases/invitations";
 import { useAuth } from "@/application/contexts/AuthContext";
 
 const Main = () => {
@@ -64,6 +67,11 @@ const Main = () => {
 
   const handleRejectInvitation = async (invitationId) => {
     console.log("Rechazar invitación:", invitationId);
+    try {
+      await deleteInvitation(invitationId);
+    } catch (error) {
+      console.error("Error rejecting invitation:", error);
+    }
   };
 
   return (
