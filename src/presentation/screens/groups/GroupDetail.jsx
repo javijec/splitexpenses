@@ -112,14 +112,145 @@ function GroupDetail() {
 
   return (
     <>
-      <Box sx={{ mb: 4 }}>
+      <Box
+        sx={{
+          mb: 4,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Typography variant="h4" component="h1" gutterBottom>
           {group?.name}
         </Typography>
+        {isAdmin && (
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<DeleteIcon />}
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDeleteModal();
+            }}
+          >
+            Eliminar Grupo
+          </Button>
+        )}
       </Box>
 
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 4 }}>
+          <Box sx={{ display: { xs: 'block', md: 'none' }, mb: 3 }}>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="members-content"
+                id="members-header"
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography>Miembros</Typography>
+                  <Box>
+                    <Button
+                      variant="contained"
+                      startIcon={<PersonAddIcon />}
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleInviteModal();
+                      }}
+                      sx={{ mr: 1 }}
+                    >
+                      Invitar
+                    </Button>
+                  </Box>
+                </Box>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  {members.map((member) => (
+                    <ListItem key={member.id + "a"}>
+                      <ListItemAvatar>
+                        <Avatar>{member.displayName?.charAt(0) || "U"}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={member.displayName}
+                        secondary={
+                          <>
+                            {member.id === user.uid && (
+                              <Chip size="small" label="Tú" sx={{ mr: 1 }} />
+                            )}
+                            {member.id == group.createdBy.id && (
+                              <Chip
+                                size="small"
+                                color="primary"
+                                label="Administrador"
+                              />
+                            )}
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+
+          <Box sx={{ display: { xs: 'none', md: 'block' }, mb: 3 }}>
+            <Card>
+              <CardHeader 
+                title="Miembros"
+                action={
+                  <Button
+                    variant="contained"
+                    startIcon={<PersonAddIcon />}
+                    size="small"
+                    onClick={handleInviteModal}
+                  >
+                    Invitar
+                  </Button>
+                }
+              />
+              <Divider />
+              <CardContent>
+                <List>
+                  {members.map((member) => (
+                    <ListItem key={member.id + "a"}>
+                      <ListItemAvatar>
+                        <Avatar>{member.displayName?.charAt(0) || "U"}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={member.displayName}
+                        secondary={
+                          <>
+                            {member.id === user.uid && (
+                              <Chip size="small" label="Tú" sx={{ mr: 1 }} />
+                            )}
+                            {member.id == group.createdBy.id && (
+                              <Chip
+                                size="small"
+                                color="primary"
+                                label="Administrador"
+                              />
+                            )}
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </CardContent>
+            </Card>
+          </Box>
+
           <Card sx={{ mb: 3 }}>
             <CardHeader title="Balance del Grupo" />
             <Divider />
@@ -162,81 +293,6 @@ function GroupDetail() {
               )}
             </CardContent>
           </Card>
-
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="members-content"
-              id="members-header"
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography>Miembros</Typography>
-                <Box>
-                  <Button
-                    variant="contained"
-                    startIcon={<PersonAddIcon />}
-                    size="small"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleInviteModal();
-                    }}
-                    sx={{ mr: 1 }}
-                  >
-                    Invitar
-                  </Button>
-                  {isAdmin && (
-                    <Button
-                      variant="contained"
-                      color="error"
-                      startIcon={<DeleteIcon />}
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteModal();
-                      }}
-                    >
-                      Eliminar
-                    </Button>
-                  )}
-                </Box>
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails>
-              <List>
-                {members.map((member) => (
-                  <ListItem key={member.id + "a"}>
-                    <ListItemAvatar>
-                      <Avatar>{member.displayName?.charAt(0) || "U"}</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={member.displayName}
-                      secondary={
-                        <>
-                          {member.id === user.uid && (
-                            <Chip size="small" label="Tú" sx={{ mr: 1 }} />
-                          )}
-                          {member.id == group.createdBy.id && (
-                            <Chip
-                              size="small"
-                              color="primary"
-                              label="Administrador"
-                            />
-                          )}
-                        </>
-                      }
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </AccordionDetails>
-          </Accordion>
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <Card>
