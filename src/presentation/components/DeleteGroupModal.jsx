@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { deleteGroup } from "@/domain/usecases/groups";
+import { useAuth } from "@/application/contexts/AuthContext";
 import {
   Dialog,
   DialogTitle,
@@ -13,13 +14,14 @@ import {
 
 const DeleteGroupModal = ({ isOpen, onClose, groupId }) => {
   const navigate = useNavigate();
+  const { groupContext } = useAuth();
 
   const handleDeleteGroup = async () => {
     try {
       // Delete all expenses
       // Delete all invitations
       // Delete group
-      await deleteGroup(groupId);
+      await deleteGroup(groupContext.id);
       // Close modal
       onClose();
       // Redirect to home

@@ -38,7 +38,7 @@ import { getGroupByID } from "@/domain/usecases/groups";
 
 function GroupDetail() {
   const { groupId } = useParams();
-  const { user } = useAuth();
+  const { user, groupContext, setGroupContext } = useAuth();
 
   const { isExpenseModalOpen, closeExpenseModal } = useModal();
   const { isInviteModalOpen, openInviteModal, closeInviteModal } = useModal();
@@ -66,7 +66,7 @@ function GroupDetail() {
         const data = await getGroupByID(groupId);
         setGroup(data);
         setMembers(data.members);
-        setIsAdmin(data.createdBy === user.uid);
+        setIsAdmin(data.createdBy.id === user.uid);
       } catch (error) {
         console.error("Error fetching group data:", error);
       } finally {
@@ -93,7 +93,9 @@ function GroupDetail() {
   };
 
   const handleDeleteModal = () => {
-    openDeleteGroupModal(group);
+    console.log("Eliminar grupo:", group);
+    setGroupContext(group);
+    openDeleteGroupModal();
   };
 
   if (loading) {
@@ -210,7 +212,7 @@ function GroupDetail() {
                           {member.id === user.uid && (
                             <Chip size="small" label="Tú" sx={{ mr: 1 }} />
                           )}
-                          {member.id == group.createdBy && (
+                          {member.id == group.createdBy.id && (
                             <Chip
                               size="small"
                               color="primary"

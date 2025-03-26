@@ -16,6 +16,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [groupContext, setGroupContext] = useState(null);
   const [loading, setLoading] = useState(true);
   const userRepository = new UserRepository();
   const authRepository = new AuthRepository();
@@ -54,6 +55,8 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
+    groupContext,
+    setGroupContext,
     loading,
     logoutAccount,
     deleteAccount,
