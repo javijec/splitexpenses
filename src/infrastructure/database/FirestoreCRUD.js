@@ -17,18 +17,15 @@ class FirestoreCRUD {
 
   async createDocument(data) {
     try {
-      console.log("Data:", data);
       // Check if data.id exists, if not, use a generated ID
       const docRef = data.id
         ? doc(this.collectionRef, data.id)
         : doc(this.collectionRef);
-      console.log("Document Reference:", docRef);
 
       // If we're using a generated ID, add it to the data object
       const documentData = data.id ? data : { ...data, id: docRef.id };
 
       await setDoc(docRef, documentData);
-      console.log("Document written with ID: ", docRef.id);
       return { success: true, data: docRef.id };
     } catch (error) {
       return handleError(error, "FirestoreCRUD.createDocument");
@@ -60,9 +57,7 @@ class FirestoreCRUD {
 
   async deleteDocument(id) {
     try {
-      console.log("Deleting document with ID:", id);
       const docRef = doc(this.collectionRef, id);
-      console.log("Document Reference:", docRef);
       await deleteDoc(docRef);
       return { success: true, message: "Document deleted successfully" };
     } catch (error) {

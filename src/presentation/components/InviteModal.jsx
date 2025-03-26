@@ -39,7 +39,6 @@ const InviteModal = ({ isOpen, onClose, group }) => {
       status: "pending",
       createdAt: new Date().toISOString(),
     };
-    console.log("Invitation data:", invitation);
     await createInvitation(invitation);
     setEmail("");
     onClose();

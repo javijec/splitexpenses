@@ -59,8 +59,6 @@ export default function BottomAppBar() {
       openExpenseModal(); // Abre el modal usando el contexto
     } else if (location.pathname === "/dashboard") {
       openGroupModal(); // Abre el modal usando el contexto
-    } else {
-      console.log("Open Default Modal");
     }
   };
 

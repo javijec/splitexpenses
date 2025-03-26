@@ -14,7 +14,6 @@ export class AuthRepository {
   }
 
   async login() {
-    console.log("AuthRepository login");
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);

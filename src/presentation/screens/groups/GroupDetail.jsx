@@ -74,7 +74,6 @@ function GroupDetail() {
     };
     if (groupId) {
       loadGroup();
-      console.log(isAdmin);
     }
   }, [groupId]);
 
@@ -92,7 +91,6 @@ function GroupDetail() {
   };
 
   const handleDeleteModal = () => {
-    console.log("Eliminar grupo:", group);
     setGroupContext(group);
     openDeleteGroupModal();
   };

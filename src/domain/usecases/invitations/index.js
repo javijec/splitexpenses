@@ -13,7 +13,6 @@ export const createInvitation = async (invitationData) => {
     invitationData.status,
     invitationData.createdAt
   );
-  console.log(data);
   try {
     await invitationRepository.createInvitation(data);
   } catch (error) {

@@ -35,19 +35,16 @@ export const AuthProvider = ({ children }) => {
     try {
       await authRepository.deleteAccount();
       await userRepository.deleteUser(user.uid);
-      console.log("User deleted");
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
 
   const updateAccount = async (userData) => {
-    console.log(user.uid);
-    console.log(userData);
+
     try {
       await userRepository.updateUser(user.uid, userData);
       setUser({ ...user, ...userData });
-      console.log("User updated");
     } catch (error) {
       console.error("Error updating user:", error);
     }

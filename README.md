@@ -72,7 +72,6 @@ import { collection, addDoc } from "firebase/firestore";
 async function addExpense(expense) {
   try {
     const docRef = await addDoc(collection(db, "expenses"), expense);
-    console.log("Documento agregado con ID: ", docRef.id);
   } catch (e) {
     console.error("Error agregando documento: ", e);
   }
@@ -105,7 +104,6 @@ async function updateExpense(id, updatedData) {
   try {
     const docRef = doc(db, "expenses", id);
     await updateDoc(docRef, updatedData);
-    console.log("Documento actualizado");
   } catch (e) {
     console.error("Error actualizando documento: ", e);
   }
@@ -121,7 +119,6 @@ import { doc, deleteDoc } from "firebase/firestore";
 async function deleteExpense(id) {
   try {
     await deleteDoc(doc(db, "expenses", id));
-    console.log("Documento eliminado");
   } catch (e) {
     console.error("Error eliminando documento: ", e);
   }

@@ -13,10 +13,9 @@ export class AuthService {
   initAuthStateListener() {
     this.authRepository.onAuthStateChanged(async (user) => {
       if (user) {
-        console.log("User is signed in:", user.displayName);
         // You could save or update user here if needed
       } else {
-        console.log("User is signed out");
+        console.error("User is signed out");
       }
     });
   }
@@ -28,7 +27,6 @@ export class AuthService {
       if (user) {
         try {
           await user.getIdToken(true); // Force refresh the token
-          console.log("Session token refreshed");
         } catch (error) {
           console.error("Error refreshing session token:", error);
         }
@@ -69,12 +67,10 @@ export class AuthService {
   }
 
   async logout() {
-    console.log("AuthService: Logging out...");
     return this.authRepository.logout();
   }
 
   async deleteAccount() {
-    console.log("AuthService: Deleting account...");
     const user = this.authRepository.getCurrentUser();
     if (user) {
       // Delete user from Firestore first

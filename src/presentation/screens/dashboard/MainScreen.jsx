@@ -47,7 +47,6 @@ const Main = () => {
     const loadInvitations = async () => {
       try {
         const data = await getInvitationbyEmail(user.email);
-        console.log("Invitations:", data); // Add this line to log the invitation
         setInvitations(data || []);
       } catch (error) {
         console.error("Error fetching invitations:", error);
@@ -66,7 +65,6 @@ const Main = () => {
   };
 
   const handleRejectInvitation = async (invitationId) => {
-    console.log("Rechazar invitación:", invitationId);
     try {
       await deleteInvitation(invitationId);
     } catch (error) {
