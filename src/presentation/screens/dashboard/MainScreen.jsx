@@ -14,7 +14,11 @@ import {
   ListItem,
   ListItemText,
   CircularProgress,
+  Avatar,
+  ListItemAvatar,
+  Paper,
 } from "@mui/material";
+import { Groups as GroupsIcon } from "@mui/icons-material";
 import { Link } from "react-router";
 import { useModal } from "@/application/contexts/ModalContext";
 import { getGroupsByUser } from "@/domain/usecases/groups";
@@ -146,25 +150,81 @@ const Main = () => {
                   <CircularProgress />
                 </Box>
               ) : groups.length > 0 ? (
-                <List>
+                <List sx={{ width: "100%" }}>
                   {groups.map((group) => (
-                    <Fragment key={group.id}>
+                    <Paper
+                      elevation={1}
+                      sx={{
+                        mb: 2,
+                        borderRadius: 2,
+                        transition: "all 0.3s",
+                        "&:hover": {
+                          transform: "translateY(-4px)",
+                          boxShadow: 3,
+                        },
+                      }}
+                      key={group.id}
+                    >
                       <ListItem
                         button
                         component={Link}
                         to={`/group/${group.id}`}
+                        sx={{
+                          py: 1.5,
+                          borderRadius: 2,
+                        }}
                       >
+                        <ListItemAvatar>
+                          <Avatar
+                            sx={{
+                              bgcolor: "primary.main",
+                              width: 45,
+                              height: 45,
+                            }}
+                          >
+                            {group.name.charAt(0).toUpperCase()}
+                          </Avatar>
+                        </ListItemAvatar>
                         <ListItemText
                           primary={
-                            <Typography variant="subtitle1" color="primary">
+                            <Typography
+                              variant="h6"
+                              color="primary"
+                              sx={{ fontWeight: "medium" }}
+                            >
                               {group.name}
                             </Typography>
                           }
-                          secondary={`${group.members.length || 1} miembros`}
+                          secondary={
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                mt: 0.5,
+                              }}
+                            >
+                              <GroupsIcon
+                                sx={{
+                                  fontSize: 16,
+                                  mr: 0.5,
+                                  color: "text.secondary",
+                                }}
+                              />
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                {`${group.members.length || 1} ${
+                                  (group.members.length || 1) === 1
+                                    ? "miembro"
+                                    : "miembros"
+                                }`}
+                              </Typography>
+                            </Box>
+                          }
                         />
                       </ListItem>
-                      <Divider component="li" />
-                    </Fragment>
+                    </Paper>
                   ))}
                 </List>
               ) : (
