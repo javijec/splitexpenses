@@ -39,7 +39,9 @@ const DeleteGroupModal = ({ isOpen, onClose }) => {
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        <Typography variant="h6">Eliminar Grupo</Typography>
+        <Typography variant="h6" component="div">
+          Eliminar Grupo
+        </Typography>
       </DialogTitle>
       <DialogContent>
         <Box sx={{ py: 2 }}>

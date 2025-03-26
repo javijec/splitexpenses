@@ -213,6 +213,7 @@ const Main = () => {
                               <Typography
                                 variant="body2"
                                 color="text.secondary"
+                                component="span"
                               >
                                 {`${group.members.length || 1} ${
                                   (group.members.length || 1) === 1

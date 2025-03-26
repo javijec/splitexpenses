@@ -52,49 +52,47 @@ function App() {
 function AppRoutes() {
   const location = useLocation();
   return (
-    <>
-      <Container component="main" sx={{ flexGrow: 1, py: 3 }}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Main />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/group/:groupId"
-            element={
-              <ProtectedRoute>
-                <GroupDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Main />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/404" element={<NotFound />} />
-          <Route path="/*" element={<Navigate to="/404" replace />} />
-        </Routes>
+    <Container component="main" role="presentation" sx={{ flexGrow: 1, py: 3 }}>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Main />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/group/:groupId"
+          element={
+            <ProtectedRoute>
+              <GroupDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Main />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/404" element={<NotFound />} />
+        <Route path="/*" element={<Navigate to="/404" replace />} />
+      </Routes>
 
-        {location.pathname !== "/login" && <BottomAppBar />}
-      </Container>
-    </>
+      {location.pathname !== "/login" && <BottomAppBar />}
+    </Container>
   );
 }
 
