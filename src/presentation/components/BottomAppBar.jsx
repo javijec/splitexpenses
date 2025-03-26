@@ -15,6 +15,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Home, Add } from "@mui/icons-material";
+import ThemeToggle from "./ThemeToggle";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -87,6 +88,8 @@ export default function BottomAppBar() {
           )}
 
           <Box sx={{ flexGrow: 1 }} />
+
+          <ThemeToggle />
 
           <IconButton color="inherit" onClick={handleMenuOpen}>
             <Avatar src={user ? user.photoURL : ""} />

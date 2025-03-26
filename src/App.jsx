@@ -6,8 +6,7 @@ import Login from "@/presentation/screens/auth/LoginSceen";
 import Main from "@/presentation/screens/dashboard/MainScreen";
 import ProtectedRoute from "@/presentation/navigation/ProtectedRoute";
 import Profile from "@/presentation/screens/profile/ProfileScreen";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "@/presentation/theme/theme";
+import { ThemeProvider } from "@/application/contexts/ThemeContext";
 import BottomAppBar from "@/presentation/components/BottomAppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useAuthStatus } from "@/application/hooks/useAuthStatus";
@@ -21,7 +20,7 @@ function App() {
 
   if (loading) {
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider>
         <CssBaseline />
         <Box
           sx={{
@@ -37,7 +36,7 @@ function App() {
     );
   }
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider>
       <CssBaseline />
       <BrowserRouter>
         <AuthProvider>
