@@ -7,7 +7,7 @@ import Main from "@/presentation/screens/dashboard/MainScreen";
 import ProtectedRoute from "@/presentation/navigation/ProtectedRoute";
 import Profile from "@/presentation/screens/profile/ProfileScreen";
 import { ThemeProvider } from "@/application/contexts/ThemeContext";
-import BottomAppBar from "@/presentation/components/BottomAppBar";
+import BottomAppBar from "@/presentation/components/NavBar/BottomAppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useAuthStatus } from "@/application/hooks/useAuthStatus";
 import NotFound from "@/presentation/screens/NotFound";

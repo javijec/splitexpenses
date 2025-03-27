@@ -34,7 +34,10 @@ import ExpenseModal from "@/presentation/components/groups/ExpenseModal";
 import InviteModal from "@/presentation/components/groups/InviteModal";
 import DeleteGroupModal from "@/presentation/components/groups/DeleteGroupModal";
 import { getGroupByID } from "@/domain/usecases/groups";
-import { getGroupInvitations } from "@/domain/usecases/invitations";
+import {
+  getGroupInvitations,
+  deleteInvitation,
+} from "@/domain/usecases/invitations";
 import Loading from "@/presentation/components/common/Loading";
 
 function GroupDetail() {
@@ -70,25 +73,29 @@ function GroupDetail() {
     }
   };
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        const data = await getGroupByID(groupId);
-        await loadInvitations();
-        setMembers(data.members);
-        setIsAdmin(data.createdBy.id === user.uid);
-        setGroup(data);
-      } catch (error) {
-        console.error("Error fetching group data:", error);
-      } finally {
-        setLoading(false);
+  useEffect(
+    () => {
+      const load = async () => {
+        try {
+          setLoading(true);
+          const data = await getGroupByID(groupId);
+          await loadInvitations();
+          setMembers(data.members);
+          setIsAdmin(data.createdBy.id === user.uid);
+          setGroup(data);
+        } catch (error) {
+          console.error("Error fetching group data:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      if (groupId) {
+        load();
       }
-    };
-    if (groupId) {
-      load();
-    }
-  }, [groupId, isInviteModalOpen]);
+    },
+    [groupId],
+    invitations
+  );
 
   const calculateBalances = (expensesList, membersData) => {
     // Simple balance calculation logic
@@ -101,11 +108,23 @@ function GroupDetail() {
 
   const handleInviteModal = () => {
     openInviteModal();
+    
   };
 
   const handleDeleteModal = () => {
     setGroupContext(group);
     openDeleteGroupModal();
+  };
+
+  const handleDeleteInvitation = async (invitationId) => {
+    try {
+      console.log("delete " + invitationId);
+      await deleteInvitation(invitationId);
+      loadInvitations();
+      // Actualiza el estado de las invitaciones después de eliminar
+    } catch (error) {
+      console.error("Error deleting invitation:", error);
+    }
   };
 
   if (loading) {
@@ -196,9 +215,19 @@ function GroupDetail() {
                                 label="Administrador"
                               />
                             )}
-
+                            {console.log(isAdmin)}
+                            {console.log(member.id !== group.createdBy.id)}
                             {isAdmin && member.id !== group.createdBy.id && (
-                              <>//boton to delete member</>
+                              <IconButton
+                                size="small"
+                                color="error"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteInvitation(invitation.id);
+                                }}
+                              >
+                                <DeleteIcon fontSize="small" />
+                              </IconButton>
                             )}
                           </>
                         }
@@ -226,7 +255,17 @@ function GroupDetail() {
                               </>
                             }
                           />
-                          {isAdmin && <>//boton to delete invitation</>}
+                          {isAdmin && (
+                            <IconButton
+                              size="small"
+                              color="error"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                            >
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
+                          )}
                         </ListItem>
                       ))}
                     </List>
@@ -296,13 +335,23 @@ function GroupDetail() {
                           <ListItemText
                             primary={invitation.invitedEmail}
                             secondary={
-                              <>
-                                <Typography variant="body2" component="span">
-                                  Invitado por {invitation.invitedBy}
-                                </Typography>
-                              </>
+                              <Typography variant="body2" component="span">
+                                Invitado por {invitation.invitedBy}
+                              </Typography>
                             }
                           />
+                          {isAdmin && (
+                            <IconButton
+                              size="small"
+                              color="error"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteInvitation(invitation.id);
+                              }}
+                            >
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
+                          )}
                         </ListItem>
                       ))}
                     </List>
@@ -415,6 +464,7 @@ function GroupDetail() {
         isOpen={isInviteModalOpen}
         onClose={closeInviteModal}
         group={group}
+        onSendInvitation={handleSendInvitation} // Pasa la función como prop
       />
       <DeleteGroupModal
         isOpen={isDeleteGroupModalOpen}
