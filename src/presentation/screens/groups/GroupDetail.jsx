@@ -196,7 +196,10 @@ function GroupDetail() {
                                 label="Administrador"
                               />
                             )}
-                            {isAdmin && <></>}
+
+                            {isAdmin && member.id !== group.createdBy.id && (
+                              <>//boton to delete member</>
+                            )}
                           </>
                         }
                       />
@@ -223,6 +226,7 @@ function GroupDetail() {
                               </>
                             }
                           />
+                          {isAdmin && <>//boton to delete invitation</>}
                         </ListItem>
                       ))}
                     </List>
