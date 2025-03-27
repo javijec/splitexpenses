@@ -159,7 +159,7 @@ function GroupDetail() {
                   }}
                 >
                   <Typography variant="h5">Miembros</Typography>
-                  <Box>
+                  {isAdmin && (
                     <Button
                       variant="contained"
                       startIcon={<PersonAddIcon />}
@@ -172,7 +172,7 @@ function GroupDetail() {
                     >
                       Invitar
                     </Button>
-                  </Box>
+                  )}
                 </Box>
               </AccordionSummary>
               <AccordionDetails>
@@ -196,6 +196,7 @@ function GroupDetail() {
                                 label="Administrador"
                               />
                             )}
+                            {isAdmin && <></>}
                           </>
                         }
                       />
@@ -233,19 +234,23 @@ function GroupDetail() {
 
           <Box sx={{ display: { xs: "none", md: "block" }, mb: 3 }}>
             <Card>
-              <CardHeader
-                title="Miembros"
-                action={
-                  <Button
-                    variant="contained"
-                    startIcon={<PersonAddIcon />}
-                    size="small"
-                    onClick={handleInviteModal}
-                  >
-                    Invitar
-                  </Button>
-                }
-              />
+              {isAdmin ? (
+                <CardHeader
+                  title="Miembros"
+                  action={
+                    <Button
+                      variant="contained"
+                      startIcon={<PersonAddIcon />}
+                      size="small"
+                      onClick={handleInviteModal}
+                    >
+                      Invitar
+                    </Button>
+                  }
+                />
+              ) : (
+                <CardHeader title="Miembros" />
+              )}
               <Divider />
               <CardContent>
                 <List>
@@ -400,6 +405,7 @@ function GroupDetail() {
           </Card>
         </Grid>
       </Grid>
+
       <ExpenseModal isOpen={isExpenseModalOpen} onClose={closeExpenseModal} />
       <InviteModal
         isOpen={isInviteModalOpen}
