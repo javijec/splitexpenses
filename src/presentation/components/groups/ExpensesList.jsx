@@ -38,7 +38,7 @@ const ExpensesList = ({ expenses, user }) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <ReceiptIcon sx={{ mr: 1, color: "primary.main" }} />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
-              Gastos del Grupo
+              Gastos del Grupo //voy a hacerlo con x-data-grid
             </Typography>
           </Box>
         }
