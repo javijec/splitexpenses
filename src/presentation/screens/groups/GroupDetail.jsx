@@ -57,6 +57,8 @@ function GroupDetail() {
   const loadInvitations = async () => {
     try {
       const invitationData = await getGroupInvitations(groupId);
+      const groupData = await getGroupByID(groupId);
+      setGroupContext(groupData);
       setInvitations(invitationData);
     } catch (error) {
       console.error("Error fetching invitations:", error);

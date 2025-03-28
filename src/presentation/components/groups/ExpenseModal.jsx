@@ -11,17 +11,17 @@ import {
   MenuItem,
   InputAdornment,
   FormControl,
-  InputLabel,
+  IconButton,
+  Fade,
 } from "@mui/material";
+import {
+  Close as CloseIcon,
+  Receipt as ReceiptIcon,
+} from "@mui/icons-material";
 import { useAuth } from "@/application/contexts/AuthContext";
 
-const ExpenseModal = ({
-  isOpen,
-  onClose,
-  groupMembers = [],
-  expense = null,
-}) => {
-  const { user } = useAuth();
+const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
+  const { user, groupContext } = useAuth();
   const [description, setDescription] = useState("");
   const [paidByAmounts, setPaidByAmounts] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
@@ -29,7 +29,7 @@ const ExpenseModal = ({
   const [splitAmounts, setSplitAmounts] = useState({});
   const [remaining, setRemaining] = useState(0);
   const [remainingPercentage, setRemainingPercentage] = useState(100);
-
+  const [members, setMembers] = useState(groupContext.members || []);
   // Initialize state when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -122,11 +122,58 @@ const ExpenseModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        <Typography>Añadir Gasto</Typography>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
+        },
+      }}
+      TransitionComponent={Fade}
+      TransitionProps={{ timeout: 400 }}
+    >
+      <DialogTitle
+        sx={{
+          p: 3,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          bgcolor: "primary.light",
+          color: "white",
+        }}
+      >
+        <Box>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+          >
+            <ReceiptIcon sx={{ mr: 1 }} /> Añadir Gasto
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.9, maxWidth: "90%" }}>
+            Registra un nuevo gasto para dividir entre los miembros del grupo
+          </Typography>
+        </Box>
+        <IconButton
+          onClick={onClose}
+          size="small"
+          sx={{
+            color: "white",
+            bgcolor: "rgba(255,255,255,0.1)",
+            "&:hover": {
+              bgcolor: "rgba(255,255,255,0.2)",
+            },
+          }}
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ p: 3, pt: 3 }}>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
           {/* Description field */}
           <TextField
@@ -138,43 +185,79 @@ const ExpenseModal = ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             autoFocus
-          />
-
-          {/* Paid by section */}
-          <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
-            Pagado por
-          </Typography>
-          {user && (
-            <TextField
-              margin="normal"
-              fullWidth
-              label={user.displayName || user.email}
-              type="number"
-              value={paidByAmounts[user.uid] || ""}
-              onChange={(e) => handlePaidByChange(user.uid, e.target.value)}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">€</InputAdornment>,
-              }}
-            />
-          )}
-
-          {/* Total amount - calculated from paid by amounts */}
-          <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
-            Monto Total
-          </Typography>
-          <TextField
-            margin="normal"
-            fullWidth
-            label="Monto Total"
-            type="number"
-            value={totalAmount}
+            variant="outlined"
+            placeholder="Ej: Cena, Supermercado, Entradas al cine..."
             InputProps={{
-              readOnly: true,
+              sx: {
+                borderRadius: 2,
+              },
             }}
           />
 
+          {/* Paid by section */}
+          <Typography
+            variant="subtitle2"
+            sx={{ mt: 2, mb: 1, fontWeight: 500 }}
+          >
+            Pagado por
+          </Typography>
+          {members.map((member) => (
+            <TextField
+              key={member.id}
+              margin="normal"
+              fullWidth
+              label={member.displayName || member.email}
+              type="number"
+              value={paidByAmounts[member.id] || ""}
+              onChange={(e) => handlePaidByChange(member.id, e.target.value)}
+              variant="outlined"
+              InputProps={{
+                endAdornment: <InputAdornment position="end">$</InputAdornment>,
+                sx: {
+                  borderRadius: 2,
+                },
+              }}
+            />
+          ))}
+
+          {/* Total amount - calculated from paid by amounts */}
+          <Typography
+            variant="subtitle2"
+            sx={{ mt: 2, mb: 1, fontWeight: 500 }}
+          >
+            Monto Total
+          </Typography>
+          <Box
+            sx={{
+              p: 2,
+              mt: 1,
+              mb: 2,
+              bgcolor: "primary.light",
+              borderRadius: 2,
+              boxShadow: "0 4px 12px rgba(25, 118, 210, 0.2)",
+              transition: "all 0.3s ease",
+              "&:hover": {
+                boxShadow: "0 6px 16px rgba(25, 118, 210, 0.3)",
+              },
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                color: "white",
+                textAlign: "center",
+              }}
+            >
+              ${totalAmount.toFixed(2)}
+            </Typography>
+          </Box>
+
           {/* Division type selector */}
-          <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ mt: 2, mb: 1, fontWeight: 500 }}
+          >
             Tipo de División
           </Typography>
           <FormControl fullWidth margin="normal">
@@ -182,6 +265,9 @@ const ExpenseModal = ({
               value={divisionType}
               onChange={(e) => setDivisionType(e.target.value)}
               displayEmpty
+              sx={{
+                borderRadius: 2,
+              }}
             >
               <MenuItem value="equal">Partes Iguales</MenuItem>
               <MenuItem value="amount">Por Montos</MenuItem>
@@ -192,36 +278,53 @@ const ExpenseModal = ({
           {/* Division of expense section - changes based on division type */}
           {divisionType !== "equal" && (
             <>
-              <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ mt: 2, mb: 1, fontWeight: 500 }}
+              >
                 División del Gasto
               </Typography>
 
               {/* Show remaining amount or percentage */}
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  mb: 1,
+                  p: 1,
+                  bgcolor: "rgba(0, 0, 0, 0.03)",
+                  borderRadius: 1,
+                  display: "inline-block",
+                }}
+              >
                 Restante:{" "}
                 {divisionType === "amount"
-                  ? `€${remaining.toFixed(2)}`
+                  ? `$${remaining.toFixed(2)}`
                   : `${remainingPercentage.toFixed(2)}%`}
               </Typography>
 
               {/* Member split inputs */}
-              {groupMembers.map((member) => (
+              {members.map((member) => (
                 <TextField
                   key={member.id}
                   margin="normal"
                   fullWidth
-                  label={member.name || member.email}
+                  label={member.displayName || member.email}
                   type="number"
-                  value={splitAmounts[member.id] || ""}
+                  value={splitAmounts[member.displayName] || ""}
                   onChange={(e) =>
                     handleSplitAmountChange(member.id, e.target.value)
                   }
+                  variant="outlined"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        {divisionType === "amount" ? "€" : "%"}
+                        {divisionType === "amount" ? "$" : "%"}
                       </InputAdornment>
                     ),
+                    sx: {
+                      borderRadius: 2,
+                    },
                   }}
                 />
               ))}
@@ -229,11 +332,33 @@ const ExpenseModal = ({
           )}
 
           {/* Action buttons */}
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
-            <Button onClick={onClose} color="inherit">
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
+            <Button
+              onClick={onClose}
+              color="inherit"
+              sx={{
+                borderRadius: 2,
+                fontWeight: 500,
+              }}
+            >
               CANCELAR
             </Button>
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{
+                py: 1.5,
+                px: 3,
+                borderRadius: 2,
+                fontWeight: 600,
+                boxShadow: "0 4px 12px rgba(25, 118, 210, 0.3)",
+                "&:hover": {
+                  boxShadow: "0 6px 16px rgba(25, 118, 210, 0.4)",
+                },
+              }}
+              disableElevation
+            >
               AÑADIR GASTO
             </Button>
           </Box>
