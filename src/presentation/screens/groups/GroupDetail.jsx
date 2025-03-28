@@ -156,7 +156,16 @@ function GroupDetail() {
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        borderRadius: 3,
+        overflow: "hidden",
+        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.08)",
+        bgcolor: "background.paper",
+        p: { xs: 2, sm: 3 },
+        transition: "all 0.3s ease",
+      }}
+    >
       <GroupHeader
         group={group}
         isAdmin={isAdmin}
@@ -211,7 +220,7 @@ function GroupDetail() {
         isOpen={isDeleteGroupModalOpen}
         onClose={closeDeleteGroupModal}
       />
-    </>
+    </Box>
   );
 }
 
