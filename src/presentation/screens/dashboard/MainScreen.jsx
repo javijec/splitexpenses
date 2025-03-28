@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid2 as Grid } from "@mui/material";
+import { Grid2 as Grid, Box } from "@mui/material";
 import Header from "@/presentation/components/dashboard/Header";
 import Invitations from "@/presentation/components/dashboard/Invitations";
 import Groups from "@/presentation/components/dashboard/Groups";
@@ -78,18 +78,24 @@ const Main = () => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        borderRadius: 3,
+        overflow: "hidden",
+        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.08)",
+        bgcolor: "background.paper",
+        p: { xs: 2, sm: 3 },
+        transition: "all 0.3s ease",
+      }}
+    >
       <Header />
-      <Grid container spacing={3}>
+      <Grid container spacing={4} sx={{ mt: 1 }}>
         <Invitations
           invitations={invitations}
           loading={loadingInvitations}
           onAccept={handleAcceptInvitation}
           onReject={handleRejectInvitation}
         />
-        {console.log(groups)}
-        {console.log(loadingGroups)}
-
         <Groups groups={groups} loadingGroups={loadingGroups} />
       </Grid>
       <GroupModal
@@ -97,7 +103,7 @@ const Main = () => {
         onClose={closeGroupModal}
         onGroupCreated={handleCreateGroup}
       />
-    </>
+    </Box>
   );
 };
 

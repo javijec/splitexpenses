@@ -8,70 +8,102 @@ import {
   Box,
   CircularProgress,
   List,
-  Paper,
   ListItem,
   ListItemText,
-  ListItemAvatar,
-  Avatar,
+  Button,
   Typography,
+  Fade,
+  Chip,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
-import { Groups as GroupsIcon } from "@mui/icons-material";
+import {
+  Groups as GroupsIcon,
+  AddCircleOutline,
+} from "@mui/icons-material";
+import { useModal } from "@/application/contexts/ModalContext";
 import { Link } from "react-router";
 
+
 const Groups = ({ groups, loadingGroups }) => {
+  const { openGroupModal } = useModal();
 
   return (
     <Grid size={{ xs: 12, md: 8 }}>
-      <Card>
-        <CardHeader title="Mis Grupos" />
-        <Divider />
-        <CardContent>
-          {loadingGroups ? (
-            <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
-              <CircularProgress />
+      <Card
+        elevation={2}
+        sx={{
+          borderRadius: 3,
+          overflow: "hidden",
+          height: "100%",
+          transition: "all 0.3s ease",
+          "&:hover": {
+            boxShadow: 6,
+          },
+        }}
+      >
+        <CardHeader
+          title={
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <GroupsIcon sx={{ mr: 1, color: "primary.main" }} />
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                Mis Grupos
+              </Typography>
             </Box>
-          ) : groups.length > 0 ? (
-            <List sx={{ width: "100%" }}>
-              {groups.map((group) => (
-                <Paper
-                  elevation={1}
-                  sx={{
-                    mb: 2,
-                    borderRadius: 2,
-                    transition: "all 0.3s",
-                    "&:hover": {
-                      transform: "translateY(-4px)",
-                      boxShadow: 3,
-                    },
-                  }}
-                  key={group.id}
-                >
+          }
+          action={
+            <Tooltip title="Crear nuevo grupo" arrow>
+              <Button
+                onClick={openGroupModal}
+                startIcon={<AddCircleOutline />}
+                sx={{
+                  fontWeight: "medium",
+                  textTransform: "none",
+                  mr: 1,
+                }}
+              >
+                Nuevo
+              </Button>
+            </Tooltip>
+          }
+          sx={{
+            bgcolor: "background.paper",
+            pb: 2,
+          }}
+        />
+        <Divider />
+        <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>
+          {loadingGroups ? (
+            <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+              <CircularProgress size={40} thickness={4} />
+            </Box>
+          ) : groups?.length > 0 ? (
+            <Fade in={true} timeout={500}>
+              <List sx={{ p: 0 }}>
+                {groups.map((group) => (
                   <ListItem
                     button
                     component={Link}
                     to={`/group/${group.id}`}
+                    key={group.id}
                     sx={{
-                      py: 1.5,
-                      borderRadius: 2,
+                      py: 2,
+                      px: 2,
+                      borderBottom: "1px solid",
+                      borderColor: "divider",
+                      transition: "all 0.2s ease",
+                      "&:hover": {
+                        bgcolor: "action.hover",
+                      },
+                      flexDirection: { xs: "column", sm: "row" },
+                      alignItems: { xs: "flex-start", sm: "center" },
                     }}
                   >
-                    <ListItemAvatar>
-                      <Avatar
-                        sx={{
-                          bgcolor: "primary.main",
-                          width: 45,
-                          height: 45,
-                        }}
-                      >
-                        {group.name.charAt(0).toUpperCase()}
-                      </Avatar>
-                    </ListItemAvatar>
                     <ListItemText
                       primary={
                         <Typography
-                          variant="h6"
-                          color="primary"
-                          sx={{ fontWeight: "medium" }}
+                          variant="subtitle1"
+                          sx={{ fontWeight: 500, mb: 0.5 }}
                         >
                           {group.name}
                         </Typography>
@@ -84,37 +116,73 @@ const Groups = ({ groups, loadingGroups }) => {
                             mt: 0.5,
                           }}
                         >
-                          <GroupsIcon
-                            sx={{
-                              fontSize: 16,
-                              mr: 0.5,
-                              color: "text.secondary",
-                            }}
-                          />
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            component="span"
-                          >
-                            {`${group.members.length || 1} ${
-                              (group.members.length || 1) === 1
+                          <Chip
+                            label={`${group.members?.length || 1} ${
+                              (group.members?.length || 1) === 1
                                 ? "miembro"
                                 : "miembros"
                             }`}
-                          </Typography>
+                            size="small"
+                            variant="outlined"
+                            sx={{
+                              height: 24,
+                              fontSize: "0.75rem",
+                              bgcolor: "background.paper",
+                            }}
+                          />
                         </Box>
                       }
+                      sx={{ mb: { xs: 1, sm: 0 } }}
                     />
+                    <Box sx={{ display: "flex", mt: { xs: 1, sm: 0 } }}>
+                      <Tooltip title="Ver grupo">
+                        <IconButton
+                          color="primary"
+                          size="small"
+                          sx={{
+                            mr: 1,
+                            bgcolor: "primary.light",
+                            color: "white",
+                            "&:hover": {
+                              bgcolor: "primary.main",
+                            },
+                          }}
+                          onClick={() => console.log("View group", group.id)}
+                        >
+                          <GroupsIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </ListItem>
-                </Paper>
-              ))}
-            </List>
+                ))}
+              </List>
+            </Fade>
           ) : (
-            <Box sx={{ p: 2, textAlign: "center" }}>
-              <Typography variant="body1" color="text.secondary">
-                No tienes grupos creados
-              </Typography>
-            </Box>
+            <Fade in={true} timeout={500}>
+              <Box
+                sx={{
+                  p: 4,
+                  textAlign: "center",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <GroupsIcon
+                  sx={{
+                    fontSize: 40,
+                    color: "text.disabled",
+                    mb: 2,
+                    opacity: 0.6,
+                  }}
+                />
+                <Typography variant="body1" color="text.secondary">
+                  No tienes grupos creados
+                </Typography>
+              </Box>
+            </Fade>
           )}
         </CardContent>
       </Card>
