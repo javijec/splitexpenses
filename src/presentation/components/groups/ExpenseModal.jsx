@@ -29,7 +29,7 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
   const [splitAmounts, setSplitAmounts] = useState({});
   const [remaining, setRemaining] = useState(0);
   const [remainingPercentage, setRemainingPercentage] = useState(100);
-  const [members, setMembers] = useState(groupContext.members || []);
+  const [members, setMembers] = useState(groupContext?.members || []);
   // Initialize state when modal opens
   useEffect(() => {
     if (isOpen) {
