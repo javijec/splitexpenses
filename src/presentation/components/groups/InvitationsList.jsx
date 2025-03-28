@@ -168,7 +168,7 @@ export const InvitationsListMobile = ({
                     />
                     {isAdmin && (
                       <IconButton
-                        size="small"
+                        size="large"
                         color="error"
                         onClick={() => onDeleteInvitation(invitation.id)}
                         sx={{
@@ -179,7 +179,7 @@ export const InvitationsListMobile = ({
                           },
                         }}
                       >
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon fontSize="medium" />
                       </IconButton>
                     )}
                   </ListItem>

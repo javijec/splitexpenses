@@ -97,7 +97,7 @@ function GroupDetail() {
   const handleDeleteMember = async (memberId) => {
     try {
       await removeMember(groupId, memberId);
-      // Recargar miembros después de eliminar un miembro
+      console.log("delete");
       const data = await getGroupByID(groupId);
       setMembers(data.members);
       loadInvitations();
@@ -209,7 +209,7 @@ function GroupDetail() {
             <InvitationsListMobile
               invitations={invitations} // Ensure this is correctly passed
               isAdmin={isAdmin}
-              handleDeleteInvitation={handleDeleteInvitation}
+              onDeleteInvitation={handleDeleteInvitation}
             />
           </Box>
 
