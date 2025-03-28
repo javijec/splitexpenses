@@ -1,49 +1,34 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import {
-  Typography,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  Grid2 as Grid,
-  CircularProgress,
-  IconButton,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Chip,
-  Avatar,
-  ListItemAvatar,
-} from "@mui/material";
-import {
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  PersonAdd as PersonAddIcon,
-  ExpandMore as ExpandMoreIcon,
-} from "@mui/icons-material";
-
+import { Grid2 as Grid, Box } from "@mui/material";
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";
 import ExpenseModal from "@/presentation/components/groups/ExpenseModal";
 import InviteModal from "@/presentation/components/groups/InviteModal";
 import DeleteGroupModal from "@/presentation/components/groups/DeleteGroupModal";
-import { getGroupByID } from "@/domain/usecases/groups";
+import {
+  getGroupByID,
+  removeMember,
+  getMembersMailsGroup,
+} from "@/domain/usecases/groups";
 import {
   getGroupInvitations,
+  createInvitation,
   deleteInvitation,
+  getInvitationByEmailAndGroup,
 } from "@/domain/usecases/invitations";
 import Loading from "@/presentation/components/common/Loading";
+import GroupHeader from "@/presentation/components/groups/GroupHeader";
+import {
+  MembersListDesktop,
+  MembersListMobile,
+} from "@/presentation/components/groups/MembersList";
+import GroupBalance from "@/presentation/components/groups/GroupBalance";
+import ExpensesList from "@/presentation/components/groups/ExpensesList";
 
 function GroupDetail() {
   const { groupId } = useParams();
-  const { user, groupContext, setGroupContext } = useAuth();
-
+  const { user, setGroupContext } = useAuth();
   const { isExpenseModalOpen, closeExpenseModal } = useModal();
   const { isInviteModalOpen, openInviteModal, closeInviteModal } = useModal();
   const {
@@ -60,10 +45,6 @@ function GroupDetail() {
   const [loading, setLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Form states
-  const [expenseDescription, setExpenseDescription] = useState("");
-  const [expenseAmount, setExpenseAmount] = useState("");
-
   const loadInvitations = async () => {
     try {
       const invitationData = await getGroupInvitations(groupId);
@@ -73,58 +54,94 @@ function GroupDetail() {
     }
   };
 
-  useEffect(
-    () => {
-      const load = async () => {
-        try {
-          setLoading(true);
-          const data = await getGroupByID(groupId);
-          await loadInvitations();
-          setMembers(data.members);
-          setIsAdmin(data.createdBy.id === user.uid);
-          setGroup(data);
-        } catch (error) {
-          console.error("Error fetching group data:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      if (groupId) {
-        load();
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setLoading(true);
+        const data = await getGroupByID(groupId);
+        await loadInvitations();
+        setMembers(data.members);
+        setIsAdmin(data.createdBy.id === user.uid);
+        setGroup(data);
+      } catch (error) {
+        console.error("Error fetching group data:", error);
+      } finally {
+        setLoading(false);
       }
-    },
-    [groupId],
-    invitations
-  );
-
-  const calculateBalances = (expensesList, membersData) => {
-    // Simple balance calculation logic
-    // In a real app, this would be more complex
-    // Initialize balances for all members
-    // Calculate expenses
-    // Subtract equal shares from all members
-    // Convert to array for display
-  };
-
-  const handleInviteModal = () => {
-    openInviteModal();
-    
-  };
-
-  const handleDeleteModal = () => {
-    setGroupContext(group);
-    openDeleteGroupModal();
-  };
+    };
+    if (groupId) {
+      load();
+    }
+  }, [groupId]);
 
   const handleDeleteInvitation = async (invitationId) => {
     try {
-      console.log("delete " + invitationId);
       await deleteInvitation(invitationId);
       loadInvitations();
-      // Actualiza el estado de las invitaciones después de eliminar
     } catch (error) {
       console.error("Error deleting invitation:", error);
     }
+  };
+
+  const handleDeleteMember = async (memberId) => {
+    try {
+      await removeMember(groupId, memberId);
+      // Recargar miembros después de eliminar un miembro
+      const data = await getGroupByID(groupId);
+      setMembers(data.members);
+      loadInvitations();
+    } catch (error) {
+      console.error("Error deleting member:", error);
+    }
+  };
+
+  const handleSendInvitation = async (email) => {
+    try {
+      if (!email || !validateEmail(email)) {
+        setEmailError(true);
+        return;
+      }
+      const membersId = await getMembersMailsGroup(groupId);
+      if (membersId.includes(email)) {
+        setAlertInfo({
+          show: true,
+          message: "El usuario ya es miembro del grupo",
+          severity: "error",
+        });
+        return;
+      }
+
+      const existingInvitation = await getInvitationByEmailAndGroup(
+        email,
+        groupId
+      );
+      if (existingInvitation) {
+        setAlertInfo({
+          show: true,
+          message: "Ya existe una invitación pendiente para este email",
+          severity: "error",
+        });
+        return;
+      }
+
+      const invitation = {
+        groupId: group.id,
+        groupName: group.name,
+        invitedBy: group.createdBy.name,
+        invitedEmail: email,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+      };
+      await createInvitation(invitation);
+      loadInvitations();
+    } catch (error) {
+      console.error("Error sending invitation:", error);
+    }
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
   };
 
   if (loading) {
@@ -133,338 +150,52 @@ function GroupDetail() {
 
   return (
     <>
-      <Box
-        sx={{
-          mb: 4,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+      <GroupHeader
+        group={group}
+        isAdmin={isAdmin}
+        onDelete={() => {
+          setGroupContext(group);
+          openDeleteGroupModal();
         }}
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          {group?.name}
-        </Typography>
-        {isAdmin && (
-          <Button
-            variant="contained"
-            color="error"
-            startIcon={<DeleteIcon />}
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDeleteModal();
-            }}
-          >
-            Eliminar Grupo
-          </Button>
-        )}
-      </Box>
-
+      />
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 4 }}>
-          <Box sx={{ display: { xs: "block", md: "none" }, mb: 3 }}>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="members-content"
-                id="members-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "100%",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography variant="h5">Miembros</Typography>
-                  {isAdmin && (
-                    <Button
-                      variant="contained"
-                      startIcon={<PersonAddIcon />}
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleInviteModal();
-                      }}
-                      sx={{ mr: 1 }}
-                    >
-                      Invitar
-                    </Button>
-                  )}
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <List>
-                  {members.map((member) => (
-                    <ListItem key={member.id + "a"}>
-                      <ListItemAvatar>
-                        <Avatar>{member.displayName?.charAt(0) || "U"}</Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={member.displayName}
-                        secondary={
-                          <>
-                            {member.id === user.uid && (
-                              <Chip size="small" label="Tú" sx={{ mr: 1 }} />
-                            )}
-                            {member.id == group.createdBy.id && (
-                              <Chip
-                                size="small"
-                                color="primary"
-                                label="Administrador"
-                              />
-                            )}
-                            {console.log(isAdmin)}
-                            {console.log(member.id !== group.createdBy.id)}
-                            {isAdmin && member.id !== group.createdBy.id && (
-                              <IconButton
-                                size="small"
-                                color="error"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleDeleteInvitation(invitation.id);
-                                }}
-                              >
-                                <DeleteIcon fontSize="small" />
-                              </IconButton>
-                            )}
-                          </>
-                        }
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-
-                {invitations && invitations.length > 0 && (
-                  <>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                      Invitaciones Pendientes
-                    </Typography>
-                    <List>
-                      {invitations.map((invitation) => (
-                        <ListItem key={invitation.id}>
-                          <ListItemText
-                            primary={invitation.invitedEmail}
-                            secondary={
-                              <>
-                                <Typography variant="body2" component="span">
-                                  Invitado por {invitation.invitedBy}
-                                </Typography>
-                              </>
-                            }
-                          />
-                          {isAdmin && (
-                            <IconButton
-                              size="small"
-                              color="error"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                              }}
-                            >
-                              <DeleteIcon fontSize="small" />
-                            </IconButton>
-                          )}
-                        </ListItem>
-                      ))}
-                    </List>
-                  </>
-                )}
-              </AccordionDetails>
-            </Accordion>
-          </Box>
-
           <Box sx={{ display: { xs: "none", md: "block" }, mb: 3 }}>
-            <Card>
-              {isAdmin ? (
-                <CardHeader
-                  title="Miembros"
-                  action={
-                    <Button
-                      variant="contained"
-                      startIcon={<PersonAddIcon />}
-                      size="small"
-                      onClick={handleInviteModal}
-                    >
-                      Invitar
-                    </Button>
-                  }
-                />
-              ) : (
-                <CardHeader title="Miembros" />
-              )}
-              <Divider />
-              <CardContent>
-                <List>
-                  {members.map((member) => (
-                    <ListItem key={member.id + "a"}>
-                      <ListItemAvatar>
-                        <Avatar>{member.displayName?.charAt(0) || "U"}</Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={member.displayName}
-                        secondary={
-                          <>
-                            {member.id === user.uid && (
-                              <Chip size="small" label="Tú" sx={{ mr: 1 }} />
-                            )}
-                            {member.id == group.createdBy.id && (
-                              <Chip
-                                size="small"
-                                color="primary"
-                                label="Administrador"
-                              />
-                            )}
-                          </>
-                        }
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-
-                {invitations && invitations.length > 0 && (
-                  <>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                      Invitaciones Pendientes
-                    </Typography>
-                    <List>
-                      {invitations.map((invitation) => (
-                        <ListItem key={invitation.id}>
-                          <ListItemText
-                            primary={invitation.invitedEmail}
-                            secondary={
-                              <Typography variant="body2" component="span">
-                                Invitado por {invitation.invitedBy}
-                              </Typography>
-                            }
-                          />
-                          {isAdmin && (
-                            <IconButton
-                              size="small"
-                              color="error"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleDeleteInvitation(invitation.id);
-                              }}
-                            >
-                              <DeleteIcon fontSize="small" />
-                            </IconButton>
-                          )}
-                        </ListItem>
-                      ))}
-                    </List>
-                  </>
-                )}
-              </CardContent>
-            </Card>
+            <MembersListDesktop
+              members={members}
+              isAdmin={isAdmin}
+              user={user}
+              group={group}
+              onDeleteMember={handleDeleteMember}
+              onInvite={openInviteModal}
+              onDeleteInvitation={handleDeleteInvitation}
+              invitations={invitations}
+            />
+          </Box>
+          <Box sx={{ display: { xs: "block", md: "none" }, mb: 3 }}>
+            <MembersListMobile
+              members={members}
+              isAdmin={isAdmin}
+              user={user}
+              group={group}
+              onInvite={openInviteModal}
+              onDeleteMember={handleDeleteMember}
+              onDeleteInvitation={handleDeleteInvitation}
+              invitations={invitations}
+            />
           </Box>
 
-          <Card sx={{ mb: 3 }}>
-            <CardHeader title="Balance del Grupo" />
-            <Divider />
-            <CardContent>
-              {balances.length > 0 ? (
-                <List>
-                  {balances.map((balance) => (
-                    <ListItem key={balance.userId}>
-                      <ListItemText
-                        primary={balance.name}
-                        secondary={
-                          balance.amount > 0
-                            ? `Debe recibir: $${Math.abs(balance.amount)}`
-                            : balance.amount < 0
-                            ? `Debe pagar: $${Math.abs(balance.amount)}`
-                            : "Balance: $0"
-                        }
-                      />
-                      <Chip
-                        color={
-                          balance.amount > 0
-                            ? "success"
-                            : balance.amount < 0
-                            ? "error"
-                            : "default"
-                        }
-                        label={`$${balance.amount.toFixed(2)}`}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  sx={{ p: 2, textAlign: "center" }}
-                >
-                  No hay balances pendientes.
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
+          <GroupBalance balances={balances} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <Card>
-            <CardHeader title="Gastos del Grupo" />
-            <Divider />
-            <CardContent>
-              {expenses.length > 0 ? (
-                <List>
-                  {expenses.map((expense) => (
-                    <ListItem
-                      key={expense.id}
-                      secondaryAction={
-                        expense.paidById === user.uid && (
-                          <Box>
-                            <IconButton edge="end" aria-label="edit">
-                              <EditIcon />
-                            </IconButton>
-                            <IconButton edge="end" aria-label="delete">
-                              <DeleteIcon />
-                            </IconButton>
-                          </Box>
-                        )
-                      }
-                    >
-                      <ListItemText
-                        primary={expense.description}
-                        secondary={
-                          <>
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              color="text.primary"
-                            >
-                              ${expense.amount}
-                            </Typography>
-                            {` - Pagado por ${expense.paidByName}`}
-                          </>
-                        }
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  sx={{ p: 2, textAlign: "center" }}
-                >
-                  No hay gastos registrados
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
+          <ExpensesList expenses={expenses} user={user} />
         </Grid>
       </Grid>
-
       <ExpenseModal isOpen={isExpenseModalOpen} onClose={closeExpenseModal} />
       <InviteModal
         isOpen={isInviteModalOpen}
         onClose={closeInviteModal}
-        group={group}
-        onSendInvitation={handleSendInvitation} // Pasa la función como prop
+        handleSendInvitation={handleSendInvitation}
       />
       <DeleteGroupModal
         isOpen={isDeleteGroupModalOpen}

@@ -5,13 +5,12 @@ import {
   Box,
   Button,
   TextField,
-  CircularProgress,
   Typography,
 } from "@mui/material";
 import { createGroup } from "@/domain/usecases/groups";
 import { useAuth } from "@/application/contexts/AuthContext";
 
-const GroupModal = ({ isOpen, onClose }) => {
+const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
   const { user } = useAuth();
 
   const handleSubmit = async (event) => {
@@ -29,6 +28,7 @@ const GroupModal = ({ isOpen, onClose }) => {
     };
 
     await createGroup(groupData);
+    onGroupCreated(); // Call the callback function to update groups
     onClose();
   };
 

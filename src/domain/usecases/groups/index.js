@@ -123,6 +123,24 @@ export const addMember = async (groupId, member) => {
   }
 };
 
-export const removeMember = async (groupId, member) => {
-  // Implementación pendiente
+export const removeMember = async (groupId, memberId) => {
+  const groupRepository = new GroupRepository();
+  try {
+    const group = await groupRepository.getGroupByID(groupId);
+    if (group) {
+      const updatedMembers = group.data.members.filter(
+        (m) => m.id !== memberId
+      );
+      const updatedGroup = new Group(
+        group.data.name,
+        group.data.createdBy,
+        updatedMembers,
+        group.data.createdAt,
+        new Date()
+      );
+      await groupRepository.updateGroup(groupId, updatedGroup);
+    }
+  } catch (error) {
+    console.error("Error al eliminar el miembro:", error);
+  }
 };

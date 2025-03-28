@@ -9,13 +9,8 @@ import {
   Typography,
   Alert,
 } from "@mui/material";
-import {
-  createInvitation,
-  getInvitationByEmailAndGroup,
-} from "@/domain/usecases/invitations";
-import { getMembersMailsGroup } from "@/domain/usecases/groups";
 
-const InviteModal = ({ isOpen, onClose, group }) => {
+const InviteModal = ({ isOpen, onClose, handleSendInvitation }) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [alertInfo, setAlertInfo] = useState({
@@ -24,10 +19,7 @@ const InviteModal = ({ isOpen, onClose, group }) => {
     severity: "error",
   });
 
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
+
 
   const handleEmailChange = (e) => {
     const value = e.target.value;
@@ -48,43 +40,11 @@ const InviteModal = ({ isOpen, onClose, group }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !validateEmail(email)) {
-      setEmailError(true);
-      return;
+    if (typeof handleSendInvitation === 'function') {
+      handleSendInvitation(email);
+    } else {
+      console.error("handleSendInvitation is not a function");
     }
-    const membersId = await getMembersMailsGroup(group.id);
-    console.log(membersId);
-    if (membersId.includes(email)) {
-      setAlertInfo({
-        show: true,
-        message: "El usuario ya es miembro del grupo",
-        severity: "error",
-      });
-      return;
-    }
-
-    const existingInvitation = await getInvitationByEmailAndGroup(
-      email,
-      group.id
-    );
-    if (existingInvitation) {
-      setAlertInfo({
-        show: true,
-        message: "Ya existe una invitación pendiente para este email",
-        severity: "error",
-      });
-      return;
-    }
-
-    const invitation = {
-      groupId: group.id,
-      groupName: group.name,
-      invitedBy: group.createdBy.name,
-      invitedEmail: email,
-      status: "pending",
-      createdAt: new Date().toISOString(),
-    };
-    await createInvitation(invitation);
     handleClose();
   };
 
