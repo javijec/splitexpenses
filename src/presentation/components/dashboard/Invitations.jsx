@@ -10,6 +10,7 @@ import {
   ListItem,
   ListItemText,
   Button,
+  Typography, // Added import for Typography
 } from "@mui/material";
 
 const Invitations = ({

@@ -73,6 +73,10 @@ const Main = () => {
     }
   };
 
+  const handleCreateGroup = async () => {
+    loadGroups();
+  };
+
   return (
     <>
       <Header />
@@ -88,7 +92,11 @@ const Main = () => {
 
         <Groups groups={groups} loadingGroups={loadingGroups} />
       </Grid>
-      <GroupModal isOpen={isGroupModalOpen} onClose={closeGroupModal} />
+      <GroupModal
+        isOpen={isGroupModalOpen}
+        onClose={closeGroupModal}
+        onGroupCreated={handleCreateGroup}
+      />
     </>
   );
 };
