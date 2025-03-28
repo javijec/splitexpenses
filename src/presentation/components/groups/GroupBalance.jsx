@@ -20,13 +20,11 @@ const GroupBalance = ({ balances }) => {
       sx={{
         borderRadius: 2,
         overflow: "hidden",
-        height: "100%",
         transition: "all 0.3s ease",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
         "&:hover": {
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         },
-        mb: 3,
       }}
     >
       <CardHeader
@@ -46,7 +44,7 @@ const GroupBalance = ({ balances }) => {
         }}
       />
       <Divider />
-      <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>
+      <CardContent sx={{ p: 0 }}>
         {balances.length > 0 ? (
           <Fade in={true} timeout={500}>
             <List sx={{ p: 0 }}>
@@ -94,7 +92,6 @@ const GroupBalance = ({ balances }) => {
               sx={{
                 p: 4,
                 textAlign: "center",
-                height: "100%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",

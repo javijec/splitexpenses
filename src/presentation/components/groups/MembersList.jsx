@@ -24,7 +24,6 @@ import {
   ExpandMore as ExpandMoreIcon,
   People as PeopleIcon,
 } from "@mui/icons-material";
-import InvitationsList from "@/presentation/components/groups/InvitationsList";
 
 export const MembersListDesktop = ({
   members,
@@ -32,9 +31,7 @@ export const MembersListDesktop = ({
   user,
   group,
   onInvite,
-  onDeleteInvitation,
   onDeleteMember,
-  invitations, // Ensure this is correctly passed
 }) => {
   return (
     <Card
@@ -130,11 +127,6 @@ export const MembersListDesktop = ({
             ))}
           </List>
         </Fade>
-        <InvitationsList
-          invitations={invitations} // Ensure this is correctly passed
-          isAdmin={isAdmin}
-          onDeleteInvitation={onDeleteInvitation}
-        />
       </CardContent>
     </Card>
   );
@@ -147,8 +139,6 @@ export const MembersListMobile = ({
   group,
   onInvite,
   onDeleteMember,
-  onDeleteInvitation, // Ensure this is correctly passed
-  invitations,
 }) => {
   return (
     <Accordion
@@ -245,11 +235,6 @@ export const MembersListMobile = ({
             ))}
           </List>
         </Fade>
-        <InvitationsList
-          invitations={invitations}
-          isAdmin={isAdmin}
-          onDeleteInvitation={onDeleteInvitation}
-        />
       </AccordionDetails>
     </Accordion>
   );

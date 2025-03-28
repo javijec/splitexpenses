@@ -107,6 +107,20 @@ export const ThemeProvider = ({ children }) => {
           },
         },
       },
+      MuiCardHeader: {
+        styleOverrides: {
+          root: {
+            // Fondo más claro en modo oscuro y ligeramente más oscuro en modo claro
+            backgroundColor: mode === "dark" ? "#2a2a2a" : "#f7f7f7",
+            // Mejora del contraste para los títulos
+            "& .MuiTypography-root": {
+              color: mode === "dark" ? "#ffffff" : "#121212",
+            },
+            // Transición suave al cambiar de tema
+            transition: "background-color 0.3s ease, color 0.3s ease",
+          },
+        },
+      },
       MuiTextField: {
         styleOverrides: {
           root: {

@@ -25,6 +25,10 @@ import {
 } from "@/presentation/components/groups/MembersList";
 import GroupBalance from "@/presentation/components/groups/GroupBalance";
 import ExpensesList from "@/presentation/components/groups/ExpensesList";
+import {
+  InvitationsListDesktop,
+  InvitationsListMobile,
+} from "@/presentation/components/groups/InvitationsList";
 
 function GroupDetail() {
   const { groupId } = useParams();
@@ -184,8 +188,11 @@ function GroupDetail() {
               group={group}
               onDeleteMember={handleDeleteMember}
               onInvite={openInviteModal}
+            />
+            <InvitationsListDesktop
+              invitations={invitations} // Ensure this is correctly passed
+              isAdmin={isAdmin}
               onDeleteInvitation={handleDeleteInvitation}
-              invitations={invitations}
             />
           </Box>
           <Box sx={{ display: { xs: "block", md: "none" }, mb: 3 }}>
@@ -196,8 +203,11 @@ function GroupDetail() {
               group={group}
               onInvite={openInviteModal}
               onDeleteMember={handleDeleteMember}
-              onDeleteInvitation={handleDeleteInvitation}
-              invitations={invitations}
+            />
+            <InvitationsListMobile
+              invitations={invitations} // Ensure this is correctly passed
+              isAdmin={isAdmin}
+              handleDeleteInvitation={handleDeleteInvitation}
             />
           </Box>
 
