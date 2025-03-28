@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Avatar } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 
 const GroupHeader = ({ group, isAdmin, onDelete }) => {
@@ -7,13 +7,62 @@ const GroupHeader = ({ group, isAdmin, onDelete }) => {
       sx={{
         mb: 4,
         display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: { xs: "flex-start", sm: "center" },
+        pb: 2,
+        position: "relative",
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "1px",
+          background:
+            "linear-gradient(90deg, transparent, rgba(25, 118, 210, 0.3), transparent)",
+        },
       }}
     >
-      <Typography variant="h4" component="h1" gutterBottom>
-        {group?.name}
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Avatar
+          sx={{
+            width: 50,
+            height: 50,
+            mr: 2,
+            bgcolor: "primary.main",
+            display: { xs: "none", sm: "flex" },
+          }}
+        >
+          {group?.name?.charAt(0) || "G"}
+        </Avatar>
+        <Box>
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{
+              fontWeight: 600,
+              background: "linear-gradient(45deg, #1976d2, #42a5f5)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              mb: 0.5,
+            }}
+          >
+            {group?.name}
+          </Typography>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{
+              fontWeight: 500,
+              opacity: 0.8,
+            }}
+          >
+            Gestiona los gastos y miembros del grupo
+          </Typography>
+        </Box>
+      </Box>
       {isAdmin && (
         <Button
           variant="contained"
@@ -21,6 +70,13 @@ const GroupHeader = ({ group, isAdmin, onDelete }) => {
           startIcon={<DeleteIcon />}
           size="small"
           onClick={onDelete}
+          sx={{
+            mt: { xs: 2, sm: 0 },
+            boxShadow: "0 4px 8px rgba(211, 47, 47, 0.3)",
+            "&:hover": {
+              boxShadow: "0 6px 12px rgba(211, 47, 47, 0.4)",
+            },
+          }}
         >
           Eliminar Grupo
         </Button>
