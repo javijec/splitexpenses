@@ -16,7 +16,24 @@ const ThemeToggle = () => {
         mode === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"
       }
     >
-      <IconButton onClick={toggleTheme} color="inherit">
+      <IconButton
+        onClick={toggleTheme}
+        color="inherit"
+        sx={{
+          bgcolor: (theme) =>
+            theme.palette.mode === "dark"
+              ? "rgba(255, 255, 255, 0.08)"
+              : "rgba(0, 0, 0, 0.04)",
+          p: 1.2,
+          transition: "all 0.2s ease",
+          "&:hover": {
+            bgcolor: (theme) =>
+              theme.palette.mode === "dark"
+                ? "rgba(255, 255, 255, 0.15)"
+                : "rgba(0, 0, 0, 0.08)",
+          },
+        }}
+      >
         {mode === "light" ? <Brightness4 /> : <Brightness7 />}
       </IconButton>
     </Tooltip>

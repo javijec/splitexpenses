@@ -17,21 +17,18 @@ import {
   Badge,
   Tooltip,
 } from "@mui/material";
-import { Home, Add, Person, Logout, AccountCircle } from "@mui/icons-material";
+import { Home, Add, Person, Logout } from "@mui/icons-material";
 import ThemeToggle from "./ThemeToggle";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
-  zIndex: 1,
-  top: -30,
   left: 0,
   right: 0,
   margin: "0 auto",
-  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
+  boxShadow: "0 6px 15px rgba(0, 0, 0, 0.2)",
   transition: "all 0.3s ease",
   "&:hover": {
-    transform: "translateY(-2px)",
-    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
+    transform: "translateY(-5px)",
   },
 });
 
@@ -76,22 +73,28 @@ export default function BottomAppBar() {
       <AppBar
         position="fixed"
         color="primary"
-        elevation={3}
+        elevation={4}
         sx={{
           top: "auto",
           bottom: 0,
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
           overflow: "hidden",
-          boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
-          backdropFilter: "blur(10px)",
-          background: (theme) =>
-            theme.palette.mode === "dark"
-              ? `linear-gradient(rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95))`
-              : `linear-gradient(rgba(255, 255, 255, 0.9), rgba(245, 245, 245, 0.95))`,
+          boxShadow: "0 -4px 20px rgba(0, 0, 0, 0.15)",
+          backdropFilter: "blur(15px)",
+
+          backgroundColor: (theme) => theme.palette.primary, // Color del tema Material UI
+          border: "1px solid",
+          borderColor: (theme) => theme.palette.divider,
         }}
       >
-        <Toolbar sx={{ padding: { xs: 1, sm: 2 }, minHeight: 64 }}>
+        <Toolbar
+          sx={{
+            padding: { xs: 1.5, sm: 2.5 },
+            minHeight: 70,
+            justifyContent: "space-between",
+          }}
+        >
           {location.pathname !== "/dashboard" && (
             <IconButton
               color="inherit"
@@ -99,7 +102,14 @@ export default function BottomAppBar() {
               onClick={handleDashboard}
               sx={{
                 transition: "all 0.2s ease",
-                "&:hover": { transform: "scale(1.1)" },
+                bgcolor: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? "rgba(255, 255, 255, 0.08)"
+                    : "rgba(0, 0, 0, 0.04)",
+                p: 1.2,
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
               }}
             >
               <Home />
@@ -117,11 +127,19 @@ export default function BottomAppBar() {
             >
               <StyledFab
                 aria-label="add"
-                color="secondary"
                 onClick={handleAddButtonClick}
                 sx={{
-                  background:
-                    "linear-gradient(45deg, #FF6B6B 30%, #FF8E53 90%)",
+                  background: "red",
+                  color: "white",
+                  fontWeight: "bold",
+                  width: 56,
+                  height: 56,
+
+                  "&:hover": {
+                    background: "red",
+
+                    transform: "translateY(-3px)",
+                  },
                 }}
               >
                 <Add />
@@ -131,8 +149,8 @@ export default function BottomAppBar() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Tooltip title="Cambiar tema" arrow>
-            <Box sx={{ mx: 1 }}>
+          <Tooltip title="Cambiar tema" arrow placement="top">
+            <Box sx={{ mx: 1.5, display: "flex", alignItems: "center" }}>
               <ThemeToggle />
             </Box>
           </Tooltip>
@@ -144,7 +162,17 @@ export default function BottomAppBar() {
               sx={{
                 transition: "all 0.2s ease",
                 p: 0.5,
-                "&:hover": { transform: "scale(1.05)" },
+                bgcolor: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? "rgba(255, 255, 255, 0.08)"
+                    : "rgba(0, 0, 0, 0.04)",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  bgcolor: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "rgba(255, 255, 255, 0.15)"
+                      : "rgba(0, 0, 0, 0.08)",
+                },
                 ml: 1,
               }}
             >
@@ -154,15 +182,41 @@ export default function BottomAppBar() {
                 variant="dot"
                 color="secondary"
                 invisible={!user}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    boxShadow: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "0 0 0 2px rgba(30, 30, 35, 0.99)"
+                        : "0 0 0 2px white",
+                    bgcolor: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? theme.palette.secondary.light
+                        : theme.palette.secondary.main,
+                  },
+                }}
               >
                 <Avatar
                   src={user ? user.photoURL : ""}
                   sx={{
-                    width: 40,
-                    height: 40,
+                    width: 42,
+                    height: 42,
                     border: "2px solid",
-                    borderColor: "background.paper",
-                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                    borderColor: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "rgba(255, 255, 255, 0.2)"
+                        : "rgba(255, 255, 255, 0.9)",
+                    boxShadow: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "0 3px 10px rgba(0, 0, 0, 0.3)"
+                        : "0 3px 10px rgba(0, 0, 0, 0.15)",
+                    transition: "all 0.2s ease",
+                    bgcolor: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "rgba(255, 255, 255, 0.1)"
+                        : "rgba(0, 0, 0, 0.04)",
                   }}
                 />
               </Badge>
@@ -173,24 +227,16 @@ export default function BottomAppBar() {
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
             PaperProps={{
-              elevation: 3,
+              elevation: 5,
               sx: {
-                borderRadius: 2,
-                minWidth: 180,
+                borderRadius: 3,
+                minWidth: 200,
                 overflow: "visible",
                 mt: 1.5,
-                "&:before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  bottom: -10,
-                  right: 14,
-                  width: 20,
-                  height: 20,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
+                boxShadow: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? "0 8px 20px rgba(0, 0, 0, 0.3)"
+                    : "0 8px 20px rgba(0, 0, 0, 0.15)",
               },
             }}
             transformOrigin={{ horizontal: "right", vertical: "bottom" }}
@@ -198,7 +244,8 @@ export default function BottomAppBar() {
           >
             <MenuItem
               sx={{
-                py: 1.5,
+                py: 2,
+                px: 2.5,
                 borderBottom: "1px solid",
                 borderColor: "divider",
               }}
@@ -222,8 +269,12 @@ export default function BottomAppBar() {
               onClick={handleProfile}
               sx={{
                 py: 1.5,
+                px: 2.5,
                 transition: "all 0.2s",
-                "&:hover": { bgcolor: "action.hover" },
+                "&:hover": {
+                  bgcolor: "action.hover",
+                  transform: "translateX(5px)",
+                },
               }}
             >
               <Person sx={{ mr: 1.5, color: "primary.main" }} />
@@ -233,9 +284,17 @@ export default function BottomAppBar() {
               onClick={handleLogout}
               sx={{
                 py: 1.5,
+                px: 2.5,
                 color: "error.main",
                 transition: "all 0.2s",
-                "&:hover": { bgcolor: "error.light", color: "error.dark" },
+                borderTop: "1px solid",
+                borderColor: "divider",
+                mt: 1,
+                "&:hover": {
+                  bgcolor: "error.light",
+                  color: "error.dark",
+                  transform: "translateX(5px)",
+                },
               }}
             >
               <Logout sx={{ mr: 1.5 }} />

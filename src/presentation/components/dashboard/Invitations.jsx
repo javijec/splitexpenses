@@ -33,12 +33,13 @@ const Invitations = ({
       <Card
         elevation={2}
         sx={{
-          borderRadius: 3,
+          borderRadius: 2, // Consistente con MuiCard
           overflow: "hidden",
           height: "100%",
           transition: "all 0.3s ease",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
           "&:hover": {
-            boxShadow: 6,
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           },
         }}
       >
@@ -54,6 +55,8 @@ const Invitations = ({
           sx={{
             bgcolor: "background.paper",
             pb: 2,
+            borderBottom: "1px solid",
+            borderColor: "divider",
           }}
         />
         <Divider />

@@ -17,13 +17,9 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import {
-  Groups as GroupsIcon,
-  AddCircleOutline,
-} from "@mui/icons-material";
+import { Groups as GroupsIcon, AddCircleOutline } from "@mui/icons-material";
 import { useModal } from "@/application/contexts/ModalContext";
 import { Link } from "react-router";
-
 
 const Groups = ({ groups, loadingGroups }) => {
   const { openGroupModal } = useModal();
@@ -33,12 +29,13 @@ const Groups = ({ groups, loadingGroups }) => {
       <Card
         elevation={2}
         sx={{
-          borderRadius: 3,
+          borderRadius: 2, // Consistente con MuiCard
           overflow: "hidden",
           height: "100%",
           transition: "all 0.3s ease",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
           "&:hover": {
-            boxShadow: 6,
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           },
         }}
       >
@@ -69,6 +66,8 @@ const Groups = ({ groups, loadingGroups }) => {
           sx={{
             bgcolor: "background.paper",
             pb: 2,
+            borderBottom: "1px solid",
+            borderColor: "divider",
           }}
         />
         <Divider />
@@ -101,21 +100,18 @@ const Groups = ({ groups, loadingGroups }) => {
                   >
                     <ListItemText
                       primary={
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ fontWeight: 500, mb: 0.5 }}
-                        >
-                          {group.name}
-                        </Typography>
-                      }
-                      secondary={
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            mt: 0.5,
-                          }}
-                        >
+                        <>
+                          <Typography
+                            variant="h5"
+                            sx={{
+                              fontWeight: 500,
+                              mb: 0.5,
+                              color: "text.primary",
+                            }}
+                          >
+                            {group.name}
+                          </Typography>
+
                           <Chip
                             label={`${group.members?.length || 1} ${
                               (group.members?.length || 1) === 1
@@ -130,7 +126,7 @@ const Groups = ({ groups, loadingGroups }) => {
                               bgcolor: "background.paper",
                             }}
                           />
-                        </Box>
+                        </>
                       }
                       sx={{ mb: { xs: 1, sm: 0 } }}
                     />
