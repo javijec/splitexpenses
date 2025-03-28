@@ -8,7 +8,13 @@ import {
   TextField,
   Typography,
   Alert,
+  IconButton,
+  Fade,
 } from "@mui/material";
+import {
+  Close as CloseIcon,
+  PersonAdd as PersonAddIcon,
+} from "@mui/icons-material";
 
 const InviteModal = ({
   isOpen,
@@ -47,11 +53,58 @@ const InviteModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        <Typography>Invitar Miembro</Typography>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
+        },
+      }}
+      TransitionComponent={Fade}
+      TransitionProps={{ timeout: 400 }}
+    >
+      <DialogTitle
+        sx={{
+          p: 3,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          bgcolor: "primary.light",
+          color: "white",
+        }}
+      >
+        <Box>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+          >
+            <PersonAddIcon sx={{ mr: 1 }} /> Invitar Miembro
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.9, maxWidth: "90%" }}>
+            Invita a amigos, familia o compañeros a unirse a este grupo
+          </Typography>
+        </Box>
+        <IconButton
+          onClick={handleClose}
+          size="small"
+          sx={{
+            color: "white",
+            bgcolor: "rgba(255,255,255,0.1)",
+            "&:hover": {
+              bgcolor: "rgba(255,255,255,0.2)",
+            },
+          }}
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ p: 3, pt: 3 }}>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
           <TextField
             margin="normal"
@@ -66,6 +119,12 @@ const InviteModal = ({
             onChange={handleEmailChange}
             error={emailError}
             helperText={emailError ? "Formato de email inválido" : ""}
+            placeholder="Ingresa el email de la persona que quieres invitar"
+            InputProps={{
+              sx: {
+                borderRadius: 2,
+              },
+            }}
             sx={{ mb: 3 }}
           />
           {alertInfo.show && (
@@ -77,24 +136,37 @@ const InviteModal = ({
               {alertInfo.message}
             </Alert>
           )}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: 2,
-              mt: 2,
-            }}
-          >
-            <Button onClick={handleClose} color="inherit">
-              CANCELAR
-            </Button>
+          <Box sx={{ mt: 2 }}>
             <Button
               type="submit"
+              fullWidth
               variant="contained"
               disabled={!email || emailError}
-              sx={{ bgcolor: "primary.main" }}
+              sx={{
+                mt: 2,
+                mb: 2,
+                py: 1.5,
+                borderRadius: 2,
+                fontWeight: 600,
+                boxShadow: "0 4px 12px rgba(25, 118, 210, 0.3)",
+                "&:hover": {
+                  boxShadow: "0 6px 16px rgba(25, 118, 210, 0.4)",
+                },
+              }}
+              disableElevation
             >
               ENVIAR INVITACIÓN
+            </Button>
+            <Button
+              onClick={handleClose}
+              color="inherit"
+              fullWidth
+              sx={{
+                borderRadius: 2,
+                fontWeight: 500,
+              }}
+            >
+              CANCELAR
             </Button>
           </Box>
         </Box>
