@@ -44,6 +44,11 @@ function GroupDetail() {
   const [balances, setBalances] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [alertInfo, setAlertInfo] = useState({
+    show: false,
+    message: "",
+    severity: "error",
+  });
 
   const loadInvitations = async () => {
     try {
@@ -99,7 +104,7 @@ function GroupDetail() {
     try {
       if (!email || !validateEmail(email)) {
         setEmailError(true);
-        return;
+        return false;
       }
       const membersId = await getMembersMailsGroup(groupId);
       if (membersId.includes(email)) {
@@ -108,7 +113,7 @@ function GroupDetail() {
           message: "El usuario ya es miembro del grupo",
           severity: "error",
         });
-        return;
+        return false; // Return false to indicate failure
       }
 
       const existingInvitation = await getInvitationByEmailAndGroup(
@@ -121,7 +126,7 @@ function GroupDetail() {
           message: "Ya existe una invitación pendiente para este email",
           severity: "error",
         });
-        return;
+        return false; // Return false to indicate failure
       }
 
       const invitation = {
@@ -134,8 +139,10 @@ function GroupDetail() {
       };
       await createInvitation(invitation);
       loadInvitations();
+      return true; // Return true to indicate success
     } catch (error) {
       console.error("Error sending invitation:", error);
+      return false; // Return false to indicate failure
     }
   };
 
@@ -196,6 +203,9 @@ function GroupDetail() {
         isOpen={isInviteModalOpen}
         onClose={closeInviteModal}
         handleSendInvitation={handleSendInvitation}
+        alertInfo={alertInfo}
+        validateEmail={validateEmail}
+        setAlertInfo={setAlertInfo}
       />
       <DeleteGroupModal
         isOpen={isDeleteGroupModalOpen}

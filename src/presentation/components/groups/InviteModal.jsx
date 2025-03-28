@@ -10,41 +10,39 @@ import {
   Alert,
 } from "@mui/material";
 
-const InviteModal = ({ isOpen, onClose, handleSendInvitation }) => {
+const InviteModal = ({
+  isOpen,
+  onClose,
+  handleSendInvitation,
+  alertInfo,
+  validateEmail,
+  setAlertInfo,
+}) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
-  const [alertInfo, setAlertInfo] = useState({
-    show: false,
-    message: "",
-    severity: "error",
-  });
-
-
 
   const handleEmailChange = (e) => {
     const value = e.target.value;
     setEmail(value);
     setEmailError(value && !validateEmail(value));
+    setAlertInfo({ show: false, message: "", severity: "error" });
   };
 
   const handleClose = () => {
     setEmail("");
     setEmailError(false);
-    setAlertInfo({
-      show: false,
-      message: "",
-      severity: "error",
-    });
+    setAlertInfo({ show: false, message: "", severity: "error" });
     onClose();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (typeof handleSendInvitation === 'function') {
-      handleSendInvitation(email);
-    } else {
-      console.error("handleSendInvitation is not a function");
+    const result = await handleSendInvitation(email);
+    if (!result) {
+      // If the result is false, do not close the modal
+      return;
     }
+
     handleClose();
   };
 
