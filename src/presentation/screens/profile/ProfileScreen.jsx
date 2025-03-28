@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useAuth } from "@/application/contexts/AuthContext";
+import { Box } from "@mui/material";
 
 // Componentes
 import ProfileHeader from "@/presentation/components/profile/ProfileHeader";
 import UserInfoCard from "@/presentation/components/profile/UserInfoCard";
-import ProfileUpdateForm from "@/presentation/components/profile/ProfileUpdateForm";
 import DangerZone from "@/presentation/components/profile/DangerZone";
 import DeleteAccountDialog from "@/presentation/components/profile/DeleteAccountDialog";
 
@@ -36,7 +36,16 @@ const ProfileScreen = () => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        borderRadius: 3,
+        overflow: "hidden",
+        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.08)",
+        bgcolor: "background.paper",
+        p: { xs: 2, sm: 3 },
+        transition: "all 0.3s ease",
+      }}
+    >
       <ProfileHeader />
 
       <UserInfoCard
@@ -55,7 +64,7 @@ const ProfileScreen = () => {
         onDelete={handleDeleteAccount}
         loading={deleteLoading}
       />
-    </>
+    </Box>
   );
 };
 
