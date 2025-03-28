@@ -100,7 +100,7 @@ const Groups = ({ groups, loadingGroups }) => {
                   >
                     <ListItemText
                       primary={
-                        <>
+                        <Box>
                           <Typography
                             variant="h5"
                             sx={{
@@ -126,29 +126,10 @@ const Groups = ({ groups, loadingGroups }) => {
                               bgcolor: "background.paper",
                             }}
                           />
-                        </>
+                        </Box>
                       }
                       sx={{ mb: { xs: 1, sm: 0 } }}
                     />
-                    <Box sx={{ display: "flex", mt: { xs: 1, sm: 0 } }}>
-                      <Tooltip title="Ver grupo">
-                        <IconButton
-                          color="primary"
-                          size="small"
-                          sx={{
-                            mr: 1,
-                            bgcolor: "primary.light",
-                            color: "white",
-                            "&:hover": {
-                              bgcolor: "primary.main",
-                            },
-                          }}
-                          onClick={() => console.log("View group", group.id)}
-                        >
-                          <GroupsIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
                   </ListItem>
                 ))}
               </List>
