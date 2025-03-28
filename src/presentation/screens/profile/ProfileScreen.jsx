@@ -1,23 +1,12 @@
 import React, { useState } from "react";
-import {
-  Typography,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  Avatar,
-  Grid2 as Grid,
-  Divider,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  CircularProgress,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "@/application/contexts/AuthContext";
+
+// Componentes
+import ProfileHeader from "@/presentation/components/profile/ProfileHeader";
+import UserInfoCard from "@/presentation/components/profile/UserInfoCard";
+import ProfileUpdateForm from "@/presentation/components/profile/ProfileUpdateForm";
+import DangerZone from "@/presentation/components/profile/DangerZone";
+import DeleteAccountDialog from "@/presentation/components/profile/DeleteAccountDialog";
 
 const ProfileScreen = () => {
   const { user, deleteAccount, updateAccount } = useAuth();
@@ -28,157 +17,44 @@ const ProfileScreen = () => {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
+    setLoading(true);
     await updateAccount({ displayName });
     setLoading(false);
-    // Aquí puedes agregar la lógica para actualizar el perfil del usuario
   };
 
   const handleDeleteAccount = async () => {
+    setDeleteLoading(true);
     deleteAccount(user)
       .then(() => {
         setDeleteLoading(false);
         setDeleteDialogOpen(false);
-        // Redirigir al usuario a la página de inicio o a otra página
       })
       .catch((error) => {
         console.error("Error deleting account:", error);
         setDeleteLoading(false);
       });
-    // Aquí puedes agregar la lógica para eliminar la cuenta del usuario
   };
 
   return (
     <>
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Información de la Cuenta
-        </Typography>
-      </Box>
+      <ProfileHeader />
 
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              mb: 3,
-            }}
-          >
-            <Avatar
-              sx={{ width: 80, height: 80, mb: 2 }}
-              src={user?.photoURL}
-              alt={user?.displayName || "Usuario"}
-            >
-              {user?.displayName?.charAt(0) || "U"}
-            </Avatar>
-            <Typography variant="h6">
-              {user?.displayName || "Usuario"}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {user?.email}
-            </Typography>
-          </Box>
+      <UserInfoCard
+        user={user}
+        displayName={displayName}
+        setDisplayName={setDisplayName}
+        loading={loading}
+        handleUpdateProfile={handleUpdateProfile}
+      />
 
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Typography variant="subtitle2" gutterBottom>
-                ID de Usuario
-              </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ wordBreak: "break-all" }}
-              >
-                {user.uid}
-              </Typography>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Typography variant="subtitle2" gutterBottom>
-                Email Verificado
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {user?.emailVerified ? "Sí" : "No"}
-              </Typography>
-            </Grid>
-          </Grid>
+      <DangerZone onDeleteClick={() => setDeleteDialogOpen(true)} />
 
-          <Divider sx={{ my: 3 }} />
-
-          <Box component="form" onSubmit={handleUpdateProfile} noValidate>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="displayName"
-              label="Nombre de Usuario"
-              name="displayName"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              disabled={loading}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3 }}
-              disabled={loading}
-            >
-              {loading ? <CircularProgress size={24} /> : "ACTUALIZAR PERFIL"}
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
-
-      <Card sx={{ bgcolor: "error.dark" }}>
-        <CardContent>
-          <Typography variant="h6" color="error.contrastText">
-            Zona de Peligro
-          </Typography>
-          <Typography variant="body2" color="error.contrastText" sx={{ mt: 1 }}>
-            Una vez que elimines tu cuenta, no podrás recuperarla. Todos tus
-            datos serán eliminados permanentemente.
-          </Typography>
-          <Button
-            variant="outlined"
-            color="error"
-            startIcon={<DeleteIcon />}
-            sx={{
-              mt: 2,
-              bgcolor: "error.contrastText",
-              borderColor: "error.contrastText",
-            }}
-            onClick={() => setDeleteDialogOpen(true)}
-          >
-            Eliminar mi cuenta
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Delete Account Dialog */}
-      <Dialog
+      <DeleteAccountDialog
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
-      >
-        <DialogTitle>Eliminar Cuenta</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Esta acción eliminará permanentemente tu cuenta y todos tus datos.
-            Por favor, ingresa tu contraseña para confirmar.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setDeleteDialogOpen(false)}>Cancelar</Button>
-          <Button
-            onClick={handleDeleteAccount}
-            variant="contained"
-            color="error"
-            disabled={deleteLoading}
-          >
-            {deleteLoading ? <CircularProgress size={24} /> : "Eliminar"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onDelete={handleDeleteAccount}
+        loading={deleteLoading}
+      />
     </>
   );
 };
