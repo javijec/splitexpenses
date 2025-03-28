@@ -52,7 +52,11 @@ function App() {
 function AppRoutes() {
   const location = useLocation();
   return (
-    <Container component="main" role="presentation" sx={{ flexGrow: 1, py: 3 }}>
+    <Container
+      component="main"
+      role="presentation"
+      sx={{ flexGrow: 1, py: 5, pb: location.pathname !== "/login" ? 15 : 3 }}
+    >
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route
