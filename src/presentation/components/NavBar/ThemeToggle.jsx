@@ -15,6 +15,8 @@ const ThemeToggle = () => {
       title={
         mode === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"
       }
+      arrow
+      placement="top"
     >
       <IconButton
         onClick={toggleTheme}

@@ -91,7 +91,7 @@ export default function BottomAppBar() {
         <Toolbar
           sx={{
             padding: { xs: 1.5, sm: 2.5 },
-            minHeight: 70,
+            minHeight: 10,
             justifyContent: "space-between",
           }}
         >
@@ -149,158 +149,186 @@ export default function BottomAppBar() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Tooltip title="Cambiar tema" arrow placement="top">
-            <Box sx={{ mx: 1.5, display: "flex", alignItems: "center" }}>
-              <ThemeToggle />
-            </Box>
-          </Tooltip>
+          <Box sx={{ mx: 1.5, display: "flex", alignItems: "center" }}>
+            <ThemeToggle />
+          </Box>
 
-          <Tooltip title="Mi perfil" arrow>
-            <IconButton
-              color="inherit"
-              onClick={handleMenuOpen}
-              sx={{
-                transition: "all 0.2s ease",
-                p: 0.5,
-                bgcolor: (theme) =>
-                  theme.palette.mode === "dark"
-                    ? "rgba(255, 255, 255, 0.08)"
-                    : "rgba(0, 0, 0, 0.04)",
-                "&:hover": {
-                  transform: "scale(1.05)",
+          {location.pathname === "/profile" ? (
+            <Tooltip title="Logout" arrow>
+              <IconButton
+                color="inherit"
+                onClick={handleLogout}
+                sx={{
+                  transition: "all 0.2s ease",
+                  p: 1.3,
                   bgcolor: (theme) =>
                     theme.palette.mode === "dark"
-                      ? "rgba(255, 255, 255, 0.15)"
-                      : "rgba(0, 0, 0, 0.08)",
-                },
-                ml: 1,
-              }}
-            >
-              <Badge
-                overlap="circular"
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                variant="dot"
-                color="secondary"
-                invisible={!user}
-                sx={{
-                  "& .MuiBadge-badge": {
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    boxShadow: (theme) =>
-                      theme.palette.mode === "dark"
-                        ? "0 0 0 2px rgba(30, 30, 35, 0.99)"
-                        : "0 0 0 2px white",
+                      ? "rgba(255, 255, 255, 0.08)"
+                      : "rgba(0, 0, 0, 0.04)",
+                  "&:hover": {
+                    transform: "scale(1.05)",
                     bgcolor: (theme) =>
                       theme.palette.mode === "dark"
-                        ? theme.palette.secondary.light
-                        : theme.palette.secondary.main,
+                        ? "rgba(255, 255, 255, 0.15)"
+                        : "rgba(0, 0, 0, 0.08)",
                   },
+                  ml: 1,
                 }}
               >
-                <Avatar
-                  src={user ? user.photoURL : ""}
+                <Logout />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <>
+              <Tooltip title="Mi perfil" arrow>
+                <IconButton
+                  color="inherit"
+                  onClick={handleMenuOpen}
                   sx={{
-                    width: 42,
-                    height: 42,
-                    border: "2px solid",
-                    borderColor: (theme) =>
-                      theme.palette.mode === "dark"
-                        ? "rgba(255, 255, 255, 0.2)"
-                        : "rgba(255, 255, 255, 0.9)",
-                    boxShadow: (theme) =>
-                      theme.palette.mode === "dark"
-                        ? "0 3px 10px rgba(0, 0, 0, 0.3)"
-                        : "0 3px 10px rgba(0, 0, 0, 0.15)",
                     transition: "all 0.2s ease",
+                    p: 1.3,
                     bgcolor: (theme) =>
                       theme.palette.mode === "dark"
-                        ? "rgba(255, 255, 255, 0.1)"
+                        ? "rgba(255, 255, 255, 0.08)"
                         : "rgba(0, 0, 0, 0.04)",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      bgcolor: (theme) =>
+                        theme.palette.mode === "dark"
+                          ? "rgba(255, 255, 255, 0.15)"
+                          : "rgba(0, 0, 0, 0.08)",
+                    },
+                    ml: 1,
                   }}
-                />
-              </Badge>
-            </IconButton>
-          </Tooltip>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-            PaperProps={{
-              elevation: 5,
-              sx: {
-                borderRadius: 3,
-                minWidth: 200,
-                overflow: "visible",
-                mt: 1.5,
-                boxShadow: (theme) =>
-                  theme.palette.mode === "dark"
-                    ? "0 8px 20px rgba(0, 0, 0, 0.3)"
-                    : "0 8px 20px rgba(0, 0, 0, 0.15)",
-              },
-            }}
-            transformOrigin={{ horizontal: "right", vertical: "bottom" }}
-            anchorOrigin={{ horizontal: "right", vertical: "top" }}
-          >
-            <MenuItem
-              sx={{
-                py: 2,
-                px: 2.5,
-                borderBottom: "1px solid",
-                borderColor: "divider",
-              }}
-            >
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                  {user ? user.displayName : ""}
-                </Typography>
-                {user?.email && (
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ fontSize: "0.8rem" }}
+                >
+                  <Badge
+                    overlap="circular"
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    variant="dot"
+                    color="secondary"
+                    invisible={!user}
+                    sx={{
+                      "& .MuiBadge-badge": {
+                        width: 10,
+                        height: 10,
+                        borderRadius: "50%",
+                        boxShadow: (theme) =>
+                          theme.palette.mode === "dark"
+                            ? "0 0 0 2px rgba(30, 30, 35, 0.99)"
+                            : "0 0 0 2px white",
+                        bgcolor: (theme) =>
+                          theme.palette.mode === "dark"
+                            ? theme.palette.secondary.light
+                            : theme.palette.secondary.main,
+                      },
+                    }}
                   >
-                    {user.email}
-                  </Typography>
-                )}
-              </Box>
-            </MenuItem>
-            <MenuItem
-              onClick={handleProfile}
-              sx={{
-                py: 1.5,
-                px: 2.5,
-                transition: "all 0.2s",
-                "&:hover": {
-                  bgcolor: "action.hover",
-                  transform: "translateX(5px)",
-                },
-              }}
-            >
-              <Person sx={{ mr: 1.5, color: "primary.main" }} />
-              <Typography variant="body1">Perfil</Typography>
-            </MenuItem>
-            <MenuItem
-              onClick={handleLogout}
-              sx={{
-                py: 1.5,
-                px: 2.5,
-                color: "error.main",
-                transition: "all 0.2s",
-                borderTop: "1px solid",
-                borderColor: "divider",
-                mt: 1,
-                "&:hover": {
-                  bgcolor: "error.light",
-                  color: "error.dark",
-                  transform: "translateX(5px)",
-                },
-              }}
-            >
-              <Logout sx={{ mr: 1.5 }} />
-              <Typography variant="body1">Logout</Typography>
-            </MenuItem>
-          </Menu>
+                    <Avatar
+                      src={user ? user.photoURL : ""}
+                      sx={{
+                        width: 42,
+                        height: 42,
+                        border: "2px solid",
+                        borderColor: (theme) =>
+                          theme.palette.mode === "dark"
+                            ? "rgba(255, 255, 255, 0.2)"
+                            : "rgba(255, 255, 255, 0.9)",
+                        boxShadow: (theme) =>
+                          theme.palette.mode === "dark"
+                            ? "0 3px 10px rgba(0, 0, 0, 0.3)"
+                            : "0 3px 10px rgba(0, 0, 0, 0.15)",
+                        transition: "all 0.2s ease",
+                        bgcolor: (theme) =>
+                          theme.palette.mode === "dark"
+                            ? "rgba(255, 255, 255, 0.1)"
+                            : "rgba(0, 0, 0, 0.04)",
+                      }}
+                    />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                PaperProps={{
+                  elevation: 5,
+                  sx: {
+                    borderRadius: 3,
+                    minWidth: 200,
+                    overflow: "visible",
+                    mt: 1.5,
+                    boxShadow: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "0 8px 20px rgba(0, 0, 0, 0.3)"
+                        : "0 8px 20px rgba(0, 0, 0, 0.15)",
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "bottom" }}
+                anchorOrigin={{ horizontal: "right", vertical: "top" }}
+                arrow
+              >
+                <MenuItem
+                  sx={{
+                    py: 2,
+                    px: 2.5,
+                    borderBottom: "1px solid",
+                    borderColor: "divider",
+                  }}
+                >
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      {user ? user.displayName : ""}
+                    </Typography>
+                    {user?.email && (
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ fontSize: "0.8rem" }}
+                      >
+                        {user.email}
+                      </Typography>
+                    )}
+                  </Box>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleProfile}
+                  sx={{
+                    py: 1.5,
+                    px: 2.5,
+                    transition: "all 0.2s",
+                    "&:hover": {
+                      bgcolor: "action.hover",
+                      transform: "translateX(5px)",
+                    },
+                  }}
+                >
+                  <Person sx={{ mr: 1.5, color: "primary.main" }} />
+                  <Typography variant="body1">Perfil</Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleLogout}
+                  sx={{
+                    py: 1.5,
+                    px: 2.5,
+                    color: "error.main",
+                    transition: "all 0.2s",
+                    borderTop: "1px solid",
+                    borderColor: "divider",
+                    mt: 1,
+                    "&:hover": {
+                      bgcolor: "error.light",
+                      color: "error.dark",
+                      transform: "translateX(5px)",
+                    },
+                  }}
+                >
+                  <Logout sx={{ mr: 1.5 }} />
+                  <Typography variant="body1">Logout</Typography>
+                </MenuItem>
+              </Menu>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </Fragment>
