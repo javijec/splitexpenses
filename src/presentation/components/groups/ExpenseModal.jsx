@@ -242,25 +242,14 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
             sx={{
               display: "flex",
               flexDirection: "row",
-              flexWrap: "nowrap",
               gap: 2,
               mt: 1,
               mb: 2,
-              overflowX: "auto",
               pb: 1,
             }}
           >
             {members.map((member) => (
-              <Box
-                key={member.id}
-                sx={{
-                  flex: {
-                    xs: "1 1 100%",
-                    sm: "1 1 calc(50% - 16px)",
-                    md: "1 1 calc(33.33% - 16px)",
-                  },
-                }}
-              >
+              <Box key={member.id}>
                 <TextField
                   margin="dense"
                   fullWidth
