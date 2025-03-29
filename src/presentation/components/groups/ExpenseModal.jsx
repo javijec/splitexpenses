@@ -13,11 +13,13 @@ import {
   FormControl,
   IconButton,
   Fade,
+  Avatar,
 } from "@mui/material";
 import {
   Close as CloseIcon,
   Receipt as ReceiptIcon,
 } from "@mui/icons-material";
+import { alpha } from "@mui/material/styles";
 import { useAuth } from "@/application/contexts/AuthContext";
 
 const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
@@ -132,6 +134,17 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
           borderRadius: 3,
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
           overflow: "hidden",
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "4px",
+            background: (theme) => `${theme.palette.success.main}`,
+          },
+          transition: "all 0.3s ease",
         },
       }}
       TransitionComponent={Fade}
@@ -143,37 +156,57 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          bgcolor: "primary.light",
-          color: "white",
+          bgcolor: "background.paper",
+          borderBottom: "1px solid",
+          borderColor: "divider",
+          pb: 2,
+          pt: 3,
+          px: 3,
         }}
       >
-        <Box>
-          <Typography
-            variant="h5"
-            gutterBottom
-            sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Avatar
+            sx={{
+              bgcolor: (theme) => alpha(theme.palette.success.main, 0.1),
+              color: "success.main",
+              width: 40,
+              height: 40,
+              mr: 1.5,
+            }}
           >
-            <ReceiptIcon sx={{ mr: 1 }} /> Añadir Gasto
-          </Typography>
-          <Typography variant="body2" sx={{ opacity: 0.9, maxWidth: "90%" }}>
-            Registra un nuevo gasto para dividir entre los miembros del grupo
-          </Typography>
+            <ReceiptIcon />
+          </Avatar>
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
+            >
+              Añadir Gasto
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Registra un nuevo gasto para dividir entre los miembros del grupo
+            </Typography>
+          </Box>
         </Box>
         <IconButton
           onClick={onClose}
           size="small"
           sx={{
-            color: "white",
-            bgcolor: "rgba(255,255,255,0.1)",
+            color: "error.main",
+            bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
+            border: "1px solid",
+            borderColor: (theme) => alpha(theme.palette.error.main, 0.2),
             "&:hover": {
-              bgcolor: "rgba(255,255,255,0.2)",
+              bgcolor: (theme) => alpha(theme.palette.error.main, 0.2),
+              transform: "scale(1.05)",
             },
+            transition: "all 0.2s ease",
           }}
         >
           <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ p: 3, pt: 3 }}>
+      <DialogContent sx={{ p: 3, pt: 3, bgcolor: "background.paper" }}>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
           {/* Description field */}
           <TextField
@@ -190,54 +223,90 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
             InputProps={{
               sx: {
                 borderRadius: 2,
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: (theme) =>
+                    alpha(theme.palette.success.main, 0.5),
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "success.main",
+                },
               },
             }}
           />
 
           {/* Paid by section */}
-          <Typography
-            variant="subtitle2"
-            sx={{ mt: 2, mb: 1, fontWeight: 500 }}
-          >
+          <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
             Pagado por
           </Typography>
-          {members.map((member) => (
-            <TextField
-              key={member.id}
-              margin="normal"
-              fullWidth
-              label={member.displayName || member.email}
-              type="number"
-              value={paidByAmounts[member.id] || ""}
-              onChange={(e) => handlePaidByChange(member.id, e.target.value)}
-              variant="outlined"
-              InputProps={{
-                endAdornment: <InputAdornment position="end">$</InputAdornment>,
-                sx: {
-                  borderRadius: 2,
-                },
-              }}
-            />
-          ))}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "nowrap",
+              gap: 2,
+              mt: 1,
+              mb: 2,
+              overflowX: "auto",
+              pb: 1,
+            }}
+          >
+            {members.map((member) => (
+              <Box
+                key={member.id}
+                sx={{
+                  flex: {
+                    xs: "1 1 100%",
+                    sm: "1 1 calc(50% - 16px)",
+                    md: "1 1 calc(33.33% - 16px)",
+                  },
+                }}
+              >
+                <TextField
+                  margin="dense"
+                  fullWidth
+                  label={member.displayName || member.email}
+                  type="number"
+                  value={paidByAmounts[member.id] || ""}
+                  onChange={(e) =>
+                    handlePaidByChange(member.id, e.target.value)
+                  }
+                  variant="outlined"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">$</InputAdornment>
+                    ),
+                    sx: {
+                      borderRadius: 2,
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: (theme) =>
+                          alpha(theme.palette.success.main, 0.5),
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "success.main",
+                      },
+                    },
+                  }}
+                />
+              </Box>
+            ))}
+          </Box>
 
           {/* Total amount - calculated from paid by amounts */}
-          <Typography
-            variant="subtitle2"
-            sx={{ mt: 2, mb: 1, fontWeight: 500 }}
-          >
+          <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
             Monto Total
           </Typography>
           <Box
             sx={{
               p: 2,
-              mt: 1,
-              mb: 2,
-              bgcolor: "primary.light",
+              bgcolor: (theme) => alpha(theme.palette.success.main, 0.1),
               borderRadius: 2,
-              boxShadow: "0 4px 12px rgba(25, 118, 210, 0.2)",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
               transition: "all 0.3s ease",
+              border: "1px solid",
+              borderColor: (theme) => alpha(theme.palette.success.main, 0.2),
               "&:hover": {
-                boxShadow: "0 6px 16px rgba(25, 118, 210, 0.3)",
+                boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
+                transform: "translateY(-2px)",
               },
             }}
           >
@@ -245,7 +314,7 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
               variant="h6"
               sx={{
                 fontWeight: 600,
-                color: "white",
+                color: "success.main",
                 textAlign: "center",
               }}
             >
@@ -260,20 +329,50 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
           >
             Tipo de División
           </Typography>
-          <FormControl fullWidth margin="normal">
-            <Select
-              value={divisionType}
-              onChange={(e) => setDivisionType(e.target.value)}
-              displayEmpty
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "nowrap",
+              gap: 2,
+              mt: 1,
+              mb: 2,
+              overflowX: "auto",
+              pb: 1,
+            }}
+          >
+            <Box
               sx={{
-                borderRadius: 2,
+                flex: {
+                  xs: "1 1 100%",
+                  sm: "1 1 calc(50% - 16px)",
+                  md: "1 1 calc(33.33% - 16px)",
+                },
               }}
             >
-              <MenuItem value="equal">Partes Iguales</MenuItem>
-              <MenuItem value="amount">Por Montos</MenuItem>
-              <MenuItem value="percentage">Por Porcentajes</MenuItem>
-            </Select>
-          </FormControl>
+              <FormControl fullWidth margin="dense">
+                <Select
+                  value={divisionType}
+                  onChange={(e) => setDivisionType(e.target.value)}
+                  displayEmpty
+                  sx={{
+                    borderRadius: 2,
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: (theme) =>
+                        alpha(theme.palette.success.main, 0.5),
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "success.main",
+                    },
+                  }}
+                >
+                  <MenuItem value="equal">Partes Iguales</MenuItem>
+                  <MenuItem value="amount">Por Montos</MenuItem>
+                  <MenuItem value="percentage">Por Porcentajes</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </Box>
 
           {/* Division of expense section - changes based on division type */}
           {divisionType !== "equal" && (
@@ -284,7 +383,6 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
               >
                 División del Gasto
               </Typography>
-
               {/* Show remaining amount or percentage */}
               <Typography
                 variant="body2"
@@ -302,32 +400,61 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
                   ? `$${remaining.toFixed(2)}`
                   : `${remainingPercentage.toFixed(2)}%`}
               </Typography>
-
               {/* Member split inputs */}
-              {members.map((member) => (
-                <TextField
-                  key={member.id}
-                  margin="normal"
-                  fullWidth
-                  label={member.displayName || member.email}
-                  type="number"
-                  value={splitAmounts[member.displayName] || ""}
-                  onChange={(e) =>
-                    handleSplitAmountChange(member.id, e.target.value)
-                  }
-                  variant="outlined"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        {divisionType === "amount" ? "$" : "%"}
-                      </InputAdornment>
-                    ),
-                    sx: {
-                      borderRadius: 2,
-                    },
-                  }}
-                />
-              ))}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "nowrap",
+                  gap: 2,
+                  mt: 1,
+                  mb: 2,
+                  overflowX: "auto",
+                  pb: 1,
+                }}
+              >
+                {members.map((member) => (
+                  <Box
+                    key={member.id}
+                    sx={{
+                      flex: {
+                        xs: "1 1 100%",
+                        sm: "1 1 calc(50% - 16px)",
+                        md: "1 1 calc(33.33% - 16px)",
+                      },
+                    }}
+                  >
+                    <TextField
+                      margin="dense"
+                      fullWidth
+                      label={member.displayName || member.email}
+                      type="number"
+                      value={splitAmounts[member.displayName] || ""}
+                      onChange={(e) =>
+                        handleSplitAmountChange(member.id, e.target.value)
+                      }
+                      variant="outlined"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            {divisionType === "amount" ? "$" : "%"}
+                          </InputAdornment>
+                        ),
+                        sx: {
+                          borderRadius: 2,
+                          "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: (theme) =>
+                              alpha(theme.palette.success.main, 0.5),
+                          },
+                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "success.main",
+                          },
+                        },
+                      }}
+                    />
+                  </Box>
+                ))}
+              </Box>
             </>
           )}
 
@@ -339,6 +466,12 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
               sx={{
                 borderRadius: 2,
                 fontWeight: 500,
+                border: "1px solid",
+                borderColor: (theme) => alpha(theme.palette.grey[500], 0.2),
+                "&:hover": {
+                  bgcolor: (theme) => alpha(theme.palette.grey[500], 0.05),
+                },
+                transition: "all 0.2s ease",
               }}
             >
               CANCELAR
@@ -352,10 +485,16 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
                 px: 3,
                 borderRadius: 2,
                 fontWeight: 600,
-                boxShadow: "0 4px 12px rgba(25, 118, 210, 0.3)",
+                bgcolor: "success.main",
+                boxShadow: (theme) =>
+                  `0 4px 12px ${alpha(theme.palette.success.main, 0.3)}`,
                 "&:hover": {
-                  boxShadow: "0 6px 16px rgba(25, 118, 210, 0.4)",
+                  bgcolor: "success.dark",
+                  boxShadow: (theme) =>
+                    `0 6px 16px ${alpha(theme.palette.success.main, 0.4)}`,
+                  transform: "translateY(-2px)",
                 },
+                transition: "all 0.2s ease",
               }}
               disableElevation
             >
