@@ -1,6 +1,15 @@
 class Expense {
-  constructor(id, description, amount, groupId, paidBy, splitType, splits, active, createdAt, updatedAt) {
-    this.id = id; // Automatically generated ID
+  constructor(
+    description,
+    amount,
+    groupId,
+    paidBy,
+    splitType,
+    splits,
+    active,
+    createdAt,
+    updatedAt
+  ) {
     this.description = description; // Description of the expense
     this.amount = amount; // Amount of the expense
     this.groupId = groupId; // Reference to the group

@@ -14,6 +14,7 @@ import {
   IconButton,
   Fade,
   Avatar,
+  Alert,
 } from "@mui/material";
 import {
   Close as CloseIcon,
@@ -21,6 +22,7 @@ import {
 } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
 import { useAuth } from "@/application/contexts/AuthContext";
+import { createExpense } from "@/domain/usecases/expenses";
 
 const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
   const { user, groupContext } = useAuth();
@@ -32,6 +34,8 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
   const [remaining, setRemaining] = useState(0);
   const [remainingPercentage, setRemainingPercentage] = useState(100);
   const [members, setMembers] = useState(groupContext?.members || []);
+  const [errors, setErrors] = useState({});
+  const [formError, setFormError] = useState("");
   // Initialize state when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -104,22 +108,58 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Reset errors
+    setErrors({});
+    setFormError("");
+
+    // Validate inputs
+    let isValid = true;
+    const newErrors = {};
+
+    // Validate description (required)
+    if (!description.trim()) {
+      newErrors.description = "La descripción es obligatoria";
+      isValid = false;
+    }
+
+    // Validate total amount (must be greater than 0)
+    if (totalAmount <= 0) {
+      newErrors.totalAmount = "El monto total debe ser mayor que 0";
+      isValid = false;
+    }
+
+    // Validate remaining amount or percentage (must be 0) for non-equal divisions
+    if (divisionType === "amount" && Math.abs(remaining) > 0.01) {
+      setFormError("El monto restante debe ser 0");
+      isValid = false;
+    } else if (
+      divisionType === "percentage" &&
+      Math.abs(remainingPercentage) > 0.01
+    ) {
+      setFormError("El porcentaje restante debe ser 0");
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+
+    if (!isValid) {
+      return; // Stop submission if validation fails
+    }
+
     // Prepare expense data
     const expenseData = {
       description,
-      totalAmount,
-      paidByAmounts,
-      divisionType,
-      splitAmounts,
-      createdBy: user.uid,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      amount: totalAmount,
+      groupId: groupContext?.id,
+      paidBy: paidByAmounts,
+      splitType: divisionType,
+      splits: splitAmounts,
+      active: true,
     };
-    // Validate inputs
-    // Save expense to Firestore
-    // Save balance updates to Firestore
-    // Close modal
 
+    // Save expense to Firestore
+    await createExpense(expenseData);
+    // Close modal
     onClose();
   };
 
@@ -208,18 +248,26 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
       </DialogTitle>
       <DialogContent sx={{ p: 3, pt: 3, bgcolor: "background.paper" }}>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
+          {formError && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {formError}
+            </Alert>
+          )}
           {/* Description field */}
           <TextField
             margin="normal"
             fullWidth
             id="description"
-            label="Descripción"
+            label="Descripción *"
             name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             autoFocus
             variant="outlined"
             placeholder="Ej: Cena, Supermercado, Entradas al cine..."
+            required
+            error={!!errors.description}
+            helperText={errors.description}
             slotProps={{
               sx: {
                 borderRadius: 2,
@@ -282,7 +330,7 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
 
           {/* Total amount - calculated from paid by amounts */}
           <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-            Monto Total
+            Monto Total *
           </Typography>
           <Box
             sx={{
@@ -292,7 +340,10 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
               boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
               transition: "all 0.3s ease",
               border: "1px solid",
-              borderColor: (theme) => alpha(theme.palette.success.main, 0.2),
+              borderColor: (theme) =>
+                errors.totalAmount
+                  ? alpha(theme.palette.error.main, 0.5)
+                  : alpha(theme.palette.success.main, 0.2),
               "&:hover": {
                 boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
                 transform: "translateY(-2px)",
@@ -303,12 +354,21 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
               variant="h6"
               sx={{
                 fontWeight: 600,
-                color: "success.main",
+                color: errors.totalAmount ? "error.main" : "success.main",
                 textAlign: "center",
               }}
             >
               ${totalAmount.toFixed(2)}
             </Typography>
+            {errors.totalAmount && (
+              <Typography
+                variant="caption"
+                color="error"
+                sx={{ display: "block", textAlign: "center", mt: 1 }}
+              >
+                {errors.totalAmount}
+              </Typography>
+            )}
           </Box>
 
           {/* Division type selector */}
@@ -375,13 +435,19 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
               {/* Show remaining amount or percentage */}
               <Typography
                 variant="body2"
-                color="text.secondary"
+                color={formError ? "error" : "text.secondary"}
                 sx={{
                   mb: 1,
                   p: 1,
-                  bgcolor: "rgba(0, 0, 0, 0.03)",
+                  bgcolor: formError
+                    ? alpha("#f44336", 0.1)
+                    : "rgba(0, 0, 0, 0.03)",
                   borderRadius: 1,
                   display: "inline-block",
+                  border: formError ? "1px solid" : "none",
+                  borderColor: formError
+                    ? alpha("#f44336", 0.5)
+                    : "transparent",
                 }}
               >
                 Restante:{" "}
@@ -418,10 +484,14 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
                       fullWidth
                       label={member.displayName || member.email}
                       type="number"
-                      value={splitAmounts[member.displayName] || ""}
-                      onChange={(e) =>
-                        handleSplitAmountChange(member.id, e.target.value)
-                      }
+                      value={splitAmounts[member.id] || ""}
+                      onChange={(e) => {
+                        // Only allow positive numbers
+                        const value = e.target.value;
+                        if (/^\d*\.?\d*$/.test(value) && value >= 0) {
+                          handleSplitAmountChange(member.id, value);
+                        }
+                      }}
                       variant="outlined"
                       InputProps={{
                         endAdornment: (
@@ -429,6 +499,10 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
                             {divisionType === "amount" ? "$" : "%"}
                           </InputAdornment>
                         ),
+                        inputProps: {
+                          min: 0,
+                          step: "0.01",
+                        },
                         sx: {
                           borderRadius: 2,
                           "&:hover .MuiOutlinedInput-notchedOutline": {

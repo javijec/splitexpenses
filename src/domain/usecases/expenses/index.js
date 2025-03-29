@@ -4,7 +4,21 @@ import Expense from "@/domain/models/Expense";
 // Exporta los casos de uso relacionados con gastos
 
 export const createExpense = async (expenseData) => {
-  // Implementación pendiente
+  const expenseRepository = new ExpenseRepository();
+  const expense = new Expense(
+    expenseData.description,
+    expenseData.amount,
+    expenseData.groupId,
+    expenseData.paidBy,
+    expenseData.splitType,
+    expenseData.splits,
+    expenseData.active,
+    new Date(),
+    new Date()
+  );
+  console.log(expense);
+  await expenseRepository.createExpense(expense);
+  return expense;
 };
 
 export const getExpense = async (expenseId) => {
