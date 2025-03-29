@@ -1,4 +1,4 @@
-import UserRepository from "@/domain/repositories/UserRepository";
+import { UserRepository } from "@/domain/repositories/UserRepository";
 import User from "@/domain/models/User";
 
 export const createUser = async (user) => {
@@ -27,8 +27,10 @@ export const createUser = async (user) => {
   }
 };
 
-export const getUser = async () => {
-  // Implementación pendiente
+export const getUserName = async (id) => {
+  const userRepository = new UserRepository();
+  const user = await userRepository.getUser(id);
+  return user.data.displayName;
 };
 
 export const updateUser = async (userId, userData) => {

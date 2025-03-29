@@ -62,7 +62,6 @@ function GroupDetail() {
       const invitationData = await getGroupInvitations(groupId);
       const groupData = await getGroupByID(groupId);
       const expensesData = await getGroupExpenses(groupId);
-      console.log(expensesData);
       setGroupContext(groupData);
       setInvitations(invitationData);
       setExpenses(expensesData);
@@ -103,7 +102,6 @@ function GroupDetail() {
   const handleDeleteMember = async (memberId) => {
     try {
       await removeMember(groupId, memberId);
-      console.log("delete");
       const data = await getGroupByID(groupId);
       setMembers(data.members);
       loadInvitations();

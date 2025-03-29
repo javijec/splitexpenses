@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -10,6 +11,7 @@ import {
   Tooltip,
   Avatar,
   Paper,
+  Chip,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import {
@@ -18,9 +20,29 @@ import {
   Receipt as ReceiptIcon,
 } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
+import { getUserName } from "@/domain/usecases/users";
 
-const ExpensesList = ({ expenses, user }) => {
-  console.log(expenses);
+const ExpensesList = ({ expenses }) => {
+  const changeIdToName = (id) => {
+    // Usamos un valor por defecto mientras se carga el nombre real
+    const [name, setName] = useState("Cargando...");
+
+    useEffect(() => {
+      const fetchUserName = async () => {
+        try {
+          const displayName = await getUserName(id);
+          setName(displayName || "Unknown");
+        } catch (error) {
+          console.error("Error al obtener el nombre del usuario:", error);
+          setName("Unknown");
+        }
+      };
+
+      fetchUserName();
+    }, [id]);
+
+    return name;
+  };
 
   return (
     <Card
@@ -90,19 +112,18 @@ const ExpensesList = ({ expenses, user }) => {
                     field: "description",
                     headerName: "Descripción",
                     flex: 1,
-                    minWidth: 200,
+                    minWidth: 50,
                     renderCell: (params) => (
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Box sx={{ display: "flex" }}>
                         <Avatar
                           sx={{
+                            width: 28,
+                            height: 28,
+                            mr: 1.5,
                             bgcolor: (theme) =>
                               alpha(theme.palette.success.main, 0.1),
                             color: "success.main",
-                            width: 36,
-                            height: 36,
-                            mr: 2,
-                            fontSize: "1rem",
-                            fontWeight: "bold",
+                            fontSize: "0.8rem",
                           }}
                         >
                           {params.value.charAt(0).toUpperCase()}
@@ -123,113 +144,178 @@ const ExpensesList = ({ expenses, user }) => {
                   {
                     field: "amount",
                     headerName: "Monto",
-                    width: 120,
                     renderCell: (params) => (
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                        sx={{ fontWeight: 500 }}
-                      >
-                        ${params.value}
-                      </Typography>
+                      <Chip
+                        label={`$${params.value}`}
+                        size="small"
+                        color="success"
+                        variant="outlined"
+                        sx={{
+                          height: 28,
+                          fontSize: "0.85rem",
+                          fontWeight: 500,
+                          bgcolor: (theme) =>
+                            alpha(theme.palette.success.main, 0.05),
+                          borderColor: (theme) =>
+                            alpha(theme.palette.success.main, 0.3),
+                        }}
+                      />
                     ),
                   },
                   {
-                    field: "paidByName",
+                    field: "paidBy.id",
                     headerName: "Pagado por",
-                    width: 180,
+                    width: 300,
                     renderCell: (params) => (
-                      <Typography variant="body2" color="text.secondary">
-                        {params.value}
-                      </Typography>
+                      <Box>
+                        {Array.isArray(params.row.paidBy) ? (
+                          params.row.paidBy.map((payer, index) => (
+                            <Typography
+                              key={payer.id}
+                              variant="body2"
+                              color="text.secondary"
+                              sx={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                py: 0.5,
+                                px: 1,
+                                borderRadius: 1,
+                                bgcolor: (theme) =>
+                                  alpha(theme.palette.success.main, 0.04),
+                                border: "1px solid",
+                                borderColor: (theme) =>
+                                  alpha(theme.palette.success.main, 0.1),
+                              }}
+                            >
+                              {changeIdToName(payer.id)}
+                              {index < params.row.paidBy.length - 1 && ", "}
+                            </Typography>
+                          ))
+                        ) : (
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{
+                              py: 0.5,
+                              px: 1,
+                              borderRadius: 1,
+                              bgcolor: (theme) =>
+                                alpha(theme.palette.success.main, 0.04),
+                              border: "1px solid",
+                              borderColor: (theme) =>
+                                alpha(theme.palette.success.main, 0.1),
+                            }}
+                          >
+                            {changeIdToName(params.row.paidBy?.id) || "Unknown"}
+                          </Typography>
+                        )}
+                      </Box>
                     ),
                   },
                   {
                     field: "actions",
                     headerName: "Acciones",
-                    width: 120,
                     sortable: false,
                     filterable: false,
-                    renderCell: (params) =>
-                      params.row.paidById === user.uid && (
-                        <Box>
-                          <Tooltip title="Editar gasto" placement="top">
-                            <IconButton
-                              edge="end"
-                              aria-label="edit"
-                              size="small"
-                              sx={{
-                                width: 36,
-                                height: 36,
-                                mr: 1,
+                    renderCell: (params) => (
+                      <Box>
+                        <Tooltip title="Editar gasto">
+                          <IconButton
+                            edge="end"
+                            aria-label="edit"
+                            size="small"
+                            sx={{
+                              width: 36,
+                              height: 36,
+                              mr: 1,
+                              bgcolor: (theme) =>
+                                alpha(theme.palette.success.main, 0.1),
+                              color: "success.main",
+                              border: "1px solid",
+                              borderColor: (theme) =>
+                                alpha(theme.palette.success.main, 0.2),
+                              "&:hover": {
                                 bgcolor: (theme) =>
-                                  alpha(theme.palette.primary.main, 0.1),
-                                color: "primary.main",
-                                border: "1px solid",
-                                borderColor: (theme) =>
-                                  alpha(theme.palette.primary.main, 0.2),
-                                "&:hover": {
-                                  bgcolor: (theme) =>
-                                    alpha(theme.palette.primary.main, 0.2),
-                                  transform: "scale(1.05)",
-                                },
-                                transition: "all 0.2s ease",
-                              }}
-                            >
-                              <EditIcon fontSize="small" />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Eliminar gasto" placement="top">
-                            <IconButton
-                              edge="end"
-                              aria-label="delete"
-                              size="small"
-                              sx={{
-                                width: 36,
-                                height: 36,
+                                  alpha(theme.palette.success.main, 0.2),
+                                transform: "scale(1.05)",
+                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+                              },
+                              transition: "all 0.2s ease",
+                            }}
+                          >
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Eliminar gasto">
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            size="small"
+                            sx={{
+                              width: 36,
+                              height: 36,
+                              bgcolor: (theme) =>
+                                alpha(theme.palette.error.main, 0.1),
+                              color: "error.main",
+                              border: "1px solid",
+                              borderColor: (theme) =>
+                                alpha(theme.palette.error.main, 0.2),
+                              "&:hover": {
                                 bgcolor: (theme) =>
-                                  alpha(theme.palette.error.main, 0.1),
-                                color: "error.main",
-                                border: "1px solid",
-                                borderColor: (theme) =>
                                   alpha(theme.palette.error.main, 0.2),
-                                "&:hover": {
-                                  bgcolor: (theme) =>
-                                    alpha(theme.palette.error.main, 0.2),
-                                  transform: "scale(1.05)",
-                                },
-                                transition: "all 0.2s ease",
-                              }}
-                            >
-                              <DeleteIcon fontSize="small" />
-                            </IconButton>
-                          </Tooltip>
-                        </Box>
-                      ),
+                                transform: "scale(1.05)",
+                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+                              },
+                              transition: "all 0.2s ease",
+                            }}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    ),
                   },
                 ]}
-                autoHeight
                 disableRowSelectionOnClick
                 disableColumnMenu
                 sx={{
                   border: "none",
+                  borderRadius: 2,
+                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
+                  overflow: "hidden",
+                  "& .MuiDataGrid-main": {
+                    borderRadius: 2,
+                    overflow: "hidden",
+                  },
                   "& .MuiDataGrid-cell": {
                     borderBottom: "1px solid",
                     borderColor: "divider",
-                    py: 1.5,
                   },
                   "& .MuiDataGrid-row": {
                     transition: "all 0.3s ease",
                     "&:hover": {
                       bgcolor: (theme) =>
-                        alpha(theme.palette.success.main, 0.04),
+                        alpha(theme.palette.success.main, 0.06),
                       transform: "translateY(-2px)",
+                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
                     },
                   },
                   "& .MuiDataGrid-columnHeaders": {
-                    bgcolor: (theme) => alpha(theme.palette.success.main, 0.04),
+                    bgcolor: (theme) => alpha(theme.palette.success.main, 0.08),
                     borderBottom: "none",
+
+                    "& .MuiDataGrid-columnHeaderTitle": {
+                      fontWeight: 700,
+                      color: "text.primary",
+                      letterSpacing: 0.2,
+                    },
+                  },
+                  "& .MuiDataGrid-footerContainer": {
+                    borderTop: "none",
+                    bgcolor: (theme) => alpha(theme.palette.success.main, 0.04),
+                  },
+                  "& .MuiDataGrid-virtualScroller": {
+                    bgcolor: "background.paper",
                   },
                 }}
               />

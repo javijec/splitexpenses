@@ -16,7 +16,6 @@ export const createExpense = async (expenseData) => {
     new Date(),
     new Date()
   );
-  console.log(expense);
   await expenseRepository.createExpense(expense);
   return expense;
 };
@@ -47,7 +46,6 @@ export const deleteGroupExpenses = async (groupId) => {
 
 export const getGroupExpenses = async (groupId) => {
   const data = await getExpenses();
-  console.log("data", data.data);
   // Ensure data is an array before filtering
   if (!Array.isArray(data.data)) {
     return [];
