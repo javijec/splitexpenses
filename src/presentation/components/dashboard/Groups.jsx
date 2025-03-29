@@ -16,10 +16,17 @@ import {
   Chip,
   IconButton,
   Tooltip,
+  Avatar,
+  Paper,
 } from "@mui/material";
-import { Groups as GroupsIcon, AddCircleOutline } from "@mui/icons-material";
+import {
+  Groups as GroupsIcon,
+  AddCircleOutline,
+  ArrowForward,
+} from "@mui/icons-material";
 import { useModal } from "@/application/contexts/ModalContext";
 import { Link } from "react-router";
+import { alpha } from "@mui/material/styles";
 
 const Groups = ({ groups, loadingGroups }) => {
   const { openGroupModal } = useModal();
@@ -27,37 +34,71 @@ const Groups = ({ groups, loadingGroups }) => {
   return (
     <Grid size={{ xs: 12, md: 8 }}>
       <Card
-        elevation={2}
+        elevation={3}
         sx={{
-          borderRadius: 2, // Consistente con MuiCard
+          borderRadius: 3,
           overflow: "hidden",
           height: "100%",
           transition: "all 0.3s ease",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
           "&:hover": {
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
+          },
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "4px",
+            background: (theme) =>
+              `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
           },
         }}
       >
         <CardHeader
           title={
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <GroupsIcon sx={{ mr: 1, color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              <Avatar
+                sx={{
+                  bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
+                  color: "primary.main",
+                  width: 40,
+                  height: 40,
+                  mr: 1.5,
+                }}
+              >
+                <GroupsIcon />
+              </Avatar>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 700, letterSpacing: 0.2 }}
+              >
                 Mis Grupos
               </Typography>
             </Box>
           }
           action={
-            <Tooltip title="Crear nuevo grupo" arrow>
+            <Tooltip title="Crear nuevo grupo" arrow placement="left">
               <Button
                 onClick={openGroupModal}
+                variant="contained"
                 startIcon={<AddCircleOutline />}
                 sx={{
-                  fontWeight: "medium",
+                  fontWeight: 600,
                   textTransform: "none",
                   mr: 1,
+                  borderRadius: 2,
+                  px: 2,
+                  boxShadow: (theme) =>
+                    `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
+                  "&:hover": {
+                    boxShadow: (theme) =>
+                      `0 6px 14px ${alpha(theme.palette.primary.main, 0.4)}`,
+                  },
                 }}
+                disableElevation
               >
                 Nuevo
               </Button>
@@ -66,6 +107,8 @@ const Groups = ({ groups, loadingGroups }) => {
           sx={{
             bgcolor: "background.paper",
             pb: 2,
+            pt: 3,
+            px: 3,
             borderBottom: "1px solid",
             borderColor: "divider",
           }}
@@ -86,59 +129,107 @@ const Groups = ({ groups, loadingGroups }) => {
                     to={`/group/${group.id}`}
                     key={group.id}
                     sx={{
-                      py: 2,
-                      px: 2,
+                      py: 2.5,
+                      px: 3,
                       borderBottom: "1px solid",
                       borderColor: "divider",
-                      transition: "all 0.2s ease",
+                      transition: "all 0.3s ease",
                       "&:hover": {
-                        bgcolor: "action.hover",
+                        bgcolor: (theme) =>
+                          alpha(theme.palette.primary.main, 0.04),
+                        transform: "translateY(-2px)",
                       },
                       flexDirection: { xs: "column", sm: "row" },
                       alignItems: { xs: "flex-start", sm: "center" },
+                      justifyContent: "space-between",
                     }}
                   >
                     <ListItemText
                       primary={
-                        <Box>
-                          <Typography
-                            variant="h5"
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Avatar
                             sx={{
-                              fontWeight: 500,
-                              mb: 0.5,
-                              color: "text.primary",
+                              bgcolor: (theme) =>
+                                alpha(theme.palette.primary.main, 0.1),
+                              color: "primary.main",
+                              width: 36,
+                              height: 36,
+                              mr: 2,
+                              fontSize: "1rem",
+                              fontWeight: "bold",
                             }}
                           >
-                            {group.name}
-                          </Typography>
+                            {group.name.charAt(0).toUpperCase()}
+                          </Avatar>
+                          <Box>
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontWeight: 600,
+                                mb: 0.5,
+                                color: "text.primary",
+                                letterSpacing: 0.2,
+                              }}
+                            >
+                              {group.name}
+                            </Typography>
 
-                          <Chip
-                            label={`${group.members?.length || 1} ${
-                              (group.members?.length || 1) === 1
-                                ? "miembro"
-                                : "miembros"
-                            }`}
-                            size="small"
-                            variant="outlined"
-                            sx={{
-                              height: 24,
-                              fontSize: "0.75rem",
-                              bgcolor: "background.paper",
-                            }}
-                          />
+                            <Chip
+                              label={`${group.members?.length || 1} ${
+                                (group.members?.length || 1) === 1
+                                  ? "miembro"
+                                  : "miembros"
+                              }`}
+                              size="small"
+                              color="primary"
+                              variant="outlined"
+                              sx={{
+                                height: 24,
+                                fontSize: "0.75rem",
+                                fontWeight: 500,
+                                bgcolor: (theme) =>
+                                  alpha(theme.palette.primary.main, 0.05),
+                                borderColor: (theme) =>
+                                  alpha(theme.palette.primary.main, 0.3),
+                              }}
+                            />
+                          </Box>
                         </Box>
                       }
                       sx={{ mb: { xs: 1, sm: 0 } }}
                     />
+                    <Box
+                      sx={{
+                        display: { xs: "none", sm: "flex" },
+                        alignItems: "center",
+                      }}
+                    >
+                      <Tooltip title="Ver detalles" placement="left">
+                        <IconButton
+                          size="small"
+                          sx={{
+                            color: "primary.main",
+                            bgcolor: (theme) =>
+                              alpha(theme.palette.primary.main, 0.1),
+                            "&:hover": {
+                              bgcolor: (theme) =>
+                                alpha(theme.palette.primary.main, 0.2),
+                            },
+                          }}
+                        >
+                          <ArrowForward fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </ListItem>
                 ))}
               </List>
             </Fade>
           ) : (
-            <Fade in={true} timeout={500}>
+            <Fade in={true} timeout={800}>
               <Box
                 sx={{
-                  p: 4,
+                  p: 5,
                   textAlign: "center",
                   height: "100%",
                   display: "flex",
@@ -147,17 +238,61 @@ const Groups = ({ groups, loadingGroups }) => {
                   alignItems: "center",
                 }}
               >
-                <GroupsIcon
+                <Paper
+                  elevation={0}
                   sx={{
-                    fontSize: 40,
-                    color: "text.disabled",
-                    mb: 2,
-                    opacity: 0.6,
+                    p: 4,
+                    borderRadius: 4,
+                    bgcolor: (theme) => alpha(theme.palette.primary.main, 0.04),
+                    border: "1px dashed",
+                    borderColor: (theme) =>
+                      alpha(theme.palette.primary.main, 0.2),
+                    mb: 3,
                   }}
-                />
-                <Typography variant="body1" color="text.secondary">
-                  No tienes grupos creados
-                </Typography>
+                >
+                  <Avatar
+                    sx={{
+                      width: 60,
+                      height: 60,
+                      bgcolor: (theme) =>
+                        alpha(theme.palette.primary.main, 0.1),
+                      color: "primary.main",
+                      mb: 2,
+                      mx: "auto",
+                    }}
+                  >
+                    <GroupsIcon sx={{ fontSize: 30 }} />
+                  </Avatar>
+                  <Typography
+                    variant="h6"
+                    color="text.primary"
+                    sx={{ mb: 1, fontWeight: 600 }}
+                  >
+                    No tienes grupos creados
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 3 }}
+                  >
+                    Crea tu primer grupo para comenzar a dividir gastos
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    startIcon={<AddCircleOutline />}
+                    onClick={openGroupModal}
+                    sx={{
+                      borderRadius: 2,
+                      px: 3,
+                      py: 1,
+                      fontWeight: 600,
+                      boxShadow: (theme) =>
+                        `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
+                    }}
+                  >
+                    Crear Grupo
+                  </Button>
+                </Paper>
               </Box>
             </Fade>
           )}

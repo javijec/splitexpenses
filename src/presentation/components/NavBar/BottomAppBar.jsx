@@ -51,10 +51,12 @@ export default function BottomAppBar() {
     navigate("/dashboard");
   };
   const handleLogout = async () => {
+    handleMenuClose();
     await logoutAccount();
     navigate("/login");
   };
   const handleProfile = async () => {
+    handleMenuClose();
     navigate("/profile");
   };
 

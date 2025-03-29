@@ -10,28 +10,55 @@ import {
   Typography,
   Box,
   Fade,
+  Avatar,
+  Paper,
 } from "@mui/material";
 import { AccountBalance as BalanceIcon } from "@mui/icons-material";
+import { alpha } from "@mui/material/styles";
 
 const GroupBalance = ({ balances }) => {
   return (
     <Card
-      elevation={2}
+      elevation={3}
       sx={{
-        borderRadius: 2,
+        borderRadius: 3,
         overflow: "hidden",
         transition: "all 0.3s ease",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
         "&:hover": {
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
+        },
+        position: "relative",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "4px",
+          background: (theme) =>
+            `linear-gradient(90deg, ${theme.palette.info.main}, ${theme.palette.primary.main})`,
         },
       }}
     >
       <CardHeader
         title={
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <BalanceIcon sx={{ mr: 1, color: "primary.main" }} />
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <Avatar
+              sx={{
+                bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
+                color: "info.main",
+                width: 40,
+                height: 40,
+                mr: 1.5,
+              }}
+            >
+              <BalanceIcon />
+            </Avatar>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
+            >
               Balance del Grupo
             </Typography>
           </Box>
@@ -39,6 +66,8 @@ const GroupBalance = ({ balances }) => {
         sx={{
           bgcolor: "background.paper",
           pb: 2,
+          pt: 3,
+          px: 3,
           borderBottom: "1px solid",
           borderColor: "divider",
         }}
@@ -52,25 +81,60 @@ const GroupBalance = ({ balances }) => {
                 <ListItem
                   key={balance.userId}
                   sx={{
-                    py: 2,
-                    px: 2,
+                    py: 2.5,
+                    px: 3,
                     borderBottom: "1px solid",
                     borderColor: "divider",
-                    transition: "all 0.2s ease",
+                    transition: "all 0.3s ease",
                     "&:hover": {
-                      bgcolor: "action.hover",
+                      bgcolor: (theme) => alpha(theme.palette.info.main, 0.04),
+                      transform: "translateY(-2px)",
                     },
+                    flexDirection: { xs: "column", sm: "row" },
+                    alignItems: { xs: "flex-start", sm: "center" },
+                    justifyContent: "space-between",
                   }}
                 >
                   <ListItemText
-                    primary={balance.name}
-                    secondary={
-                      balance.amount > 0
-                        ? `Debe recibir: $${Math.abs(balance.amount)}`
-                        : balance.amount < 0
-                        ? `Debe pagar: $${Math.abs(balance.amount)}`
-                        : "Balance: $0"
+                    primary={
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Avatar
+                          sx={{
+                            bgcolor: (theme) =>
+                              alpha(theme.palette.info.main, 0.1),
+                            color: "info.main",
+                            width: 36,
+                            height: 36,
+                            mr: 2,
+                            fontSize: "1rem",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {balance.name.charAt(0).toUpperCase()}
+                        </Avatar>
+                        <Box>
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              fontWeight: 600,
+                              mb: 0.5,
+                              color: "text.primary",
+                              letterSpacing: 0.2,
+                            }}
+                          >
+                            {balance.name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {balance.amount > 0
+                              ? `Debe recibir: $${Math.abs(balance.amount)}`
+                              : balance.amount < 0
+                              ? `Debe pagar: $${Math.abs(balance.amount)}`
+                              : "Balance: $0"}
+                          </Typography>
+                        </Box>
+                      </Box>
                     }
+                    sx={{ mb: { xs: 1, sm: 0 } }}
                   />
                   <Chip
                     color={
@@ -81,6 +145,34 @@ const GroupBalance = ({ balances }) => {
                         : "default"
                     }
                     label={`$${balance.amount.toFixed(2)}`}
+                    sx={{
+                      height: 28,
+                      fontSize: "0.85rem",
+                      fontWeight: 500,
+                      bgcolor: (theme) =>
+                        alpha(
+                          theme.palette[
+                            balance.amount > 0
+                              ? "success"
+                              : balance.amount < 0
+                              ? "error"
+                              : "default"
+                          ].main,
+                          0.1
+                        ),
+                      borderColor: (theme) =>
+                        alpha(
+                          theme.palette[
+                            balance.amount > 0
+                              ? "success"
+                              : balance.amount < 0
+                              ? "error"
+                              : "default"
+                          ].main,
+                          0.3
+                        ),
+                      mt: { xs: 1, sm: 0 },
+                    }}
                   />
                 </ListItem>
               ))}
@@ -90,25 +182,46 @@ const GroupBalance = ({ balances }) => {
           <Fade in={true} timeout={500}>
             <Box
               sx={{
-                p: 4,
+                p: 5,
                 textAlign: "center",
+                height: "100%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <BalanceIcon
+              <Paper
+                elevation={0}
                 sx={{
-                  fontSize: 40,
-                  color: "text.disabled",
-                  mb: 2,
-                  opacity: 0.6,
+                  p: 4,
+                  borderRadius: 4,
+                  bgcolor: (theme) => alpha(theme.palette.info.main, 0.04),
+                  border: "1px dashed",
+                  borderColor: (theme) => alpha(theme.palette.info.main, 0.2),
+                  mb: 3,
                 }}
-              />
-              <Typography variant="body1" color="text.secondary">
-                No hay balances pendientes.
-              </Typography>
+              >
+                <Avatar
+                  sx={{
+                    width: 60,
+                    height: 60,
+                    bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
+                    color: "info.main",
+                    mb: 2,
+                    mx: "auto",
+                  }}
+                >
+                  <BalanceIcon sx={{ fontSize: 30 }} />
+                </Avatar>
+                <Typography
+                  variant="h6"
+                  color="text.primary"
+                  sx={{ mb: 1, fontWeight: 600 }}
+                >
+                  No hay balances pendientes
+                </Typography>
+              </Paper>
             </Box>
           </Fade>
         )}

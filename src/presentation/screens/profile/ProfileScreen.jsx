@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "@/application/contexts/AuthContext";
-import { Box } from "@mui/material";
+import { Box, Grid2 as Grid, Fade, useTheme } from "@mui/material";
 
 // Componentes
 import ProfileHeader from "@/presentation/components/profile/ProfileHeader";
@@ -14,6 +14,7 @@ const ProfileScreen = () => {
   const [loading, setLoading] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const theme = useTheme();
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -36,35 +37,57 @@ const ProfileScreen = () => {
   };
 
   return (
-    <Box
-      sx={{
-        borderRadius: 3,
-        overflow: "hidden",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.08)",
-        bgcolor: "background.paper",
-        p: { xs: 2, sm: 3 },
-        transition: "all 0.3s ease",
-      }}
-    >
-      <ProfileHeader />
+    <Fade in={true} timeout={600}>
+      <Box
+        sx={{
+          borderRadius: 3,
+          overflow: "hidden",
+          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
+          bgcolor: "background.paper",
+          p: { xs: 2, sm: 3 },
+          transition: "all 0.3s ease",
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "4px",
+            background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+          },
+          "&:hover": {
+            boxShadow: "0 12px 28px rgba(0, 0, 0, 0.15)",
+            transform: "translateY(-2px)",
+          },
+        }}
+      >
+        <ProfileHeader />
 
-      <UserInfoCard
-        user={user}
-        displayName={displayName}
-        setDisplayName={setDisplayName}
-        loading={loading}
-        handleUpdateProfile={handleUpdateProfile}
-      />
+        <Grid container spacing={3} sx={{ mt: 1 }}>
+          <Grid size={{ xs: 12 }}>
+            <UserInfoCard
+              user={user}
+              displayName={displayName}
+              setDisplayName={setDisplayName}
+              loading={loading}
+              handleUpdateProfile={handleUpdateProfile}
+            />
+          </Grid>
 
-      <DangerZone onDeleteClick={() => setDeleteDialogOpen(true)} />
+          <Grid size={{ xs: 12 }}>
+            <DangerZone onDeleteClick={() => setDeleteDialogOpen(true)} />
+          </Grid>
+        </Grid>
 
-      <DeleteAccountDialog
-        open={deleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
-        onDelete={handleDeleteAccount}
-        loading={deleteLoading}
-      />
-    </Box>
+        <DeleteAccountDialog
+          open={deleteDialogOpen}
+          onClose={() => setDeleteDialogOpen(false)}
+          onDelete={handleDeleteAccount}
+          loading={deleteLoading}
+        />
+      </Box>
+    </Fade>
   );
 };
 

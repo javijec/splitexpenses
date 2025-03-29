@@ -59,6 +59,7 @@ const Main = () => {
       await addMember(groupId, user);
       await deleteInvitation(invitationId);
       loadInvitations();
+      loadGroups();
     } catch (error) {
       console.error("Error accepting invitation:", error);
     }

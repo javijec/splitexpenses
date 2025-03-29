@@ -9,18 +9,21 @@ import {
   List,
   ListItem,
   ListItemText,
-  Button,
   Typography,
   Fade,
   Chip,
   IconButton,
   Tooltip,
+  Avatar,
+  Paper,
 } from "@mui/material";
 import {
   Check as CheckIcon,
   Close as CloseIcon,
   Email as EmailIcon,
+  MarkEmailRead as MarkEmailReadIcon,
 } from "@mui/icons-material";
+import { alpha } from "@mui/material/styles";
 
 const Invitations = ({
   onAccept,
@@ -31,23 +34,47 @@ const Invitations = ({
   return (
     <Grid size={{ xs: 12, md: 4 }}>
       <Card
-        elevation={2}
+        elevation={3}
         sx={{
-          borderRadius: 2, // Consistente con MuiCard
+          borderRadius: 3,
           overflow: "hidden",
           height: "100%",
           transition: "all 0.3s ease",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
           "&:hover": {
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
+          },
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "4px",
+            background: (theme) =>
+              `linear-gradient(90deg, ${theme.palette.info.main}, ${theme.palette.primary.main})`,
           },
         }}
       >
         <CardHeader
           title={
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <EmailIcon sx={{ mr: 1, color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              <Avatar
+                sx={{
+                  bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
+                  color: "info.main",
+                  width: 40,
+                  height: 40,
+                  mr: 1.5,
+                }}
+              >
+                <EmailIcon />
+              </Avatar>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 700, letterSpacing: 0.2 }}
+              >
                 Invitaciones Pendientes
               </Typography>
             </Box>
@@ -55,6 +82,8 @@ const Invitations = ({
           sx={{
             bgcolor: "background.paper",
             pb: 2,
+            pt: 3,
+            px: 3,
             borderBottom: "1px solid",
             borderColor: "divider",
           }}
@@ -72,61 +101,91 @@ const Invitations = ({
                   <ListItem
                     key={invitation.id}
                     sx={{
-                      py: 2,
-                      px: 2,
+                      py: 2.5,
+                      px: 3,
                       borderBottom: "1px solid",
                       borderColor: "divider",
-                      transition: "all 0.2s ease",
+                      transition: "all 0.3s ease",
                       "&:hover": {
-                        bgcolor: "action.hover",
+                        bgcolor: (theme) =>
+                          alpha(theme.palette.info.main, 0.04),
+                        transform: "translateY(-2px)",
                       },
                       flexDirection: { xs: "column", sm: "row" },
                       alignItems: { xs: "flex-start", sm: "center" },
+                      justifyContent: "space-between",
                     }}
                   >
                     <ListItemText
                       primary={
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ fontWeight: 500, mb: 0.5 }}
-                        >
-                          {invitation.groupName}
-                        </Typography>
-                      }
-                      secondary={
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            mt: 0.5,
-                          }}
-                        >
-                          <Chip
-                            label={`De: ${invitation.invitedBy}`}
-                            size="small"
-                            variant="outlined"
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Avatar
                             sx={{
-                              height: 24,
-                              fontSize: "0.75rem",
-                              bgcolor: "background.paper",
+                              bgcolor: (theme) =>
+                                alpha(theme.palette.info.main, 0.1),
+                              color: "info.main",
+                              width: 36,
+                              height: 36,
+                              mr: 2,
+                              fontSize: "1rem",
+                              fontWeight: "bold",
                             }}
-                          />
+                          >
+                            {invitation.groupName.charAt(0).toUpperCase()}
+                          </Avatar>
+                          <Box>
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontWeight: 600,
+                                mb: 0.5,
+                                color: "text.primary",
+                                letterSpacing: 0.2,
+                              }}
+                            >
+                              {invitation.groupName}
+                            </Typography>
+
+                            <Chip
+                              label={`De: ${invitation.invitedBy}`}
+                              size="small"
+                              color="info"
+                              variant="outlined"
+                              sx={{
+                                height: 24,
+                                fontSize: "0.75rem",
+                                fontWeight: 500,
+                                bgcolor: (theme) =>
+                                  alpha(theme.palette.info.main, 0.05),
+                                borderColor: (theme) =>
+                                  alpha(theme.palette.info.main, 0.3),
+                              }}
+                            />
+                          </Box>
                         </Box>
                       }
                       sx={{ mb: { xs: 1, sm: 0 } }}
                     />
-                    <Box sx={{ display: "flex", mt: { xs: 1, sm: 0 } }}>
-                      <Tooltip title="Aceptar invitación">
+                    <Box sx={{ display: "flex", mt: { xs: 1, sm: 0 }, gap: 1 }}>
+                      <Tooltip title="Aceptar invitación" placement="top">
                         <IconButton
-                          color="primary"
+                          color="success"
                           size="small"
                           sx={{
-                            mr: 1,
-                            bgcolor: "primary.light",
-                            color: "white",
+                            width: 36,
+                            height: 36,
+                            bgcolor: (theme) =>
+                              alpha(theme.palette.success.main, 0.1),
+                            color: "success.main",
+                            border: "1px solid",
+                            borderColor: (theme) =>
+                              alpha(theme.palette.success.main, 0.2),
                             "&:hover": {
-                              bgcolor: "primary.main",
+                              bgcolor: (theme) =>
+                                alpha(theme.palette.success.main, 0.2),
+                              transform: "scale(1.05)",
                             },
+                            transition: "all 0.2s ease",
                           }}
                           onClick={() =>
                             onAccept(invitation.id, invitation.groupId)
@@ -135,16 +194,25 @@ const Invitations = ({
                           <CheckIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Rechazar invitación">
+                      <Tooltip title="Rechazar invitación" placement="top">
                         <IconButton
                           color="error"
                           size="small"
                           sx={{
-                            bgcolor: "error.light",
-                            color: "white",
+                            width: 36,
+                            height: 36,
+                            bgcolor: (theme) =>
+                              alpha(theme.palette.error.main, 0.1),
+                            color: "error.main",
+                            border: "1px solid",
+                            borderColor: (theme) =>
+                              alpha(theme.palette.error.main, 0.2),
                             "&:hover": {
-                              bgcolor: "error.main",
+                              bgcolor: (theme) =>
+                                alpha(theme.palette.error.main, 0.2),
+                              transform: "scale(1.05)",
                             },
+                            transition: "all 0.2s ease",
                           }}
                           onClick={() => onReject(invitation.id)}
                         >
@@ -157,10 +225,10 @@ const Invitations = ({
               </List>
             </Fade>
           ) : (
-            <Fade in={true} timeout={500}>
+            <Fade in={true} timeout={800}>
               <Box
                 sx={{
-                  p: 4,
+                  p: 5,
                   textAlign: "center",
                   height: "100%",
                   display: "flex",
@@ -169,17 +237,44 @@ const Invitations = ({
                   alignItems: "center",
                 }}
               >
-                <EmailIcon
+                <Paper
+                  elevation={0}
                   sx={{
-                    fontSize: 40,
-                    color: "text.disabled",
-                    mb: 2,
-                    opacity: 0.6,
+                    p: 4,
+                    borderRadius: 4,
+                    bgcolor: (theme) => alpha(theme.palette.info.main, 0.04),
+                    border: "1px dashed",
+                    borderColor: (theme) => alpha(theme.palette.info.main, 0.2),
+                    mb: 3,
                   }}
-                />
-                <Typography variant="body1" color="text.secondary">
-                  No tienes invitaciones pendientes
-                </Typography>
+                >
+                  <Avatar
+                    sx={{
+                      width: 60,
+                      height: 60,
+                      bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
+                      color: "info.main",
+                      mb: 2,
+                      mx: "auto",
+                    }}
+                  >
+                    <MarkEmailReadIcon sx={{ fontSize: 30 }} />
+                  </Avatar>
+                  <Typography
+                    variant="h6"
+                    color="text.primary"
+                    sx={{ mb: 1, fontWeight: 600 }}
+                  >
+                    No tienes invitaciones pendientes
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 1 }}
+                  >
+                    Cuando alguien te invite a un grupo, aparecerá aquí
+                  </Typography>
+                </Paper>
               </Box>
             </Fade>
           )}
