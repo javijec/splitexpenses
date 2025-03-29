@@ -220,7 +220,7 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
             autoFocus
             variant="outlined"
             placeholder="Ej: Cena, Supermercado, Entradas al cine..."
-            InputProps={{
+            slotProps={{
               sx: {
                 borderRadius: 2,
                 "&:hover .MuiOutlinedInput-notchedOutline": {

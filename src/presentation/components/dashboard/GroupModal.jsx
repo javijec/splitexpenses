@@ -7,7 +7,6 @@ import {
   TextField,
   Typography,
   IconButton,
-  Divider,
   Fade,
   Avatar,
 } from "@mui/material";
@@ -47,7 +46,7 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
       onClose={onClose}
       maxWidth="sm"
       fullWidth
-      PaperProps={{
+      slotProps={{
         sx: {
           borderRadius: 3,
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
@@ -65,8 +64,8 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
           transition: "all 0.3s ease",
         },
       }}
-      TransitionComponent={Fade}
-      TransitionProps={{ timeout: 400 }}
+      slots={{ transition: Fade }}
+      slotProps={{ transition: { timeout: 500 } }}
     >
       <DialogTitle
         sx={{
@@ -137,7 +136,7 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
             autoFocus
             variant="outlined"
             placeholder="Ej: Viaje a la playa, Gastos del apartamento..."
-            InputProps={{
+            slotProps={{
               sx: {
                 borderRadius: 2,
                 "&:hover .MuiOutlinedInput-notchedOutline": {

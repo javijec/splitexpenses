@@ -2,17 +2,17 @@ import React from "react";
 import { Box, CircularProgress, Container } from "@mui/material";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import { AuthProvider } from "@/application/contexts/AuthContext";
-import Login from "@/presentation/screens/auth/LoginSceen";
-import Main from "@/presentation/screens/dashboard/MainScreen";
+import Login from "@/presentation/screens/LoginSceen";
+import Main from "@/presentation/screens/MainScreen";
 import ProtectedRoute from "@/presentation/navigation/ProtectedRoute";
-import Profile from "@/presentation/screens/profile/ProfileScreen";
+import Profile from "@/presentation/screens/ProfileScreen";
 import { ThemeProvider } from "@/application/contexts/ThemeContext";
 import BottomAppBar from "@/presentation/components/NavBar/BottomAppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useAuthStatus } from "@/application/hooks/useAuthStatus";
 import NotFound from "@/presentation/screens/NotFound";
 import { Navigate } from "react-router";
-import GroupDetail from "@/presentation/screens/groups/GroupDetail";
+import GroupDetail from "@/presentation/screens/GroupDetail";
 import { ModalProvider } from "@/application/contexts/ModalContext";
 
 function App() {

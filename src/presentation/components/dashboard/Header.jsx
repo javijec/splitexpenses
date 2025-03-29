@@ -1,4 +1,4 @@
-import { Box, Typography, Avatar, Divider } from "@mui/material";
+import { Box, Typography, Avatar } from "@mui/material";
 import { useAuth } from "@/application/contexts/AuthContext";
 
 const Header = () => {
