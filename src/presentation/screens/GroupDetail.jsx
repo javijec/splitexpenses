@@ -232,6 +232,7 @@ function GroupDetail() {
         isOpen={isExpenseModalOpen}
         onClose={closeExpenseModal}
         membersList={groupContext?.members}
+        onExpenseAdded={setExpenses} // Pass setExpenses as the callback
       />
       <InviteModal
         isOpen={isInviteModalOpen}

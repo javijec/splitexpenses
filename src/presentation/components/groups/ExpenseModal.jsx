@@ -22,9 +22,15 @@ import {
 } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
 import { useAuth } from "@/application/contexts/AuthContext";
-import { createExpense } from "@/domain/usecases/expenses";
+import { createExpense, getGroupExpenses } from "@/domain/usecases/expenses";
 
-const ExpenseModal = ({ isOpen, onClose, expense = [], membersList }) => {
+const ExpenseModal = ({
+  isOpen,
+  onClose,
+  expense = [],
+  membersList,
+  onExpenseAdded,
+}) => {
   const { user, groupContext } = useAuth();
   const [description, setDescription] = useState("");
   const [paidByAmounts, setPaidByAmounts] = useState([]);
@@ -205,6 +211,13 @@ const ExpenseModal = ({ isOpen, onClose, expense = [], membersList }) => {
 
     // Save expense to Firestore
     await createExpense(expenseData);
+
+    // Call the callback to update expenses list
+    if (onExpenseAdded) {
+      const updatedExpenses = await getGroupExpenses(groupContext?.id); // Fetch updated expenses
+      onExpenseAdded(updatedExpenses);
+    }
+
     // Close modal
     onClose();
   };
