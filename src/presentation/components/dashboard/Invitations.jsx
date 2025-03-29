@@ -89,14 +89,14 @@ const Invitations = ({
           }}
         />
         <Divider />
-        <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>
+        <CardContent>
           {loadingInvitations ? (
             <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
               <CircularProgress size={40} thickness={4} />
             </Box>
           ) : invitations.length > 0 ? (
             <Fade in={true} timeout={500}>
-              <List sx={{ p: 0 }}>
+              <List>
                 {invitations.map((invitation) => (
                   <ListItem
                     key={invitation.id}
@@ -228,9 +228,7 @@ const Invitations = ({
             <Fade in={true} timeout={800}>
               <Box
                 sx={{
-                  p: 5,
                   textAlign: "center",
-                  height: "100%",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
