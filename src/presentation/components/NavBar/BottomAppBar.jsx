@@ -21,6 +21,8 @@ import { Home, Add, Person, Logout } from "@mui/icons-material";
 import ThemeToggle from "./ThemeToggle";
 
 const StyledFab = styled(Fab)({
+  position: "fixed",
+  zIndex: 1000,
   position: "absolute",
   left: 0,
   right: 0,
@@ -75,16 +77,16 @@ export default function BottomAppBar() {
       <AppBar
         position="fixed"
         color="primary"
-        elevation={4}
+        elevation={3}
         sx={{
           top: "auto",
           bottom: 0,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
           overflow: "hidden",
-          boxShadow: "0 -4px 20px rgba(0, 0, 0, 0.15)",
+          boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(15px)",
-
+          height: "auto",
           backgroundColor: (theme) => theme.palette.primary, // Color del tema Material UI
           border: "1px solid",
           borderColor: (theme) => theme.palette.divider,
@@ -92,8 +94,8 @@ export default function BottomAppBar() {
       >
         <Toolbar
           sx={{
-            padding: { xs: 1.5, sm: 2.5 },
-            minHeight: 10,
+            padding: { xs: 0.8, sm: 1.5 },
+            minHeight: 0,
             justifyContent: "space-between",
           }}
         >
@@ -108,13 +110,13 @@ export default function BottomAppBar() {
                   theme.palette.mode === "dark"
                     ? "rgba(255, 255, 255, 0.08)"
                     : "rgba(0, 0, 0, 0.04)",
-                p: 1.2,
+                p: 0.8,
                 "&:hover": {
                   transform: "scale(1.1)",
                 },
               }}
             >
-              <Home />
+              <Home fontSize="small" />
             </IconButton>
           )}
           {!location.pathname.startsWith("/profile") && (
@@ -134,8 +136,8 @@ export default function BottomAppBar() {
                   background: "red",
                   color: "white",
                   fontWeight: "bold",
-                  width: 56,
-                  height: 56,
+                  width: 60,
+                  height: 60,
 
                   "&:hover": {
                     background: "red",
@@ -144,7 +146,7 @@ export default function BottomAppBar() {
                   },
                 }}
               >
-                <Add />
+                <Add fontSize="small" />
               </StyledFab>
             </Tooltip>
           )}
@@ -162,7 +164,7 @@ export default function BottomAppBar() {
                 onClick={handleLogout}
                 sx={{
                   transition: "all 0.2s ease",
-                  p: 1.3,
+                  p: 0.8,
                   bgcolor: (theme) =>
                     theme.palette.mode === "dark"
                       ? "rgba(255, 255, 255, 0.08)"
@@ -177,7 +179,7 @@ export default function BottomAppBar() {
                   ml: 1,
                 }}
               >
-                <Logout />
+                <Logout fontSize="small" />
               </IconButton>
             </Tooltip>
           ) : (
@@ -188,7 +190,7 @@ export default function BottomAppBar() {
                   onClick={handleMenuOpen}
                   sx={{
                     transition: "all 0.2s ease",
-                    p: 1.3,
+                    p: 0.8,
                     bgcolor: (theme) =>
                       theme.palette.mode === "dark"
                         ? "rgba(255, 255, 255, 0.08)"
@@ -211,8 +213,8 @@ export default function BottomAppBar() {
                     invisible={!user}
                     sx={{
                       "& .MuiBadge-badge": {
-                        width: 10,
-                        height: 10,
+                        width: 8,
+                        height: 8,
                         borderRadius: "50%",
                         boxShadow: (theme) =>
                           theme.palette.mode === "dark"
@@ -228,8 +230,8 @@ export default function BottomAppBar() {
                     <Avatar
                       src={user ? user.photoURL : ""}
                       sx={{
-                        width: 42,
-                        height: 42,
+                        width: 32,
+                        height: 32,
                         border: "2px solid",
                         borderColor: (theme) =>
                           theme.palette.mode === "dark"
