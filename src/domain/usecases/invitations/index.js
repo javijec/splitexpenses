@@ -1,9 +1,12 @@
 import Invitation from "@/domain/models/Invitation";
 import InvitationRepository from "@/domain/repositories/InvitationRepository";
 
-// Exporta los casos de uso relacionados con invitaciones
-
 export const createInvitation = async (invitationData) => {
+  if (!invitationData) {
+    console.error("Invitation data is required");
+    return;
+  }
+
   const invitationRepository = new InvitationRepository();
   const data = new Invitation(
     invitationData.groupId,
@@ -16,71 +19,90 @@ export const createInvitation = async (invitationData) => {
   try {
     await invitationRepository.createInvitation(data);
   } catch (error) {
-    console.error("Error al crear la invitación:", error);
+    console.error("Error creating invitation:", error);
   }
 };
 
 export const getInvitations = async () => {
+  const invitationRepository = new InvitationRepository();
   try {
-    const invitationRepository = new InvitationRepository();
-    const result = await invitationRepository.getInvitations();
-
-    return result;
+    return await invitationRepository.getInvitations();
   } catch (error) {
-    console.error("Error al obtener invitaciones:", error);
+    console.error("Error fetching invitations:", error);
+    return [];
   }
 };
 
 export const getInvitationbyEmail = async (userEmail) => {
+  if (!userEmail) {
+    console.error("User email is required");
+    return [];
+  }
+
   try {
-    const invitationRepository = new InvitationRepository();
-    const result = await invitationRepository.getInvitations();
-
-
-      const userInvitations = result.filter(
-        (invitation) => invitation.invitedEmail === userEmail
-      );
-      return userInvitations;
-
+    const invitations = await getInvitations();
+    return invitations.filter((invitation) => invitation.invitedEmail === userEmail);
   } catch (error) {
-    console.error("Error al obtener las invitaciones del usuario:", error);
+    console.error("Error fetching user invitations:", error);
     return [];
   }
 };
 
 export const getGroupInvitations = async (groupId) => {
+  if (!groupId) {
+    console.error("Group ID is required");
+    return [];
+  }
+
   try {
-    const result = await getInvitations();
-    return result.filter((invitation) => invitation.groupId === groupId);
+    const invitations = await getInvitations();
+    return invitations.filter((invitation) => invitation.groupId === groupId);
   } catch (error) {
-    console.error("Error al obtener invitaciones del grupo:", error);
+    console.error("Error fetching group invitations:", error);
     return [];
   }
 };
 
 export const getInvitationByEmailAndGroup = async (userEmail, groupId) => {
+  if (!userEmail || !groupId) {
+    console.error("User email and group ID are required");
+    return null;
+  }
+
   try {
     const invitations = await getInvitationbyEmail(userEmail);
     return invitations.find((invitation) => invitation.groupId === groupId);
   } catch (error) {
-    console.error("Error al obtener invitaciones del usuario:", error);
+    console.error("Error fetching invitation by email and group:", error);
     return null;
   }
 };
 
 export const deleteInvitation = async (invitationId) => {
+  if (!invitationId) {
+    console.error("Invitation ID is required");
+    return;
+  }
+
+  const invitationRepository = new InvitationRepository();
   try {
-    const invitationRepository = new InvitationRepository();
     await invitationRepository.deleteInvitation(invitationId);
   } catch (error) {
-    console.error("Error al eliminar la invitación:", error);
+    console.error("Error deleting invitation:", error);
   }
 };
 
 export const deleteGroupInvitations = async (groupId) => {
-  const invitations = await getGroupInvitations(groupId);
-  const deletePromises = invitations.map((invitation) => {
-    deleteInvitation(invitation.id);
-  });
-  await Promise.all(deletePromises);
+  if (!groupId) {
+    console.error("Group ID is required");
+    return;
+  }
+
+  try {
+    const invitations = await getGroupInvitations(groupId);
+    const deletePromises = invitations.map((invitation) => deleteInvitation(invitation.id));
+    await Promise.all(deletePromises);
+  } catch (error) {
+    console.error("Error deleting group invitations:", error);
+  }
 };
