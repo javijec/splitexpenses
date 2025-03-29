@@ -9,11 +9,13 @@ import {
   IconButton,
   Divider,
   Fade,
+  Avatar,
 } from "@mui/material";
 import {
   Close as CloseIcon,
   GroupAdd as GroupAddIcon,
 } from "@mui/icons-material";
+import { alpha } from "@mui/material/styles";
 import { createGroup } from "@/domain/usecases/groups";
 import { useAuth } from "@/application/contexts/AuthContext";
 
@@ -50,6 +52,17 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
           borderRadius: 3,
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
           overflow: "hidden",
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "4px",
+            background: (theme) => `${theme.palette.primary.main}`,
+          },
+          transition: "all 0.3s ease",
         },
       }}
       TransitionComponent={Fade}
@@ -61,37 +74,58 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          bgcolor: "primary.light",
-          color: "white",
+          bgcolor: "background.paper",
+          borderBottom: "1px solid",
+          borderColor: "divider",
+          pb: 2,
+          pt: 3,
+          px: 3,
         }}
       >
-        <Box>
-          <Typography
-            variant="h5"
-            gutterBottom
-            sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Avatar
+            sx={{
+              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
+              color: "primary.main",
+              width: 40,
+              height: 40,
+              mr: 1.5,
+            }}
           >
-            <GroupAddIcon sx={{ mr: 1 }} /> Crear Nuevo Grupo
-          </Typography>
-          <Typography variant="body2" sx={{ opacity: 0.9, maxWidth: "90%" }}>
-            Crea un grupo para compartir gastos con amigos, familia o compañeros
-          </Typography>
+            <GroupAddIcon />
+          </Avatar>
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
+            >
+              Crear Nuevo Grupo
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Crea un grupo para compartir gastos con amigos, familia o
+              compañeros
+            </Typography>
+          </Box>
         </Box>
         <IconButton
           onClick={onClose}
           size="small"
           sx={{
-            color: "white",
-            bgcolor: "rgba(255,255,255,0.1)",
+            color: "error.main",
+            bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
+            border: "1px solid",
+            borderColor: (theme) => alpha(theme.palette.error.main, 0.2),
             "&:hover": {
-              bgcolor: "rgba(255,255,255,0.2)",
+              bgcolor: (theme) => alpha(theme.palette.error.main, 0.2),
+              transform: "scale(1.05)",
             },
+            transition: "all 0.2s ease",
           }}
         >
           <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ p: 3, pt: 3 }}>
+      <DialogContent sx={{ p: 3, pt: 3, bgcolor: "background.paper" }}>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
           <TextField
             margin="normal"
@@ -106,28 +140,57 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
             InputProps={{
               sx: {
                 borderRadius: 2,
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: (theme) =>
+                    alpha(theme.palette.primary.main, 0.5),
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "primary.main",
+                },
               },
             }}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{
-              mt: 4,
-              mb: 2,
-              py: 1.5,
-              borderRadius: 2,
-              fontWeight: 600,
-              boxShadow: "0 4px 12px rgba(25, 118, 210, 0.3)",
-              "&:hover": {
-                boxShadow: "0 6px 16px rgba(25, 118, 210, 0.4)",
-              },
-            }}
-            disableElevation
-          >
-            CREAR GRUPO
-          </Button>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
+            <Button
+              onClick={onClose}
+              color="inherit"
+              sx={{
+                borderRadius: 2,
+                fontWeight: 500,
+                border: "1px solid",
+                borderColor: (theme) => alpha(theme.palette.grey[500], 0.2),
+                "&:hover": {
+                  bgcolor: (theme) => alpha(theme.palette.grey[500], 0.05),
+                },
+                transition: "all 0.2s ease",
+              }}
+            >
+              CANCELAR
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{
+                py: 1.5,
+                px: 3,
+                borderRadius: 2,
+                fontWeight: 600,
+                boxShadow: (theme) =>
+                  `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
+                "&:hover": {
+                  bgcolor: "primary.dark",
+                  boxShadow: (theme) =>
+                    `0 6px 16px ${alpha(theme.palette.primary.main, 0.4)}`,
+                  transform: "translateY(-2px)",
+                },
+                transition: "all 0.2s ease",
+              }}
+              disableElevation
+            >
+              CREAR GRUPO
+            </Button>
+          </Box>
         </Box>
       </DialogContent>
     </Dialog>
