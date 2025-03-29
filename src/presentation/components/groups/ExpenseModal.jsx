@@ -27,10 +27,10 @@ import { createExpense } from "@/domain/usecases/expenses";
 const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
   const { user, groupContext } = useAuth();
   const [description, setDescription] = useState("");
-  const [paidByAmounts, setPaidByAmounts] = useState({});
+  const [paidByAmounts, setPaidByAmounts] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [divisionType, setDivisionType] = useState("equal"); // equal, amount, percentage
-  const [splitAmounts, setSplitAmounts] = useState({});
+  const [splitAmounts, setSplitAmounts] = useState([]);
   const [remaining, setRemaining] = useState(0);
   const [remainingPercentage, setRemainingPercentage] = useState(100);
   const [members, setMembers] = useState(groupContext?.members || []);
@@ -43,24 +43,35 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
         // Edit mode - populate with existing expense data
         setDescription(expense.description || "");
         setTotalAmount(expense.totalAmount || 0);
-        setPaidByAmounts(expense.paidByAmounts || {});
+        setPaidByAmounts(expense.paidByAmounts || []);
         setDivisionType(expense.divisionType || "equal");
-        setSplitAmounts(expense.splitAmounts || {});
+        setSplitAmounts(expense.splitAmounts || []);
       } else {
         // Create mode - initialize with defaults
         setDescription("");
         setTotalAmount(0);
 
         // Initialize paidByAmounts with current user
-        const initialPaidBy = {};
+        const initialPaidBy = [];
         if (user) {
-          initialPaidBy[user.uid] = 0;
+          initialPaidBy.push({ id: user.uid, amount: 0 });
         }
         setPaidByAmounts(initialPaidBy);
 
         // Initialize with equal division
         setDivisionType("equal");
-        setSplitAmounts({});
+
+        // Inicializar splitAmounts con división igual
+        if (groupContext?.members?.length > 0) {
+          const equalSplit = 0; // Inicialmente 0 porque totalAmount es 0
+          const equalSplits = groupContext.members.map((member) => ({
+            id: member.id,
+            amount: equalSplit,
+          }));
+          setSplitAmounts(equalSplits);
+        } else {
+          setSplitAmounts([]);
+        }
       }
     }
   }, [isOpen, expense, user]);
@@ -68,14 +79,14 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
   // Calculate remaining amount or percentage when values change
   useEffect(() => {
     if (divisionType === "amount") {
-      const totalSplit = Object.values(splitAmounts).reduce(
-        (sum, amount) => sum + Number(amount || 0),
+      const totalSplit = splitAmounts.reduce(
+        (sum, item) => sum + Number(item.amount || 0),
         0
       );
       setRemaining(totalAmount - totalSplit);
     } else if (divisionType === "percentage") {
-      const totalPercentage = Object.values(splitAmounts).reduce(
-        (sum, percentage) => sum + Number(percentage || 0),
+      const totalPercentage = splitAmounts.reduce(
+        (sum, item) => sum + Number(item.amount || 0),
         0
       );
       setRemainingPercentage(100 - totalPercentage);
@@ -84,25 +95,57 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
 
   // Update total amount when paid by amounts change
   useEffect(() => {
-    const total = Object.values(paidByAmounts).reduce(
-      (sum, amount) => sum + Number(amount || 0),
+    const total = paidByAmounts.reduce(
+      (sum, item) => sum + Number(item.amount || 0),
       0
     );
     setTotalAmount(total);
-  }, [paidByAmounts]);
+
+    // Si el tipo de división es 'equal', actualizar automáticamente los splits
+    if (divisionType === "equal" && members.length > 0) {
+      const equalSplit = total / members.length;
+      const equalSplits = members.map((member) => ({
+        id: member.id,
+        amount: equalSplit,
+      }));
+      setSplitAmounts(equalSplits);
+    }
+  }, [paidByAmounts, divisionType, members]);
 
   const handlePaidByChange = (memberId, value) => {
-    setPaidByAmounts((prev) => ({
-      ...prev,
-      [memberId]: Number(value) || 0,
-    }));
+    setPaidByAmounts((prev) => {
+      const existingIndex = prev.findIndex((item) => item.id === memberId);
+      if (existingIndex >= 0) {
+        // Update existing item
+        const updated = [...prev];
+        updated[existingIndex] = {
+          ...updated[existingIndex],
+          amount: Number(value) || 0,
+        };
+        return updated;
+      } else {
+        // Add new item
+        return [...prev, { id: memberId, amount: Number(value) || 0 }];
+      }
+    });
   };
 
   const handleSplitAmountChange = (memberId, value) => {
-    setSplitAmounts((prev) => ({
-      ...prev,
-      [memberId]: Number(value) || 0,
-    }));
+    setSplitAmounts((prev) => {
+      const existingIndex = prev.findIndex((item) => item.id === memberId);
+      if (existingIndex >= 0) {
+        // Update existing item
+        const updated = [...prev];
+        updated[existingIndex] = {
+          ...updated[existingIndex],
+          amount: Number(value) || 0,
+        };
+        return updated;
+      } else {
+        // Add new item
+        return [...prev, { id: memberId, amount: Number(value) || 0 }];
+      }
+    });
   };
 
   const handleSubmit = async (event) => {
@@ -303,7 +346,10 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
                   fullWidth
                   label={member.displayName || member.email}
                   type="number"
-                  value={paidByAmounts[member.id] || ""}
+                  value={
+                    paidByAmounts.find((item) => item.id === member.id)
+                      ?.amount || ""
+                  }
                   onChange={(e) =>
                     handlePaidByChange(member.id, e.target.value)
                   }
@@ -402,7 +448,27 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
               <FormControl fullWidth margin="dense">
                 <Select
                   value={divisionType}
-                  onChange={(e) => setDivisionType(e.target.value)}
+                  onChange={(e) => {
+                    const newDivisionType = e.target.value;
+                    setDivisionType(newDivisionType);
+
+                    // Si el tipo de división es 'equal', calcular inmediatamente la división igual
+                    if (newDivisionType === "equal") {
+                      // Calcular división igual entre los miembros
+                      const equalSplit = totalAmount / members.length;
+                      const equalSplits = members.map((member) => ({
+                        id: member.id,
+                        amount: equalSplit,
+                      }));
+                      setSplitAmounts(equalSplits);
+                    } else if (
+                      splitAmounts.length === 0 ||
+                      divisionType === "equal"
+                    ) {
+                      // Si cambiamos de 'equal' a otro tipo, inicializar con valores vacíos
+                      setSplitAmounts([]);
+                    }
+                  }}
                   displayEmpty
                   sx={{
                     borderRadius: 2,
@@ -484,7 +550,10 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
                       fullWidth
                       label={member.displayName || member.email}
                       type="number"
-                      value={splitAmounts[member.id] || ""}
+                      value={
+                        splitAmounts.find((item) => item.id === member.id)
+                          ?.amount || ""
+                      }
                       onChange={(e) => {
                         // Only allow positive numbers
                         const value = e.target.value;
