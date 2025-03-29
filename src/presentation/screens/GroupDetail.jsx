@@ -17,6 +17,9 @@ import {
   deleteInvitation,
   getInvitationByEmailAndGroup,
 } from "@/domain/usecases/invitations";
+
+import { getGroupExpenses } from "@/domain/usecases/expenses";
+
 import Loading from "@/presentation/components/common/Loading";
 import GroupHeader from "@/presentation/components/groups/GroupHeader";
 import {
@@ -58,10 +61,13 @@ function GroupDetail() {
     try {
       const invitationData = await getGroupInvitations(groupId);
       const groupData = await getGroupByID(groupId);
+      const expensesData = await getGroupExpenses(groupId);
+      console.log(expensesData);
       setGroupContext(groupData);
       setInvitations(invitationData);
+      setExpenses(expensesData);
     } catch (error) {
-      console.error("Error fetching invitations:", error);
+      console.error("Error fetching:", error);
     }
   };
 

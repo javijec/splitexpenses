@@ -3,9 +3,6 @@ import {
   CardHeader,
   Divider,
   CardContent,
-  List,
-  ListItem,
-  ListItemText,
   IconButton,
   Typography,
   Box,
@@ -14,6 +11,7 @@ import {
   Avatar,
   Paper,
 } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -22,6 +20,8 @@ import {
 import { alpha } from "@mui/material/styles";
 
 const ExpensesList = ({ expenses, user }) => {
+  console.log(expenses);
+
   return (
     <Card
       elevation={3}
@@ -81,84 +81,17 @@ const ExpensesList = ({ expenses, user }) => {
       <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>
         {expenses.length > 0 ? (
           <Fade in={true} timeout={500}>
-            <List sx={{ p: 0 }}>
-              {expenses.map((expense) => (
-                <ListItem
-                  key={expense.id}
-                  sx={{
-                    py: 2.5,
-                    px: 3,
-                    borderBottom: "1px solid",
-                    borderColor: "divider",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: (theme) =>
-                        alpha(theme.palette.success.main, 0.04),
-                      transform: "translateY(-2px)",
-                    },
-                    flexDirection: { xs: "column", sm: "row" },
-                    alignItems: { xs: "flex-start", sm: "center" },
-                  }}
-                  secondaryAction={
-                    expense.paidById === user.uid && (
-                      <Box>
-                        <Tooltip title="Editar gasto" placement="top">
-                          <IconButton
-                            edge="end"
-                            aria-label="edit"
-                            size="small"
-                            sx={{
-                              width: 36,
-                              height: 36,
-                              mr: 1,
-                              bgcolor: (theme) =>
-                                alpha(theme.palette.primary.main, 0.1),
-                              color: "primary.main",
-                              border: "1px solid",
-                              borderColor: (theme) =>
-                                alpha(theme.palette.primary.main, 0.2),
-                              "&:hover": {
-                                bgcolor: (theme) =>
-                                  alpha(theme.palette.primary.main, 0.2),
-                                transform: "scale(1.05)",
-                              },
-                              transition: "all 0.2s ease",
-                            }}
-                          >
-                            <EditIcon fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Eliminar gasto" placement="top">
-                          <IconButton
-                            edge="end"
-                            aria-label="delete"
-                            size="small"
-                            sx={{
-                              width: 36,
-                              height: 36,
-                              bgcolor: (theme) =>
-                                alpha(theme.palette.error.main, 0.1),
-                              color: "error.main",
-                              border: "1px solid",
-                              borderColor: (theme) =>
-                                alpha(theme.palette.error.main, 0.2),
-                              "&:hover": {
-                                bgcolor: (theme) =>
-                                  alpha(theme.palette.error.main, 0.2),
-                                transform: "scale(1.05)",
-                              },
-                              transition: "all 0.2s ease",
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-                      </Box>
-                    )
-                  }
-                >
-                  <ListItemText
-                    primary={
+            <Box sx={{ height: "100%", width: "100%", p: 2 }}>
+              <DataGrid
+                rows={expenses}
+                getRowId={(row) => row.id}
+                columns={[
+                  {
+                    field: "description",
+                    headerName: "Descripción",
+                    flex: 1,
+                    minWidth: 200,
+                    renderCell: (params) => (
                       <Box sx={{ display: "flex", alignItems: "center" }}>
                         <Avatar
                           sx={{
@@ -172,46 +105,135 @@ const ExpensesList = ({ expenses, user }) => {
                             fontWeight: "bold",
                           }}
                         >
-                          {expense.description.charAt(0).toUpperCase()}
+                          {params.value.charAt(0).toUpperCase()}
                         </Avatar>
-                        <Box>
-                          <Typography
-                            variant="h6"
-                            sx={{
-                              fontWeight: 600,
-                              mb: 0.5,
-                              color: "text.primary",
-                              letterSpacing: 0.2,
-                            }}
-                          >
-                            {expense.description}
-                          </Typography>
-
-                          <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              color="text.primary"
-                              sx={{ fontWeight: 500 }}
-                            >
-                              ${expense.amount}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                              sx={{ ml: 1 }}
-                            >
-                              {` - Pagado por ${expense.paidByName}`}
-                            </Typography>
-                          </Box>
-                        </Box>
+                        <Typography
+                          variant="subtitle1"
+                          sx={{
+                            fontWeight: 600,
+                            color: "text.primary",
+                            letterSpacing: 0.2,
+                          }}
+                        >
+                          {params.value}
+                        </Typography>
                       </Box>
-                    }
-                    sx={{ mb: { xs: 1, sm: 0 } }}
-                  />
-                </ListItem>
-              ))}
-            </List>
+                    ),
+                  },
+                  {
+                    field: "amount",
+                    headerName: "Monto",
+                    width: 120,
+                    renderCell: (params) => (
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                        sx={{ fontWeight: 500 }}
+                      >
+                        ${params.value}
+                      </Typography>
+                    ),
+                  },
+                  {
+                    field: "paidByName",
+                    headerName: "Pagado por",
+                    width: 180,
+                    renderCell: (params) => (
+                      <Typography variant="body2" color="text.secondary">
+                        {params.value}
+                      </Typography>
+                    ),
+                  },
+                  {
+                    field: "actions",
+                    headerName: "Acciones",
+                    width: 120,
+                    sortable: false,
+                    filterable: false,
+                    renderCell: (params) =>
+                      params.row.paidById === user.uid && (
+                        <Box>
+                          <Tooltip title="Editar gasto" placement="top">
+                            <IconButton
+                              edge="end"
+                              aria-label="edit"
+                              size="small"
+                              sx={{
+                                width: 36,
+                                height: 36,
+                                mr: 1,
+                                bgcolor: (theme) =>
+                                  alpha(theme.palette.primary.main, 0.1),
+                                color: "primary.main",
+                                border: "1px solid",
+                                borderColor: (theme) =>
+                                  alpha(theme.palette.primary.main, 0.2),
+                                "&:hover": {
+                                  bgcolor: (theme) =>
+                                    alpha(theme.palette.primary.main, 0.2),
+                                  transform: "scale(1.05)",
+                                },
+                                transition: "all 0.2s ease",
+                              }}
+                            >
+                              <EditIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Eliminar gasto" placement="top">
+                            <IconButton
+                              edge="end"
+                              aria-label="delete"
+                              size="small"
+                              sx={{
+                                width: 36,
+                                height: 36,
+                                bgcolor: (theme) =>
+                                  alpha(theme.palette.error.main, 0.1),
+                                color: "error.main",
+                                border: "1px solid",
+                                borderColor: (theme) =>
+                                  alpha(theme.palette.error.main, 0.2),
+                                "&:hover": {
+                                  bgcolor: (theme) =>
+                                    alpha(theme.palette.error.main, 0.2),
+                                  transform: "scale(1.05)",
+                                },
+                                transition: "all 0.2s ease",
+                              }}
+                            >
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      ),
+                  },
+                ]}
+                autoHeight
+                disableRowSelectionOnClick
+                disableColumnMenu
+                sx={{
+                  border: "none",
+                  "& .MuiDataGrid-cell": {
+                    borderBottom: "1px solid",
+                    borderColor: "divider",
+                    py: 1.5,
+                  },
+                  "& .MuiDataGrid-row": {
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      bgcolor: (theme) =>
+                        alpha(theme.palette.success.main, 0.04),
+                      transform: "translateY(-2px)",
+                    },
+                  },
+                  "& .MuiDataGrid-columnHeaders": {
+                    bgcolor: (theme) => alpha(theme.palette.success.main, 0.04),
+                    borderBottom: "none",
+                  },
+                }}
+              />
+            </Box>
           </Fade>
         ) : (
           <Fade in={true} timeout={500}>

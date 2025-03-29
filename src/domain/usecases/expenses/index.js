@@ -47,11 +47,12 @@ export const deleteGroupExpenses = async (groupId) => {
 
 export const getGroupExpenses = async (groupId) => {
   const data = await getExpenses();
+  console.log("data", data.data);
   // Ensure data is an array before filtering
-  if (!Array.isArray(data)) {
+  if (!Array.isArray(data.data)) {
     return [];
   }
-  const result = data.filter((expense) => expense.groupId === groupId);
+  const result = data.data.filter((expense) => expense.groupId === groupId);
   return result;
 };
 
