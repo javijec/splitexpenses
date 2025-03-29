@@ -91,13 +91,14 @@ const Main = () => {
     >
       <Header />
       <Grid container spacing={4} sx={{ mt: 1 }}>
-        <Invitations
+        <Groups
+          groups={groups}
+          loadingGroups={loadingGroups}
           invitations={invitations}
-          loading={loadingInvitations}
+          loadingInvitations={loadingInvitations}
           onAccept={handleAcceptInvitation}
           onReject={handleRejectInvitation}
         />
-        <Groups groups={groups} loadingGroups={loadingGroups} />
       </Grid>
       <GroupModal
         isOpen={isGroupModalOpen}

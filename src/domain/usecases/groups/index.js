@@ -52,10 +52,8 @@ export const getMembersMailsGroup = async (groupId) => {
     const groupRepository = new GroupRepository();
     const result = await groupRepository.getGroupByID(groupId);
 
-    if (result.success) {
-      const group = result;
-      return group.members.map((member) => member.email);
-    }
+    const group = result;
+    return group.members.map((member) => member.email);
   } catch (error) {
     console.error("Error al obtener los miembros del grupo:", error);
     return [];

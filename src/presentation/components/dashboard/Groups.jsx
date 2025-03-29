@@ -17,18 +17,30 @@ import {
   Tooltip,
   Avatar,
   Paper,
+  Badge,
 } from "@mui/material";
 import {
   Groups as GroupsIcon,
   AddCircleOutline,
   ArrowForward,
+  Notifications as NotificationsIcon,
 } from "@mui/icons-material";
 import { useModal } from "@/application/contexts/ModalContext";
+import { useState } from "react";
+import InvitationsDialog from "./InvitationsDialog";
 import { Link } from "react-router";
 import { alpha } from "@mui/material/styles";
 
-const Groups = ({ groups, loadingGroups }) => {
+const Groups = ({
+  groups,
+  loadingGroups,
+  invitations = [],
+  loadingInvitations,
+  onAccept,
+  onReject,
+}) => {
   const { openGroupModal } = useModal();
+  const [isInvitationsDialogOpen, setIsInvitationsDialogOpen] = useState(false);
 
   return (
     <Grid size={{ xs: 12, md: 8 }}>
@@ -79,29 +91,61 @@ const Groups = ({ groups, loadingGroups }) => {
             </Box>
           }
           action={
-            <Tooltip title="Crear nuevo grupo" arrow placement="left">
-              <Button
-                onClick={openGroupModal}
-                variant="contained"
-                startIcon={<AddCircleOutline />}
-                sx={{
-                  fontWeight: 600,
-                  textTransform: "none",
-                  mr: 1,
-                  borderRadius: 2,
-                  px: 2,
-                  boxShadow: (theme) =>
-                    `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
-                  "&:hover": {
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              {invitations.length > 0 && (
+                <Tooltip
+                  title="Ver invitaciones pendientes"
+                  arrow
+                  placement="bottom"
+                >
+                  <IconButton
+                    onClick={() => setIsInvitationsDialogOpen(true)}
+                    sx={{
+                      mr: 1,
+                      position: "relative",
+                    }}
+                  >
+                    <Badge
+                      badgeContent={invitations.length}
+                      color="error"
+                      overlap="circular"
+                      sx={{
+                        "& .MuiBadge-badge": {
+                          fontSize: "0.7rem",
+                          height: 18,
+                          minWidth: 18,
+                        },
+                      }}
+                    >
+                      <NotificationsIcon color="info" />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
+              )}
+              <Tooltip title="Crear nuevo grupo" arrow placement="left">
+                <Button
+                  onClick={openGroupModal}
+                  variant="contained"
+                  startIcon={<AddCircleOutline />}
+                  sx={{
+                    fontWeight: 600,
+                    textTransform: "none",
+                    mr: 1,
+                    borderRadius: 2,
+                    px: 2,
                     boxShadow: (theme) =>
-                      `0 6px 14px ${alpha(theme.palette.primary.main, 0.4)}`,
-                  },
-                }}
-                disableElevation
-              >
-                Nuevo
-              </Button>
-            </Tooltip>
+                      `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
+                    "&:hover": {
+                      boxShadow: (theme) =>
+                        `0 6px 14px ${alpha(theme.palette.primary.main, 0.4)}`,
+                    },
+                  }}
+                  disableElevation
+                >
+                  Nuevo
+                </Button>
+              </Tooltip>
+            </Box>
           }
           sx={{
             bgcolor: "background.paper",
@@ -297,6 +341,14 @@ const Groups = ({ groups, loadingGroups }) => {
           )}
         </CardContent>
       </Card>
+      <InvitationsDialog
+        open={isInvitationsDialogOpen}
+        onClose={() => setIsInvitationsDialogOpen(false)}
+        invitations={invitations}
+        loadingInvitations={loadingInvitations}
+        onAccept={onAccept}
+        onReject={onReject}
+      />
     </Grid>
   );
 };
