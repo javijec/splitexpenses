@@ -1,3 +1,4 @@
+import FirestoreCRUD from "@/infrastructure/database/FirestoreCRUD";
 import { withErrorHandling } from "@/utils/errorHandler";
 
 class BalanceRepository {
