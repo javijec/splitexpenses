@@ -25,7 +25,7 @@ export const getInvitations = async () => {
     const invitationRepository = new InvitationRepository();
     const result = await invitationRepository.getInvitations();
 
-    return result.data;
+    return result;
   } catch (error) {
     console.error("Error al obtener invitaciones:", error);
   }
@@ -36,16 +36,12 @@ export const getInvitationbyEmail = async (userEmail) => {
     const invitationRepository = new InvitationRepository();
     const result = await invitationRepository.getInvitations();
 
-    if (result.success) {
-      // Business logic: Filter groups where the user is a member or the creator
-      const userInvitations = result.data.filter(
+
+      const userInvitations = result.filter(
         (invitation) => invitation.invitedEmail === userEmail
       );
       return userInvitations;
-    } else {
-      console.error("Error al obtener invitaciones del usuario:", result.error);
-      return [];
-    }
+
   } catch (error) {
     console.error("Error al obtener las invitaciones del usuario:", error);
     return [];

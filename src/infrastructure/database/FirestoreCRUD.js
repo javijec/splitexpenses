@@ -26,7 +26,7 @@ class FirestoreCRUD {
       const documentData = data.id ? data : { ...data, id: docRef.id };
 
       await setDoc(docRef, documentData);
-      return { success: true, data: docRef.id };
+      return docRef.id;
     } catch (error) {
       return handleError(error, "FirestoreCRUD.createDocument");
     }
@@ -39,7 +39,7 @@ class FirestoreCRUD {
         id: doc.id,
         ...doc.data(),
       }));
-      return { success: true, data: documents };
+      return documents;
     } catch (error) {
       return handleError(error, "FirestoreCRUD.readDocuments");
     }
@@ -54,7 +54,6 @@ class FirestoreCRUD {
           ? Object.assign({}, updatedData)
           : updatedData;
       await updateDoc(docRef, plainData);
-      return { success: true, message: "Document updated successfully" };
     } catch (error) {
       return handleError(error, "FirestoreCRUD.updateDocument");
     }
@@ -64,7 +63,6 @@ class FirestoreCRUD {
     try {
       const docRef = doc(this.collectionRef, id);
       await deleteDoc(docRef);
-      return { success: true, message: "Document deleted successfully" };
     } catch (error) {
       return handleError(error, "FirestoreCRUD.deleteDocument");
     }
@@ -75,18 +73,12 @@ class FirestoreCRUD {
     try {
       const docRef = doc(this.collectionRef, id);
       const docSnap = await getDoc(docRef);
+      const data = {
+        id: docSnap.id,
+        ...docSnap.data(),
+      };
 
-      if (docSnap.exists()) {
-        return {
-          success: true,
-          data: {
-            id: docSnap.id,
-            ...docSnap.data(),
-          },
-        };
-      } else {
-        return false;
-      }
+      return data;
     } catch (error) {
       return handleError(error, "FirestoreCRUD.readDocument");
     }

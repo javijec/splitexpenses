@@ -35,7 +35,9 @@ export const updateExpense = async (expenseId, expenseData) => {
 };
 
 export const deleteExpense = async (expenseId) => {
-  await ExpenseRepository.deleteExpense(expenseId);
+  const expenseRepository = new ExpenseRepository();
+  await expenseRepository.deleteExpense(expenseId);
+  return await getExpenses();
 };
 
 export const deleteGroupExpenses = async (groupId) => {
@@ -47,10 +49,10 @@ export const deleteGroupExpenses = async (groupId) => {
 export const getGroupExpenses = async (groupId) => {
   const data = await getExpenses();
   // Ensure data is an array before filtering
-  if (!Array.isArray(data.data)) {
+  if (!Array.isArray(data)) {
     return [];
   }
-  const result = data.data.filter((expense) => expense.groupId === groupId);
+  const result = data.filter((expense) => expense.groupId === groupId);
   return result;
 };
 

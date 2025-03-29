@@ -30,7 +30,7 @@ export const createUser = async (user) => {
 export const getUserName = async (id) => {
   const userRepository = new UserRepository();
   const user = await userRepository.getUser(id);
-  return user.data.displayName;
+  return user.displayName;
 };
 
 export const updateUser = async (userId, userData) => {

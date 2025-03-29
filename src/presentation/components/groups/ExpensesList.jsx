@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -11,13 +10,27 @@ import {
 } from "@mui/material";
 import { Receipt as ReceiptIcon } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
-import ExpensesTable from "./ExpensesTable";
+import ExpensesTable from "@/presentation/components/groups/ExpensesTable";
+import { deleteExpense } from "@/domain/usecases/expenses";
 
-const ExpensesList = ({ expenses = [] }) => {
+const ExpensesList = ({ expenses = [], setExpenses }) => {
+  // Log the type of expenses to debug
+
   if (!Array.isArray(expenses)) {
     console.error("Invalid expenses prop: expected an array.");
     return null;
   }
+
+  const handleDeleteExpense = async (expenseId) => {
+    const data = await deleteExpense(expenseId);
+    console.log("Deleted expense with ID:", expenseId);
+    console.log("Updated expenses:", data);
+    setExpenses(data);
+  };
+
+  const handleEditExpense = async (expenseId) => {
+    console.log("Editing expense with ID:", expenseId);
+  };
 
   return (
     <Card
@@ -79,7 +92,11 @@ const ExpensesList = ({ expenses = [] }) => {
         {expenses.length > 0 ? (
           <Fade in={expenses.length > 0} timeout={500}>
             <Box>
-              <ExpensesTable expenses={expenses} />
+              <ExpensesTable
+                expenses={expenses}
+                onEditExpense={handleEditExpense}
+                onDeleteExpense={handleDeleteExpense}
+              />
             </Box>
           </Fade>
         ) : (

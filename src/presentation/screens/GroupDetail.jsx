@@ -35,7 +35,7 @@ import {
 
 function GroupDetail() {
   const { groupId } = useParams();
-  const { user, setGroupContext } = useAuth();
+  const { user, groupContext, setGroupContext } = useAuth();
   const { isExpenseModalOpen, closeExpenseModal } = useModal();
   const { isInviteModalOpen, openInviteModal, closeInviteModal } = useModal();
   const {
@@ -67,6 +67,7 @@ function GroupDetail() {
       setExpenses(expensesData);
     } catch (error) {
       console.error("Error fetching:", error);
+    } finally {
     }
   };
 
@@ -220,10 +221,18 @@ function GroupDetail() {
           <GroupBalance balances={balances} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <ExpensesList expenses={expenses} user={user} />
+          <ExpensesList
+            expenses={expenses}
+            user={user}
+            setExpenses={setExpenses}
+          />
         </Grid>
       </Grid>
-      <ExpenseModal isOpen={isExpenseModalOpen} onClose={closeExpenseModal} />
+      <ExpenseModal
+        isOpen={isExpenseModalOpen}
+        onClose={closeExpenseModal}
+        membersList={groupContext?.members}
+      />
       <InviteModal
         isOpen={isInviteModalOpen}
         onClose={closeInviteModal}

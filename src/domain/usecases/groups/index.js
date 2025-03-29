@@ -23,12 +23,7 @@ export const getGroupByID = async (groupId) => {
     const groupRepository = new GroupRepository();
     const result = await groupRepository.getGroupByID(groupId);
 
-    if (result.success) {
-      return result.data;
-    } else {
-      console.error("Error al obtener el grupo:", result.error);
-      return null;
-    }
+    return result;
   } catch (error) {
     console.error("Error al obtener el grupo:", error);
     return null;
@@ -40,18 +35,12 @@ export const getGroupsByUser = async (userId) => {
     const groupRepository = new GroupRepository();
     const result = await groupRepository.getGroups();
 
-    if (result.success) {
-      // Business logic: Filter groups where the user is a member or the creator
-      const userGroups = result.data.filter(
-        (group) =>
-          group.createdBy === userId ||
-          group.members.some((member) => member.id === userId)
-      );
-      return userGroups;
-    } else {
-      console.error("Error al obtener los grupos del usuario:", result.error);
-      return [];
-    }
+    const userGroups = result.filter(
+      (group) =>
+        group.createdBy === userId ||
+        group.members.some((member) => member.id === userId)
+    );
+    return userGroups;
   } catch (error) {
     console.error("Error al obtener los grupos del usuario:", error);
     return [];
@@ -64,7 +53,7 @@ export const getMembersMailsGroup = async (groupId) => {
     const result = await groupRepository.getGroupByID(groupId);
 
     if (result.success) {
-      const group = result.data;
+      const group = result;
       return group.members.map((member) => member.email);
     }
   } catch (error) {
@@ -108,12 +97,12 @@ export const addMember = async (groupId, member) => {
   try {
     const group = await groupRepository.getGroupByID(groupId);
     if (group) {
-      const updatedMembers = [...group.data.members, memberData];
+      const updatedMembers = [...group.members, memberData];
       const updatedGroup = new Group(
-        group.data.name,
-        group.data.createdBy,
+        group.name,
+        group.createdBy,
         updatedMembers,
-        group.data.createdAt,
+        group.createdAt,
         new Date()
       );
       await groupRepository.updateGroup(groupId, updatedGroup);
@@ -128,14 +117,12 @@ export const removeMember = async (groupId, memberId) => {
   try {
     const group = await groupRepository.getGroupByID(groupId);
     if (group) {
-      const updatedMembers = group.data.members.filter(
-        (m) => m.id !== memberId
-      );
+      const updatedMembers = group.members.filter((m) => m.id !== memberId);
       const updatedGroup = new Group(
-        group.data.name,
-        group.data.createdBy,
+        group.name,
+        group.createdBy,
         updatedMembers,
-        group.data.createdAt,
+        group.createdAt,
         new Date()
       );
       await groupRepository.updateGroup(groupId, updatedGroup);

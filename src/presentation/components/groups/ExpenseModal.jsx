@@ -24,7 +24,7 @@ import { alpha } from "@mui/material/styles";
 import { useAuth } from "@/application/contexts/AuthContext";
 import { createExpense } from "@/domain/usecases/expenses";
 
-const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
+const ExpenseModal = ({ isOpen, onClose, expense = [], membersList }) => {
   const { user, groupContext } = useAuth();
   const [description, setDescription] = useState("");
   const [paidByAmounts, setPaidByAmounts] = useState([]);
@@ -33,10 +33,14 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
   const [splitAmounts, setSplitAmounts] = useState([]);
   const [remaining, setRemaining] = useState(0);
   const [remainingPercentage, setRemainingPercentage] = useState(100);
-  const [members, setMembers] = useState(groupContext?.members || []);
+  const [members, setMembers] = useState([]);
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState("");
-  // Initialize state when modal opens
+
+  useEffect(() => {
+    setMembers(membersList);
+  }, [membersList]);
+
   useEffect(() => {
     if (isOpen) {
       if (expense) {
@@ -74,7 +78,7 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
         }
       }
     }
-  }, [isOpen, expense, user]);
+  }, [isOpen, user]);
 
   // Calculate remaining amount or percentage when values change
   useEffect(() => {
@@ -101,7 +105,6 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
     );
     setTotalAmount(total);
 
-    // Si el tipo de división es 'equal', actualizar automáticamente los splits
     if (divisionType === "equal" && members.length > 0) {
       const equalSplit = total / members.length;
       const equalSplits = members.map((member) => ({
@@ -339,7 +342,7 @@ const ExpenseModal = ({ isOpen, onClose, expense = null }) => {
               pb: 1,
             }}
           >
-            {members.map((member) => (
+            {members?.map((member) => (
               <Box key={member.id}>
                 <TextField
                   margin="dense"

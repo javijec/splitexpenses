@@ -13,13 +13,10 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-} from "@mui/icons-material";
+import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
 
-const ExpensesTable = ({ expenses }) => {
+const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
   return (
     <TableContainer
       component={Paper}
@@ -36,10 +33,18 @@ const ExpensesTable = ({ expenses }) => {
           }}
         >
           <TableRow>
-            <TableCell><Typography variant="subtitle2">Fecha</Typography></TableCell>
-            <TableCell><Typography variant="subtitle2">Descripción</Typography></TableCell>
-            <TableCell><Typography variant="subtitle2">Monto</Typography></TableCell>
-            <TableCell><Typography variant="subtitle2">Acciones</Typography></TableCell>
+            <TableCell>
+              <Typography variant="subtitle2">Fecha</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="subtitle2">Descripción</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="subtitle2">Monto</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="subtitle2">Acciones</Typography>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -55,7 +60,9 @@ const ExpensesTable = ({ expenses }) => {
             >
               <TableCell>
                 <Typography variant="body2" color="text.secondary">
-                  {new Date(expense.createdAt.seconds * 1000).toLocaleDateString("es-ES")}
+                  {new Date(
+                    expense.createdAt.seconds * 1000
+                  ).toLocaleDateString("es-ES")}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -74,7 +81,8 @@ const ExpensesTable = ({ expenses }) => {
                     fontSize: "0.85rem",
                     fontWeight: 500,
                     bgcolor: (theme) => alpha(theme.palette.success.main, 0.05),
-                    borderColor: (theme) => alpha(theme.palette.success.main, 0.3),
+                    borderColor: (theme) =>
+                      alpha(theme.palette.success.main, 0.3),
                   }}
                 />
               </TableCell>
@@ -85,16 +93,20 @@ const ExpensesTable = ({ expenses }) => {
                       edge="end"
                       aria-label="edit"
                       size="small"
+                      onClick={() => onEditExpense(expense.id)}
                       sx={{
                         width: 36,
                         height: 36,
                         mr: 1,
-                        bgcolor: (theme) => alpha(theme.palette.success.main, 0.1),
+                        bgcolor: (theme) =>
+                          alpha(theme.palette.success.main, 0.1),
                         color: "success.main",
                         border: "1px solid",
-                        borderColor: (theme) => alpha(theme.palette.success.main, 0.2),
+                        borderColor: (theme) =>
+                          alpha(theme.palette.success.main, 0.2),
                         "&:hover": {
-                          bgcolor: (theme) => alpha(theme.palette.success.main, 0.2),
+                          bgcolor: (theme) =>
+                            alpha(theme.palette.success.main, 0.2),
                           transform: "scale(1.05)",
                           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
                         },
@@ -109,15 +121,19 @@ const ExpensesTable = ({ expenses }) => {
                       edge="end"
                       aria-label="delete"
                       size="small"
+                      onClick={() => onDeleteExpense(expense.id)}
                       sx={{
                         width: 36,
                         height: 36,
-                        bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
+                        bgcolor: (theme) =>
+                          alpha(theme.palette.error.main, 0.1),
                         color: "error.main",
                         border: "1px solid",
-                        borderColor: (theme) => alpha(theme.palette.error.main, 0.2),
+                        borderColor: (theme) =>
+                          alpha(theme.palette.error.main, 0.2),
                         "&:hover": {
-                          bgcolor: (theme) => alpha(theme.palette.error.main, 0.2),
+                          bgcolor: (theme) =>
+                            alpha(theme.palette.error.main, 0.2),
                           transform: "scale(1.05)",
                           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
                         },
