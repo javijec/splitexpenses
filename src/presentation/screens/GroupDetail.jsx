@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { Grid2 as Grid, Box } from "@mui/material";
+import { Grid2 as Grid, Box, Button } from "@mui/material";
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";
 import ExpenseModal from "@/presentation/components/groups/ExpenseModal";
 import InviteModal from "@/presentation/components/groups/InviteModal";
 import DeleteGroupModal from "@/presentation/components/groups/DeleteGroupModal";
+import MembersDialog from "@/presentation/components/groups/MembersDialog";
+import GroupInvitationsDialog from "@/presentation/components/groups/GroupInvitationsDialog";
 import {
   getGroupByID,
   removeMember,
@@ -43,6 +45,8 @@ function GroupDetail() {
     openDeleteGroupModal,
     closeDeleteGroupModal,
   } = useModal();
+  const [isMembersDialogOpen, setIsMembersDialogOpen] = useState(false);
+  const [isInvitationsDialogOpen, setIsInvitationsDialogOpen] = useState(false);
 
   const [group, setGroup] = useState(null);
   const [expenses, setExpenses] = useState([]);
@@ -197,25 +201,40 @@ function GroupDetail() {
               onInvite={openInviteModal}
             />
             <InvitationsListDesktop
-              invitations={invitations} // Ensure this is correctly passed
+              invitations={invitations}
               isAdmin={isAdmin}
               onDeleteInvitation={handleDeleteInvitation}
             />
           </Box>
-          <Box sx={{ display: { xs: "block", md: "none" }, mb: 3 }}>
-            <MembersListMobile
-              members={members}
-              isAdmin={isAdmin}
-              user={user}
-              group={group}
-              onInvite={openInviteModal}
-              onDeleteMember={handleDeleteMember}
-            />
-            <InvitationsListMobile
-              invitations={invitations} // Ensure this is correctly passed
-              isAdmin={isAdmin}
-              onDeleteInvitation={handleDeleteInvitation}
-            />
+          <Box sx={{ display: { xs: "flex", md: "none" }, mb: 3, gap: 2 }}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={() => setIsMembersDialogOpen(true)}
+              sx={{
+                borderRadius: 2,
+                py: 1.5,
+                fontWeight: 600,
+                textTransform: "none",
+              }}
+            >
+              Ver Miembros
+            </Button>
+            {invitations.length > 0 && (
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={() => setIsInvitationsDialogOpen(true)}
+                sx={{
+                  borderRadius: 2,
+                  py: 1.5,
+                  fontWeight: 600,
+                  textTransform: "none",
+                }}
+              >
+                Ver Invitaciones
+              </Button>
+            )}
           </Box>
 
           <GroupBalance balances={balances} />
@@ -245,6 +264,23 @@ function GroupDetail() {
       <DeleteGroupModal
         isOpen={isDeleteGroupModalOpen}
         onClose={closeDeleteGroupModal}
+      />
+      <MembersDialog
+        open={isMembersDialogOpen}
+        onClose={() => setIsMembersDialogOpen(false)}
+        members={members}
+        isAdmin={isAdmin}
+        user={user}
+        group={group}
+        onDeleteMember={handleDeleteMember}
+        onInvite={openInviteModal}
+      />
+      <GroupInvitationsDialog
+        open={isInvitationsDialogOpen}
+        onClose={() => setIsInvitationsDialogOpen(false)}
+        invitations={invitations}
+        isAdmin={isAdmin}
+        onDeleteInvitation={handleDeleteInvitation}
       />
     </Box>
   );
