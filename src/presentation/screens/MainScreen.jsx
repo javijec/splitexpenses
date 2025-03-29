@@ -90,7 +90,7 @@ const Main = () => {
       }}
     >
       <Header />
-      <Grid container spacing={4} sx={{ mt: 1 }}>
+      <Grid spacing={4} sx={{ mt: 1 }}>
         <Groups
           groups={groups}
           loadingGroups={loadingGroups}
