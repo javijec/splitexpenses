@@ -182,7 +182,7 @@ const GroupBalance = ({ balances }) => {
           <Fade in={true} timeout={500}>
             <Box
               sx={{
-                p: 2,
+                p: 1,
                 textAlign: "center",
                 height: "100%",
                 display: "flex",
