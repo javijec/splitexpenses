@@ -33,10 +33,23 @@ const GroupInvitationsDialog = ({
       PaperProps={{
         sx: {
           borderRadius: 3,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
           overflow: "hidden",
-          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "4px",
+            background: (theme) => `${theme.palette.primary.main}`,
+          },
+          transition: "all 0.3s ease",
         },
       }}
+      TransitionComponent={Fade}
+      TransitionProps={{ timeout: 400 }}
     >
       <DialogTitle
         sx={{
@@ -65,7 +78,7 @@ const GroupInvitationsDialog = ({
           </Typography>
         </Box>
       </DialogTitle>
-      <DialogContent sx={{ p: 0 }}>
+      <DialogContent sx={{ p: 0, bgcolor: "background.paper" }}>
         <Fade in={true} timeout={500}>
           <List sx={{ p: 0 }}>
             {invitations.map((invitation) => (
@@ -91,8 +104,7 @@ const GroupInvitationsDialog = ({
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <Avatar
                         sx={{
-                          bgcolor: (theme) =>
-                            alpha(theme.palette.info.main, 0.1),
+                          bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
                           color: "info.main",
                           width: 36,
                           height: 36,
@@ -101,8 +113,7 @@ const GroupInvitationsDialog = ({
                           fontWeight: "bold",
                           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
                           border: "2px solid",
-                          borderColor: (theme) =>
-                            alpha(theme.palette.info.main, 0.2),
+                          borderColor: (theme) => alpha(theme.palette.info.main, 0.2),
                         }}
                       >
                         {invitation.invitedEmail.charAt(0).toUpperCase()}
@@ -135,15 +146,12 @@ const GroupInvitationsDialog = ({
                       sx={{
                         width: 36,
                         height: 36,
-                        bgcolor: (theme) =>
-                          alpha(theme.palette.error.main, 0.1),
+                        bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
                         color: "error.main",
                         border: "1px solid",
-                        borderColor: (theme) =>
-                          alpha(theme.palette.error.main, 0.2),
+                        borderColor: (theme) => alpha(theme.palette.error.main, 0.2),
                         "&:hover": {
-                          bgcolor: (theme) =>
-                            alpha(theme.palette.error.main, 0.2),
+                          bgcolor: (theme) => alpha(theme.palette.error.main, 0.2),
                           transform: "scale(1.05)",
                         },
                         transition: "all 0.2s ease",
@@ -159,11 +167,11 @@ const GroupInvitationsDialog = ({
         </Fade>
       </DialogContent>
       <DialogActions
-        sx={{ p: 2, borderTop: "1px solid", borderColor: "divider" }}
+        sx={{ p: 2, borderTop: "1px solid", borderColor: "divider", bgcolor: "background.paper" }}
       >
         <Button
           onClick={onClose}
-          variant="outlined"
+          variant="contained"
           sx={{
             borderRadius: 2,
             fontWeight: 600,

@@ -41,68 +41,86 @@ const MembersDialog = ({
       PaperProps={{
         sx: {
           borderRadius: 3,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
           overflow: "hidden",
-          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "4px",
+            background: (theme) => `${theme.palette.primary.main}`,
+          },
+          transition: "all 0.3s ease",
         },
       }}
+      TransitionComponent={Fade}
+      TransitionProps={{ timeout: 400 }}
     >
       <DialogTitle
         sx={{
+          p: 3,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
           bgcolor: "background.paper",
+          borderBottom: "1px solid",
+          borderColor: "divider",
           pb: 2,
           pt: 3,
           px: 3,
-          borderBottom: "1px solid",
-          borderColor: "divider",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Avatar
-              sx={{
-                bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
-                color: "primary.main",
-                width: 40,
-                height: 40,
-                mr: 1.5,
-              }}
-            >
-              <PeopleIcon />
-            </Avatar>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-            >
-              Miembros
-            </Typography>
-          </Box>
-          {isAdmin && (
-            <Button
-              variant="contained"
-              startIcon={<PersonAddIcon />}
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation();
-                onInvite();
-              }}
-              sx={{
-                fontWeight: 600,
-                textTransform: "none",
-                borderRadius: 2,
-              }}
-            >
-              Invitar
-            </Button>
-          )}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Avatar
+            sx={{
+              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
+              color: "primary.main",
+              width: 40,
+              height: 40,
+              mr: 1.5,
+            }}
+          >
+            <PeopleIcon />
+          </Avatar>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 700, letterSpacing: 0.2 }}
+          >
+            Miembros
+          </Typography>
         </Box>
+        {isAdmin && (
+          <Button
+            variant="contained"
+            startIcon={<PersonAddIcon />}
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              onInvite();
+            }}
+            sx={{
+              fontWeight: 600,
+              textTransform: "none",
+              borderRadius: 2,
+              boxShadow: (theme) =>
+                `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
+              "&:hover": {
+                bgcolor: "primary.dark",
+                boxShadow: (theme) =>
+                  `0 6px 16px ${alpha(theme.palette.primary.main, 0.4)}`,
+                transform: "translateY(-2px)",
+              },
+              transition: "all 0.2s ease",
+            }}
+          >
+            Invitar
+          </Button>
+        )}
       </DialogTitle>
-      <DialogContent sx={{ p: 0 }}>
+      <DialogContent sx={{ p: 0, bgcolor: "background.paper" }}>
         <Fade in={true} timeout={500}>
           <List sx={{ p: 0 }}>
             {members.map((member) => (
@@ -126,8 +144,7 @@ const MembersDialog = ({
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Avatar
                     sx={{
-                      bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, 0.1),
+                      bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
                       color: "primary.main",
                       width: 40,
                       height: 40,
@@ -136,8 +153,7 @@ const MembersDialog = ({
                       fontWeight: "bold",
                       boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
                       border: "2px solid",
-                      borderColor: (theme) =>
-                        alpha(theme.palette.primary.main, 0.2),
+                      borderColor: (theme) => alpha(theme.palette.primary.main, 0.2),
                     }}
                   >
                     {member.displayName?.charAt(0).toUpperCase() || "U"}
@@ -181,15 +197,12 @@ const MembersDialog = ({
                       sx={{
                         width: 36,
                         height: 36,
-                        bgcolor: (theme) =>
-                          alpha(theme.palette.error.main, 0.1),
+                        bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
                         color: "error.main",
                         border: "1px solid",
-                        borderColor: (theme) =>
-                          alpha(theme.palette.error.main, 0.2),
+                        borderColor: (theme) => alpha(theme.palette.error.main, 0.2),
                         "&:hover": {
-                          bgcolor: (theme) =>
-                            alpha(theme.palette.error.main, 0.2),
+                          bgcolor: (theme) => alpha(theme.palette.error.main, 0.2),
                           transform: "scale(1.05)",
                         },
                         transition: "all 0.2s ease",
@@ -207,11 +220,11 @@ const MembersDialog = ({
         </Fade>
       </DialogContent>
       <DialogActions
-        sx={{ p: 2, borderTop: "1px solid", borderColor: "divider" }}
+        sx={{ p: 2, borderTop: "1px solid", borderColor: "divider", bgcolor: "background.paper" }}
       >
         <Button
           onClick={onClose}
-          variant="outlined"
+          variant="contained"
           sx={{
             borderRadius: 2,
             fontWeight: 600,
