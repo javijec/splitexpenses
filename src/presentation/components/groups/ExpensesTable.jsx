@@ -92,11 +92,9 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
                     <IconButton
                       edge="end"
                       aria-label="edit"
-                      size="small"
+                      size="large"
                       onClick={() => onEditExpense(expense.id)}
                       sx={{
-                        width: 36,
-                        height: 36,
                         mr: 1,
                         bgcolor: (theme) =>
                           alpha(theme.palette.success.main, 0.1),
@@ -120,11 +118,9 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      size="small"
+                      size="large"
                       onClick={() => onDeleteExpense(expense.id)}
                       sx={{
-                        width: 36,
-                        height: 36,
                         bgcolor: (theme) =>
                           alpha(theme.palette.error.main, 0.1),
                         color: "error.main",
