@@ -1,19 +1,31 @@
-import FirestoreCRUD from "@/infrastructure/database/FirestoreCRUD";
+import { withErrorHandling } from "@/utils/errorHandler";
 
 class InvitationRepository {
   constructor() {
     this.firestoreCRUD = new FirestoreCRUD("invitations");
+    this.createInvitation = withErrorHandling(
+      this._createInvitation.bind(this),
+      "InvitationRepository.createInvitation"
+    );
+    this.getInvitations = withErrorHandling(
+      this._getInvitations.bind(this),
+      "InvitationRepository.getInvitations"
+    );
+    this.deleteInvitation = withErrorHandling(
+      this._deleteInvitation.bind(this),
+      "InvitationRepository.deleteInvitation"
+    );
   }
 
-  async createInvitation(invitationData) {
+  async _createInvitation(invitationData) {
     return await this.firestoreCRUD.createDocument(invitationData);
   }
 
-  async getInvitations() {
+  async _getInvitations() {
     return await this.firestoreCRUD.readDocuments();
   }
 
-  async deleteInvitation(invitationId) {
+  async _deleteInvitation(invitationId) {
     return await this.firestoreCRUD.deleteDocument(invitationId);
   }
 }
