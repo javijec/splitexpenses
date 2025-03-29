@@ -182,7 +182,7 @@ const GroupBalance = ({ balances }) => {
           <Fade in={true} timeout={500}>
             <Box
               sx={{
-                p: 5,
+                p: 2,
                 textAlign: "center",
                 height: "100%",
                 display: "flex",
@@ -194,12 +194,11 @@ const GroupBalance = ({ balances }) => {
               <Paper
                 elevation={0}
                 sx={{
-                  p: 4,
+                  p: 1,
                   borderRadius: 4,
                   bgcolor: (theme) => alpha(theme.palette.info.main, 0.04),
                   border: "1px dashed",
                   borderColor: (theme) => alpha(theme.palette.info.main, 0.2),
-                  mb: 3,
                 }}
               >
                 <Avatar
