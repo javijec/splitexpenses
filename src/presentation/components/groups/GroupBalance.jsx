@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemAvatar,
   Chip,
   Typography,
   Box,
@@ -136,90 +137,52 @@ const GroupBalance = ({ balances, transactions }) => {
                       justifyContent: "space-between",
                     }}
                   >
+                    <ListItemAvatar>
+                      <Avatar
+                        sx={{
+                          bgcolor: (theme) =>
+                            alpha(theme.palette.info.main, 0.1),
+                          color: "info.main",
+                          width: 36,
+                          height: 36,
+                          mr: 2,
+                          fontSize: "1rem",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {getUserDisplayName(balance.id).charAt(0).toUpperCase()}
+                      </Avatar>
+                    </ListItemAvatar>
                     <ListItemText
                       primary={
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <Avatar
+                        <Box>
+                          <Typography
+                            variant="h6"
                             sx={{
-                              bgcolor: (theme) =>
-                                alpha(theme.palette.info.main, 0.1),
-                              color: "info.main",
-                              width: 36,
-                              height: 36,
-                              mr: 2,
-                              fontSize: "1rem",
-                              fontWeight: "bold",
+                              fontWeight: 600,
+                              mb: 0.5,
+                              color: "text.primary",
+                              letterSpacing: 0.2,
                             }}
                           >
-                            {getUserDisplayName(balance.id)
-                              .charAt(0)
-                              .toUpperCase()}
-                          </Avatar>
-                          <Box>
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontWeight: 600,
-                                mb: 0.5,
-                                color: "text.primary",
-                                letterSpacing: 0.2,
-                              }}
-                            >
-                              {getUserDisplayName(balance.id)}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              {balance.amount > 0
-                                ? `Debe recibir: $${Math.abs(
-                                    balance.amount
-                                  ).toFixed(2)}`
-                                : balance.amount < 0
-                                ? `Debe pagar: $${Math.abs(
-                                    balance.amount
-                                  ).toFixed(2)}`
-                                : "Balance: $0"}
-                            </Typography>
-                          </Box>
+                            {getUserDisplayName(balance.id)}
+                          </Typography>
                         </Box>
                       }
                       sx={{ mb: { xs: 1, sm: 0 } }}
-                    />
-                    <Chip
-                      color={
-                        balance.amount > 0
-                          ? "success"
-                          : balance.amount < 0
-                          ? "error"
-                          : "default"
+                      secondary={
+                        <Typography variant="body2" color="text.secondary">
+                          {balance.amount > 0
+                            ? `Debe recibir: $${Math.abs(
+                                balance.amount
+                              ).toFixed(2)}`
+                            : balance.amount < 0
+                            ? `Debe pagar: $${Math.abs(balance.amount).toFixed(
+                                2
+                              )}`
+                            : "Balance: $0"}
+                        </Typography>
                       }
-                      label={`$${balance.amount.toFixed(2)}`}
-                      sx={{
-                        height: 28,
-                        fontSize: "0.85rem",
-                        fontWeight: 500,
-                        bgcolor: (theme) =>
-                          alpha(
-                            theme.palette[
-                              balance.amount > 0
-                                ? "success"
-                                : balance.amount < 0
-                                ? "error"
-                                : "default"
-                            ].main,
-                            0.1
-                          ),
-                        borderColor: (theme) =>
-                          alpha(
-                            theme.palette[
-                              balance.amount > 0
-                                ? "success"
-                                : balance.amount < 0
-                                ? "error"
-                                : "default"
-                            ].main,
-                            0.3
-                          ),
-                        mt: { xs: 1, sm: 0 },
-                      }}
                     />
                   </ListItem>
                 ))}
@@ -359,28 +322,30 @@ const GroupBalance = ({ balances, transactions }) => {
                       </Box>
                     }
                     secondary={
-                      <Typography
-                        variant="body2"
-                        sx={{ mt: 1, color: "text.secondary" }}
-                      >
-                        Debe pagar
-                      </Typography>
+                      <>
+                        <Typography
+                          variant="body2"
+                          sx={{ mt: 1, color: "text.secondary" }}
+                        >
+                          Debe pagar
+                        </Typography>
+                        <Chip
+                          color="primary"
+                          label={`$${transaction.amount.toFixed(2)}`}
+                          sx={{
+                            height: 28,
+                            fontSize: "0.85rem",
+                            fontWeight: 500,
+                            bgcolor: (theme) =>
+                              alpha(theme.palette.primary.main, 0.1),
+                            borderColor: (theme) =>
+                              alpha(theme.palette.primary.main, 0.3),
+                            mt: { xs: 1, sm: 0 },
+                          }}
+                        />
+                      </>
                     }
                     sx={{ mb: { xs: 1, sm: 0 } }}
-                  />
-                  <Chip
-                    color="primary"
-                    label={`$${transaction.amount.toFixed(2)}`}
-                    sx={{
-                      height: 28,
-                      fontSize: "0.85rem",
-                      fontWeight: 500,
-                      bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, 0.1),
-                      borderColor: (theme) =>
-                        alpha(theme.palette.primary.main, 0.3),
-                      mt: { xs: 1, sm: 0 },
-                    }}
                   />
                 </ListItem>
               ))}
