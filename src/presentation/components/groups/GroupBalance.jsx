@@ -54,9 +54,7 @@ const GroupBalance = ({ balances, transactions }) => {
         overflow: "hidden",
         transition: "all 0.3s ease",
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-        "&:hover": {
-          boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
-        },
+
         position: "relative",
         "&::before": {
           content: '""',
@@ -104,35 +102,31 @@ const GroupBalance = ({ balances, transactions }) => {
         }
         sx={{
           bgcolor: "background.paper",
-          pb: 2,
-          pt: 3,
+          pb: 1,
+          pt: 2,
           px: 3,
           borderBottom: "1px solid",
           borderColor: "divider",
         }}
       />
       <Divider />
-      <CardContent sx={{ p: 0 }}>
+      <CardContent sx={{ p: 0, m: 0 }}>
         {!showTransactions ? (
           // Mostrar balances individuales
           balances && balances.length > 0 ? (
             <Fade in={true} timeout={500}>
-              <List sx={{ p: 0 }}>
+              <List sx={{ p: 0, m: 0 }}>
                 {balances.map((balance) => (
                   <ListItem
                     key={balance.id}
                     sx={{
-                      py: 2.5,
+                      py: 1,
                       px: 3,
                       borderBottom: "1px solid",
                       borderColor: "divider",
                       transition: "all 0.3s ease",
-                      "&:hover": {
-                        bgcolor: (theme) =>
-                          alpha(theme.palette.info.main, 0.04),
-                        transform: "translateY(-2px)",
-                      },
-                      flexDirection: { xs: "column", sm: "row" },
+
+                      flexDirection: { xs: "row" },
                       alignItems: { xs: "flex-start", sm: "center" },
                       justifyContent: "space-between",
                     }}
@@ -145,7 +139,7 @@ const GroupBalance = ({ balances, transactions }) => {
                           color: "info.main",
                           width: 36,
                           height: 36,
-                          mr: 2,
+
                           fontSize: "1rem",
                           fontWeight: "bold",
                         }}
@@ -155,34 +149,75 @@ const GroupBalance = ({ balances, transactions }) => {
                     </ListItemAvatar>
                     <ListItemText
                       primary={
-                        <Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
                           <Typography
                             variant="h6"
                             sx={{
                               fontWeight: 600,
-                              mb: 0.5,
                               color: "text.primary",
                               letterSpacing: 0.2,
                             }}
                           >
                             {getUserDisplayName(balance.id)}
                           </Typography>
+                          <Chip
+                            label={
+                              balance.amount > 0
+                                ? `Recibe: $${Math.abs(balance.amount).toFixed(
+                                    2
+                                  )}`
+                                : balance.amount < 0
+                                ? `Paga: $${Math.abs(balance.amount).toFixed(
+                                    2
+                                  )}`
+                                : "Balance: $0"
+                            }
+                            color={
+                              balance.amount > 0
+                                ? "success"
+                                : balance.amount < 0
+                                ? "error"
+                                : "default"
+                            }
+                            sx={{
+                              height: 28,
+                              fontSize: "0.85rem",
+                              fontWeight: 500,
+                              color: (theme) =>
+                                theme.palette.mode === "dark" ? "#fff" : "#000",
+                              bgcolor: (theme) =>
+                                alpha(
+                                  theme.palette[
+                                    balance.amount > 0
+                                      ? "success"
+                                      : balance.amount < 0
+                                      ? "error"
+                                      : "default"
+                                  ].main,
+                                  0.3
+                                ),
+                              borderColor: (theme) =>
+                                alpha(
+                                  theme.palette[
+                                    balance.amount > 0
+                                      ? "success"
+                                      : balance.amount < 0
+                                      ? "error"
+                                      : "default"
+                                  ].main,
+                                  0.3
+                                ),
+                            }}
+                          />
                         </Box>
                       }
                       sx={{ mb: { xs: 1, sm: 0 } }}
-                      secondary={
-                        <Typography variant="body2" color="text.secondary">
-                          {balance.amount > 0
-                            ? `Debe recibir: $${Math.abs(
-                                balance.amount
-                              ).toFixed(2)}`
-                            : balance.amount < 0
-                            ? `Debe pagar: $${Math.abs(balance.amount).toFixed(
-                                2
-                              )}`
-                            : "Balance: $0"}
-                        </Typography>
-                      }
                     />
                   </ListItem>
                 ))}
@@ -237,28 +272,31 @@ const GroupBalance = ({ balances, transactions }) => {
         ) : // Mostrar transacciones simplificadas
         transactions && transactions.length > 0 ? (
           <Fade in={true} timeout={500}>
-            <List sx={{ p: 0 }}>
+            <List sx={{ p: 0, m: 0 }}>
               {transactions.map((transaction, index) => (
                 <ListItem
                   key={index}
                   sx={{
-                    py: 2.5,
+                    py: 1,
                     px: 3,
                     borderBottom: "1px solid",
                     borderColor: "divider",
                     transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: (theme) => alpha(theme.palette.info.main, 0.04),
-                      transform: "translateY(-2px)",
-                    },
-                    flexDirection: { xs: "column", sm: "row" },
+
+                    flexDirection: { xs: "row" },
                     alignItems: { xs: "flex-start", sm: "center" },
                     justifyContent: "space-between",
                   }}
                 >
                   <ListItemText
                     primary={
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <Avatar
                             sx={{
@@ -322,10 +360,15 @@ const GroupBalance = ({ balances, transactions }) => {
                       </Box>
                     }
                     secondary={
-                      <>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "left",
+                        }}
+                      >
                         <Typography
                           variant="body2"
-                          sx={{ mt: 1, color: "text.secondary" }}
+                          sx={{ mt: 0.5, mr: 1, color: "text.secondary" }}
                         >
                           Debe pagar
                         </Typography>
@@ -340,10 +383,9 @@ const GroupBalance = ({ balances, transactions }) => {
                               alpha(theme.palette.primary.main, 0.1),
                             borderColor: (theme) =>
                               alpha(theme.palette.primary.main, 0.3),
-                            mt: { xs: 1, sm: 0 },
                           }}
                         />
-                      </>
+                      </Box>
                     }
                     sx={{ mb: { xs: 1, sm: 0 } }}
                   />

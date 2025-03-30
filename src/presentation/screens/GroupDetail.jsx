@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { Grid2 as Grid, Box, Button } from "@mui/material";
+import { Group, Email } from "@mui/icons-material";
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";
 import ExpenseModal from "@/presentation/components/groups/ExpenseModal";
@@ -220,6 +221,7 @@ function GroupDetail() {
                 textTransform: "none",
               }}
             >
+              <Group sx={{ mr: 1 }} />
               Ver Miembros
             </Button>
             {invitations.length > 0 && (
@@ -234,12 +236,14 @@ function GroupDetail() {
                   textTransform: "none",
                 }}
               >
+                <Email sx={{ mr: 1 }} />
                 Ver Invitaciones
               </Button>
             )}
           </Box>
-
-          <GroupBalance balances={balances} transactions={transactions} />
+          <Box>
+            <GroupBalance balances={balances} transactions={transactions} />
+          </Box>
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <ExpensesList

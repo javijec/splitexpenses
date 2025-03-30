@@ -5,9 +5,8 @@ const GroupHeader = ({ group, isAdmin, onDelete }) => {
   return (
     <Box
       sx={{
-        mb: 4,
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
+        flexDirection: { xs: "row", sm: "row" },
         justifyContent: "space-between",
         alignItems: { xs: "flex-start", sm: "center" },
         pb: 2,
@@ -59,7 +58,7 @@ const GroupHeader = ({ group, isAdmin, onDelete }) => {
               opacity: 0.8,
             }}
           >
-            Gestiona los gastos y miembros del grupo
+            Gestionar grupo
           </Typography>
         </Box>
       </Box>
@@ -68,7 +67,7 @@ const GroupHeader = ({ group, isAdmin, onDelete }) => {
           variant="contained"
           color="error"
           startIcon={<DeleteIcon />}
-          size="small"
+          size="medium"
           onClick={onDelete}
           sx={{
             mt: { xs: 2, sm: 0 },
@@ -78,7 +77,7 @@ const GroupHeader = ({ group, isAdmin, onDelete }) => {
             },
           }}
         >
-          Eliminar Grupo
+          Eliminar
         </Button>
       )}
     </Box>
