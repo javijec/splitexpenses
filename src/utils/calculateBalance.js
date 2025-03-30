@@ -22,7 +22,13 @@ const calculateBalance = (expenses) => {
     });
   });
 
-  return balances;
+  // Convertir el objeto balances a un array de objetos con id y amount
+  const balancesArray = Object.entries(balances).map(([id, amount]) => ({
+    id,
+    amount,
+  }));
+
+  return balancesArray;
 };
 
 export default calculateBalance;

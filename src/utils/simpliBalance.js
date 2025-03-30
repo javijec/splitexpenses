@@ -4,14 +4,15 @@ const simplifyBalance = (balances) => {
   let creditors = [];
   let debtors = [];
 
-  for (const [id, balance] of Object.entries(balances)) {
-    if (balance > 0) {
-      creditors.push({ id, amount: balance });
-    } else if (balance < 0) {
+  // Procesamos el array de balances
+  balances.forEach(({ id, amount }) => {
+    if (amount > 0) {
+      creditors.push({ id, amount });
+    } else if (amount < 0) {
       // Guardamos el monto como positivo para facilitar los cálculos
-      debtors.push({ id, amount: -balance });
+      debtors.push({ id, amount: -amount });
     }
-  }
+  });
 
   // Array para almacenar las transacciones simplificadas
   const transactions = [];
