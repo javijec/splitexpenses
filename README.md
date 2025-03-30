@@ -135,7 +135,7 @@ Almacena la información de los usuarios registrados mediante Google
 
 ```
 {
-  uid: string (ID de Firebase),
+  id: string (ID de Firebase),
   displayName: string,
   email: string,
   photoURL: string,
@@ -167,9 +167,8 @@ Almacena la información de los grupos, incluyendo sus miembros.
 {
   id: string (automático),
   name: string,
-  description: string,
-  createdBy: string (ID del propietario),
-  members: array<string> (IDs de los miembros),
+  createdBy: map { id: string, displayName: string},
+  members: array [ displayName: string, email: string, id: string],
   createdAt: timestamp,
   updatedAt: timestamp
 }
@@ -186,13 +185,13 @@ Almacena todos los gastos registrados en la aplicación.
   amount: number,
   groupId: string (referencia al grupo),
   paidBy: array<{
-    memberId: string,
-    value: number
+    id: string,
+    amount: number
   }>,
   splitType: string ('equal', 'amount', 'percentage'),
   splits: array<{
-    memberId: string,
-    value: number
+    id: string,
+    amount: number
   }>,
   active: boolean,
   createdAt: timestamp,
