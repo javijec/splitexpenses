@@ -92,8 +92,8 @@ export const MembersListDesktop = ({
         }
         sx={{
           bgcolor: "background.paper",
-          pb: 2,
-          pt: 3,
+          pb: 1,
+          pt: 2,
           px: 3,
           borderBottom: "1px solid",
           borderColor: "divider",
@@ -107,7 +107,7 @@ export const MembersListDesktop = ({
               <ListItem
                 key={member.id}
                 sx={{
-                  py: 2.5,
+                  py: 1.5,
                   px: 3,
                   borderBottom: "1px solid",
                   borderColor: "divider",

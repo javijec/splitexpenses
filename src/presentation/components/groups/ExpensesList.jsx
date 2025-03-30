@@ -15,7 +15,7 @@ import ExpensesTable from "@/presentation/components/groups/ExpensesTable";
 import { deleteExpense, getExpense } from "@/domain/usecases/expenses";
 
 const ExpensesList = ({ expenses = [], setExpenses }) => {
-  const { modalData, setModalData, openExpenseModal } = useModal();
+  const { setModalData, openExpenseModal } = useModal();
   if (!Array.isArray(expenses)) {
     console.error("Invalid expenses prop: expected an array.");
     return null;
@@ -42,9 +42,7 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
         height: "100%",
         transition: "all 0.3s ease",
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-        "&:hover": {
-          boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
-        },
+
         position: "relative",
         "&::before": {
           content: '""',
@@ -75,14 +73,14 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
               variant="h6"
               sx={{ fontWeight: 700, letterSpacing: 0.2 }}
             >
-              Gastos del Grupo
+              Gastos
             </Typography>
           </Box>
         }
         sx={{
           bgcolor: "background.paper",
-          pb: 2,
-          pt: 3,
+          pb: 1,
+          pt: 2,
           px: 3,
           borderBottom: "1px solid",
           borderColor: "divider",
