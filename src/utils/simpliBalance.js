@@ -5,12 +5,12 @@ const simplifyBalance = (balances) => {
   let debtors = [];
 
   // Procesamos el array de balances
-  balances.forEach(({ id, amount }) => {
+  balances.forEach(({ id, amount, displayName }) => {
     if (amount > 0) {
-      creditors.push({ id, amount });
+      creditors.push({ id, amount, displayName });
     } else if (amount < 0) {
       // Guardamos el monto como positivo para facilitar los cálculos
-      debtors.push({ id, amount: -amount });
+      debtors.push({ id, amount: -amount, displayName });
     }
   });
 
@@ -28,7 +28,9 @@ const simplifyBalance = (balances) => {
     const amount = Math.min(debtor.amount, creditor.amount);
     transactions.push({
       from: debtor.id,
+      fromName: debtor.displayName,
       to: creditor.id,
+      toName: creditor.displayName,
       amount,
     });
 
@@ -45,7 +47,8 @@ const simplifyBalance = (balances) => {
       j++;
     }
   }
-
+  console.log(transactions);
+  // Devolvemos el array de transacciones simplificadas
   return transactions;
 };
 

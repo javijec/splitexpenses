@@ -47,6 +47,15 @@ function GroupDetail() {
 
   const [group, setGroup] = useState(null);
   const [expenses, setExpenses] = useState([]);
+
+  // Función para actualizar los gastos y recalcular los balances
+  const updateExpensesAndBalances = (newExpenses) => {
+    setExpenses(newExpenses);
+    const balanceData = calculateBalance(newExpenses);
+    const transactions = simplifyBalance(balanceData);
+    setBalances(balanceData);
+    setTransactions(transactions);
+  };
   const [members, setMembers] = useState([]);
   const [invitations, setInvitations] = useState([]);
   const [balances, setBalances] = useState([]);
@@ -69,9 +78,8 @@ function GroupDetail() {
 
       setGroupContext(groupData);
       setInvitations(invitationData);
-      setExpenses(expensesData);
-      setBalances(balanceData);
-      setTransactions(transactions);
+      updateExpensesAndBalances(expensesData);
+      // Los balances y transacciones ya se actualizan en updateExpensesAndBalances
     } catch (error) {
       console.error("Error fetching:", error);
     } finally {
@@ -249,7 +257,7 @@ function GroupDetail() {
           <ExpensesList
             expenses={expenses}
             user={user}
-            setExpenses={setExpenses}
+            setExpenses={updateExpensesAndBalances}
           />
         </Grid>
       </Grid>
@@ -257,7 +265,7 @@ function GroupDetail() {
         isOpen={isExpenseModalOpen}
         onClose={closeExpenseModal}
         membersList={groupContext?.members}
-        onExpenseAdded={setExpenses} // Pass setExpenses as the callback
+        onExpenseAdded={updateExpensesAndBalances} // Usar la nueva función que actualiza balances
       />
       <InviteModal
         isOpen={isInviteModalOpen}

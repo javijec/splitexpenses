@@ -6,7 +6,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemAvatar,
   Chip,
   Typography,
   Box,
@@ -18,42 +17,10 @@ import {
 
 import { AccountBalance as BalanceIcon } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
-import { getUserName } from "@/domain/usecases/users";
-import { useState, useEffect } from "react";
-import Loading from "../common/Loading";
+import { useState } from "react";
 
 const GroupBalance = ({ balances, transactions }) => {
-  const [userNames, setUserNames] = useState({});
   const [showTransactions, setShowTransactions] = useState(true);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchUserNames = async () => {
-      const names = {};
-      for (const balance of balances) {
-        const name = await getUserName(balance.id);
-        if (name) {
-          names[balance.id] = name;
-        }
-      }
-      setUserNames(names);
-      setLoading(false);
-    };
-
-    if (balances && balances.length > 0) {
-      fetchUserNames();
-    } else {
-      setLoading(false);
-    }
-  }, [balances]);
-
-  const getUserDisplayName = (userId) => {
-    return userNames[userId] || userId;
-  };
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
     <Card
@@ -157,7 +124,7 @@ const GroupBalance = ({ balances, transactions }) => {
                               letterSpacing: 0.2,
                             }}
                           >
-                            {getUserDisplayName(balance.id)}
+                            {balance.displayName}
                           </Typography>
                           <Chip
                             label={
@@ -298,7 +265,7 @@ const GroupBalance = ({ balances, transactions }) => {
                               color: "text.primary",
                             }}
                           >
-                            {getUserDisplayName(transaction.from)}
+                            {transaction.fromName}
                           </Typography>
                         </Box>
                         <Typography
@@ -327,12 +294,13 @@ const GroupBalance = ({ balances, transactions }) => {
                                 ? theme.palette.primary.light
                                 : theme.palette.primary.main,
                           }}
-                        />                         <Typography
-                        variant="body2"
-                        sx={{ mx: 1, color: "text.secondary" }}
-                      >
-                        a
-                      </Typography>
+                        />{" "}
+                        <Typography
+                          variant="body2"
+                          sx={{ mx: 1, color: "text.secondary" }}
+                        >
+                          a
+                        </Typography>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <Typography
                             variant="body1"
@@ -341,7 +309,7 @@ const GroupBalance = ({ balances, transactions }) => {
                               color: "text.primary",
                             }}
                           >
-                            {getUserDisplayName(transaction.to)}
+                            {transaction.toName}
                           </Typography>
                         </Box>
                       </Box>

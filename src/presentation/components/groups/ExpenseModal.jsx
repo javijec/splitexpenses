@@ -64,7 +64,11 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
         // Initialize paidByAmounts with current user
         const initialPaidBy = [];
         if (user) {
-          initialPaidBy.push({ id: user.uid, amount: 0 });
+          initialPaidBy.push({
+            id: user.uid,
+            amount: 0,
+            displayName: user.displayName || user.email || "",
+          });
         }
         setPaidByAmounts(initialPaidBy);
 
@@ -77,6 +81,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           const equalSplits = groupContext.members.map((member) => ({
             id: member.id,
             amount: equalSplit,
+            displayName: member.displayName || member.email || "",
           }));
           setSplitAmounts(equalSplits);
         } else {
@@ -116,6 +121,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
       const equalSplits = members.map((member) => ({
         id: member.id,
         amount: equalSplit,
+        displayName: member.displayName || member.email || "",
       }));
       setSplitAmounts(equalSplits);
     }
@@ -124,24 +130,36 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
   const handlePaidByChange = (memberId, value) => {
     setPaidByAmounts((prev) => {
       const existingIndex = prev.findIndex((item) => item.id === memberId);
+      // Find the member to get the displayName
+      const member = members.find((m) => m.id === memberId);
+      const displayName = member?.displayName || member?.email || "";
+
       if (existingIndex >= 0) {
         // Update existing item
         const updated = [...prev];
         updated[existingIndex] = {
           ...updated[existingIndex],
           amount: Number(value) || 0,
+          displayName: displayName,
         };
         return updated;
       } else {
         // Add new item
-        return [...prev, { id: memberId, amount: Number(value) || 0 }];
+        return [
+          ...prev,
+          {
+            id: memberId,
+            amount: Number(value) || 0,
+            displayName: displayName,
+          },
+        ];
       }
     });
   };
 
-  const handleSplitAmountChange = (memberId, value) => {
+  const handleSplitAmountChange = (member, value) => {
     setSplitAmounts((prev) => {
-      const existingIndex = prev.findIndex((item) => item.id === memberId);
+      const existingIndex = prev.findIndex((item) => item.id === member.id);
       if (existingIndex >= 0) {
         // Update existing item
         const updated = [...prev];
@@ -152,7 +170,14 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
         return updated;
       } else {
         // Add new item
-        return [...prev, { id: memberId, amount: Number(value) || 0 }];
+        return [
+          ...prev,
+          {
+            id: member.id,
+            displayName: member.displayName,
+            amount: Number(value) || 0,
+          },
+        ];
       }
     });
   };
@@ -313,16 +338,22 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ p: 2, bgcolor: "background.paper" }}>
-        <Box component="form" noValidate sx={{ mt: 0 }} onSubmit={handleSubmit}>
+      <DialogContent sx={{ p: 3, bgcolor: "background.paper" }}>
+        <Box
+          component="form"
+          noValidate
+          sx={{ mt: 0, gap: 0.5, display: "flex", flexDirection: "column" }}
+          onSubmit={handleSubmit}
+        >
           {formError && (
-            <Alert severity="error" sx={{ mb: 2 }}>
+            <Alert severity="error" sx={{ mb: 1, py: 0.5 }}>
               {formError}
             </Alert>
           )}
           {/* Description field */}
           <TextField
-            margin="normal"
+            margin="dense"
+            size="small"
             fullWidth
             id="description"
             label="Descripción *"
@@ -350,7 +381,10 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           />
 
           {/* Paid by section */}
-          <Typography variant="subtitle2" sx={{ fontWeight: 400 }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ fontWeight: 400, mt: 0.5, mb: 0 }}
+          >
             Pagado por
           </Typography>
           <Box
@@ -358,15 +392,16 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
               display: "flex",
               flexDirection: "row",
               gap: 1,
-              mt: 1,
-              mb: 1,
-              pb: 1,
+              mt: 0.5,
+              mb: 0.5,
+              pb: 0,
             }}
           >
             {members?.map((member) => (
               <Box key={member.id}>
                 <TextField
                   margin="dense"
+                  size="small"
                   fullWidth
                   label={member.displayName || member.email}
                   type="number"
@@ -401,10 +436,10 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           {/* Total amount - calculated from paid by amounts */}
           <Box
             sx={{
-              p: 1, // Reduced padding
+              p: 0.5, // Reduced padding
               bgcolor: (theme) => alpha(theme.palette.success.main, 0.1),
               borderRadius: 2,
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
               transition: "all 0.3s ease",
               border: "1px solid",
               borderColor: (theme) =>
@@ -412,10 +447,11 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                   ? alpha(theme.palette.error.main, 0.5)
                   : alpha(theme.palette.success.main, 0.2),
               "&:hover": {
-                boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
-                transform: "translateY(-2px)",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.12)",
+                transform: "translateY(-1px)",
               },
               position: "relative",
+              my: 0.5,
             }}
           >
             <Typography
@@ -458,11 +494,11 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
               display: "flex",
               flexDirection: "row",
               flexWrap: "nowrap",
-              gap: 2,
-              mt: 1,
-              mb: 2,
+              gap: 1,
+              mt: 0.5,
+              mb: 1,
               overflowX: "auto",
-              pb: 1,
+              pb: 0,
             }}
           >
             <Box
@@ -474,7 +510,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                 },
               }}
             >
-              <FormControl fullWidth margin="dense">
+              <FormControl fullWidth margin="dense" size="small">
                 <Select
                   value={divisionType}
                   onChange={(e) => {
@@ -487,6 +523,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                       const equalSplit = totalAmount / members.length;
                       const equalSplits = members.map((member) => ({
                         id: member.id,
+                        displayName: member.displayName || member.email || "",
                         amount: equalSplit,
                       }));
                       setSplitAmounts(equalSplits);
@@ -522,46 +559,45 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           {/* Division of expense section - changes based on division type */}
           {divisionType !== "equal" && (
             <>
-              <Typography
-                variant="subtitle2"
-                sx={{ mt: 2, mb: 1, fontWeight: 500 }}
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mt: 0.5 }}
               >
-                División del Gasto
-              </Typography>
-              {/* Show remaining amount or percentage */}
-              <Typography
-                variant="body2"
-                color={formError ? "error" : "text.secondary"}
-                sx={{
-                  mb: 1,
-                  p: 1,
-                  bgcolor: formError
-                    ? alpha("#f44336", 0.1)
-                    : "rgba(0, 0, 0, 0.03)",
-                  borderRadius: 1,
-                  display: "inline-block",
-                  border: formError ? "1px solid" : "none",
-                  borderColor: formError
-                    ? alpha("#f44336", 0.5)
-                    : "transparent",
-                }}
-              >
-                Restante:{" "}
-                {divisionType === "amount"
-                  ? `$${remaining.toFixed(2)}`
-                  : `${remainingPercentage.toFixed(2)}%`}
-              </Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                  División del Gasto
+                </Typography>
+                {/* Show remaining amount or percentage */}
+                <Typography
+                  variant="body2"
+                  color={formError ? "error" : "text.secondary"}
+                  sx={{
+                    bgcolor: formError
+                      ? alpha("#f44336", 0.1)
+                      : "rgba(0, 0, 0, 0.03)",
+                    borderRadius: 1,
+                    display: "inline-block",
+                    border: formError ? "1px solid" : "none",
+                    borderColor: formError
+                      ? alpha("#f44336", 0.5)
+                      : "transparent",
+                  }}
+                >
+                  Restante:{" "}
+                  {divisionType === "amount"
+                    ? `$${remaining.toFixed(2)}`
+                    : `${remainingPercentage.toFixed(2)}%`}
+                </Typography>
+              </Box>
               {/* Member split inputs */}
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "row",
                   flexWrap: "nowrap",
-                  gap: 2,
-                  mt: 1,
-                  mb: 2,
+                  gap: 1,
+                  mt: 0.5,
+                  mb: 0.5,
                   overflowX: "auto",
-                  pb: 1,
+                  pb: 0,
                 }}
               >
                 {members.map((member) => (
@@ -577,6 +613,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                   >
                     <TextField
                       margin="dense"
+                      size="small"
                       fullWidth
                       label={member.displayName || member.email}
                       type="number"
@@ -588,7 +625,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                         // Only allow positive numbers
                         const value = e.target.value;
                         if (/^\d*\.?\d*$/.test(value) && value >= 0) {
-                          handleSplitAmountChange(member.id, value);
+                          handleSplitAmountChange(member, value);
                         }
                       }}
                       variant="outlined"
@@ -621,10 +658,18 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           )}
 
           {/* Action buttons */}
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              p: 0,
+              mt: 1,
+            }}
+          >
             <Button
               onClick={onClose}
               color="inherit"
+              size="small"
               sx={{
                 borderRadius: 2,
                 fontWeight: 500,
@@ -634,6 +679,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                   bgcolor: (theme) => alpha(theme.palette.grey[500], 0.05),
                 },
                 transition: "all 0.2s ease",
+                py: 0.5,
               }}
             >
               CANCELAR
@@ -643,19 +689,20 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                 type="submit"
                 variant="contained"
                 color="primary"
+                size="small"
                 sx={{
-                  py: 1.5,
-                  px: 3,
+                  py: 0.5,
+                  px: 2,
                   borderRadius: 2,
                   fontWeight: 600,
                   bgcolor: "success.main",
                   boxShadow: (theme) =>
-                    `0 4px 12px ${alpha(theme.palette.success.main, 0.3)}`,
+                    `0 2px 8px ${alpha(theme.palette.success.main, 0.3)}`,
                   "&:hover": {
                     bgcolor: "success.dark",
                     boxShadow: (theme) =>
-                      `0 6px 16px ${alpha(theme.palette.success.main, 0.4)}`,
-                    transform: "translateY(-2px)",
+                      `0 4px 12px ${alpha(theme.palette.success.main, 0.4)}`,
+                    transform: "translateY(-1px)",
                   },
                   transition: "all 0.2s ease",
                 }}
@@ -668,19 +715,20 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                 type="submit"
                 variant="contained"
                 color="primary"
+                size="small"
                 sx={{
-                  py: 1.5,
-                  px: 3,
+                  py: 0.5,
+                  px: 2,
                   borderRadius: 2,
                   fontWeight: 600,
                   bgcolor: "success.main",
                   boxShadow: (theme) =>
-                    `0 4px 12px ${alpha(theme.palette.success.main, 0.3)}`,
+                    `0 2px 8px ${alpha(theme.palette.success.main, 0.3)}`,
                   "&:hover": {
                     bgcolor: "success.dark",
                     boxShadow: (theme) =>
-                      `0 6px 16px ${alpha(theme.palette.success.main, 0.4)}`,
-                    transform: "translateY(-2px)",
+                      `0 4px 12px ${alpha(theme.palette.success.main, 0.4)}`,
+                    transform: "translateY(-1px)",
                   },
                   transition: "all 0.2s ease",
                 }}
