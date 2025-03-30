@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SignInPage } from "@toolpad/core/SignInPage";
 import { useNavigate } from "react-router";
 import { AuthService } from "@/application/services/AuthService";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 export default function Login() {
   const authService = new AuthService();
@@ -33,7 +33,7 @@ export default function Login() {
   };
 
   return (
-    <>
+    <Box>
       <SignInPage
         signIn={handleSignIn}
         providers={providers}
@@ -60,6 +60,6 @@ export default function Login() {
           {error}
         </Alert>
       </Snackbar>
-    </>
+    </Box>
   );
 }

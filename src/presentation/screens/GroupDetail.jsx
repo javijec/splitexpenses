@@ -24,16 +24,10 @@ import { getGroupExpenses } from "@/domain/usecases/expenses";
 
 import Loading from "@/presentation/components/common/Loading";
 import GroupHeader from "@/presentation/components/groups/GroupHeader";
-import {
-  MembersListDesktop,
-  MembersListMobile,
-} from "@/presentation/components/groups/MembersList";
+import { MembersListDesktop } from "@/presentation/components/groups/MembersList";
 import GroupBalance from "@/presentation/components/groups/GroupBalance";
 import ExpensesList from "@/presentation/components/groups/ExpensesList";
-import {
-  InvitationsListDesktop,
-  InvitationsListMobile,
-} from "@/presentation/components/groups/InvitationsList";
+import { InvitationsListDesktop } from "@/presentation/components/groups/InvitationsList";
 
 function GroupDetail() {
   const { groupId } = useParams();
