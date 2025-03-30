@@ -28,6 +28,8 @@ import { MembersListDesktop } from "@/presentation/components/groups/MembersList
 import GroupBalance from "@/presentation/components/groups/GroupBalance";
 import ExpensesList from "@/presentation/components/groups/ExpensesList";
 import { InvitationsListDesktop } from "@/presentation/components/groups/InvitationsList";
+import calculateBalance from "@/utils/calculateBalance";
+import simplifyBalance from "@/utils/simpliBalance";
 
 function GroupDetail() {
   const { groupId } = useParams();
@@ -47,6 +49,7 @@ function GroupDetail() {
   const [members, setMembers] = useState([]);
   const [invitations, setInvitations] = useState([]);
   const [balances, setBalances] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [alertInfo, setAlertInfo] = useState({
@@ -60,9 +63,14 @@ function GroupDetail() {
       const invitationData = await getGroupInvitations(groupId);
       const groupData = await getGroupByID(groupId);
       const expensesData = await getGroupExpenses(groupId);
+      const balanceData = calculateBalance(expensesData);
+      const transactions = simplifyBalance(balanceData);
+
       setGroupContext(groupData);
       setInvitations(invitationData);
       setExpenses(expensesData);
+      setBalances(balanceData);
+      setTransactions(transactions);
     } catch (error) {
       console.error("Error fetching:", error);
     } finally {
@@ -231,7 +239,7 @@ function GroupDetail() {
             )}
           </Box>
 
-          <GroupBalance balances={balances} />
+          <GroupBalance balances={balances} transactions={transactions} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <ExpensesList

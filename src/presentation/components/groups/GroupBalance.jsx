@@ -16,7 +16,9 @@ import {
 import { AccountBalance as BalanceIcon } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
 
-const GroupBalance = ({ balances }) => {
+const GroupBalance = ({ balances, transactions }) => {
+  console.log(balances);
+  console.log(transactions);
   return (
     <Card
       elevation={3}

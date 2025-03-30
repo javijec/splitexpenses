@@ -1,4 +1,4 @@
-const simplifyBalance = (expenses) => {
+const simplifyBalance = (balances) => {
   // Paso 2: Simplificar las transacciones
   // Separamos a las personas en acreedores (balance > 0) y deudores (balance < 0)
   let creditors = [];
@@ -45,10 +45,7 @@ const simplifyBalance = (expenses) => {
     }
   }
 
-  console.log("\nTransacciones simplificadas:");
-  transactions.forEach((t) => {
-    console.log(`${t.from} debe pagar ${t.amount.toFixed(2)} a ${t.to}`);
-  });
+  return transactions;
 };
 
 export default simplifyBalance;

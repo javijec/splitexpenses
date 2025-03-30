@@ -22,10 +22,7 @@ const calculateBalance = (expenses) => {
     });
   });
 
-  console.log("Balances netos:");
-  for (const [id, balance] of Object.entries(balances)) {
-    console.log(`${id}: ${balance.toFixed(2)}`);
-  }
+  return balances;
 };
 
 export default calculateBalance;
