@@ -15,7 +15,6 @@ import {
   Fade,
   Avatar,
   Alert,
-  Modal,
 } from "@mui/material";
 import {
   Close as CloseIcon,
@@ -254,15 +253,15 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
     >
       <DialogTitle
         sx={{
-          p: 3,
+          p: 1,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
           bgcolor: "background.paper",
           borderBottom: "1px solid",
           borderColor: "divider",
-          pb: 2,
-          pt: 3,
+          pb: 1,
+          pt: 2,
           px: 3,
         }}
       >
@@ -294,10 +293,6 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                 Añadir Gasto
               </Typography>
             )}
-
-            <Typography variant="body2" color="text.secondary">
-              Registra un nuevo gasto para dividir entre los miembros del grupo
-            </Typography>
           </Box>
         </Box>
         <IconButton
@@ -318,8 +313,8 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ p: 3, pt: 3, bgcolor: "background.paper" }}>
-        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
+      <DialogContent sx={{ p: 2, bgcolor: "background.paper" }}>
+        <Box component="form" noValidate sx={{ mt: 0 }} onSubmit={handleSubmit}>
           {formError && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {formError}
@@ -355,16 +350,16 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           />
 
           {/* Paid by section */}
-          <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 400 }}>
             Pagado por
           </Typography>
           <Box
             sx={{
               display: "flex",
               flexDirection: "row",
-              gap: 2,
+              gap: 1,
               mt: 1,
-              mb: 2,
+              mb: 1,
               pb: 1,
             }}
           >
@@ -404,12 +399,9 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           </Box>
 
           {/* Total amount - calculated from paid by amounts */}
-          <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-            Monto Total *
-          </Typography>
           <Box
             sx={{
-              p: 2,
+              p: 1, // Reduced padding
               bgcolor: (theme) => alpha(theme.palette.success.main, 0.1),
               borderRadius: 2,
               boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
@@ -423,14 +415,28 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                 boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
                 transform: "translateY(-2px)",
               },
+              position: "relative",
             }}
           >
+            <Typography
+              variant="subtitle2"
+              sx={{
+                position: "absolute",
+                top: -10,
+                left: 10,
+                px: 1,
+                fontWeight: 500,
+              }}
+            >
+              Monto Total
+            </Typography>
             <Typography
               variant="h6"
               sx={{
                 fontWeight: 600,
                 color: errors.totalAmount ? "error.main" : "success.main",
                 textAlign: "center",
+                my: 0.5, // Reduced vertical margin
               }}
             >
               ${totalAmount.toFixed(2)}
@@ -439,7 +445,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
               <Typography
                 variant="caption"
                 color="error"
-                sx={{ display: "block", textAlign: "center", mt: 1 }}
+                sx={{ display: "block", textAlign: "center", mt: 0.5 }} // Reduced top margin
               >
                 {errors.totalAmount}
               </Typography>
@@ -447,12 +453,6 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           </Box>
 
           {/* Division type selector */}
-          <Typography
-            variant="subtitle2"
-            sx={{ mt: 2, mb: 1, fontWeight: 500 }}
-          >
-            Tipo de División
-          </Typography>
           <Box
             sx={{
               display: "flex",
@@ -499,6 +499,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                     }
                   }}
                   displayEmpty
+                  labelId="division-type-select-label"
                   sx={{
                     borderRadius: 2,
                     "&:hover .MuiOutlinedInput-notchedOutline": {
