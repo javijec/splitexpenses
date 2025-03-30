@@ -131,22 +131,6 @@ const GroupBalance = ({ balances, transactions }) => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <ListItemAvatar>
-                      <Avatar
-                        sx={{
-                          bgcolor: (theme) =>
-                            alpha(theme.palette.info.main, 0.1),
-                          color: "info.main",
-                          width: 36,
-                          height: 36,
-
-                          fontSize: "1rem",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {getUserDisplayName(balance.id).charAt(0).toUpperCase()}
-                      </Avatar>
-                    </ListItemAvatar>
                     <ListItemText
                       primary={
                         <Box
@@ -157,7 +141,7 @@ const GroupBalance = ({ balances, transactions }) => {
                           }}
                         >
                           <Typography
-                            variant="h6"
+                            variant="subtitle2"
                             sx={{
                               fontWeight: 600,
                               color: "text.primary",
@@ -186,8 +170,8 @@ const GroupBalance = ({ balances, transactions }) => {
                                 : "default"
                             }
                             sx={{
-                              height: 28,
-                              fontSize: "0.85rem",
+                              height: 24,
+                              fontSize: { xs: "0.8rem", sm: "0.9rem" },
                               fontWeight: 500,
                               color: (theme) =>
                                 theme.palette.mode === "dark" ? "#fff" : "#000",
@@ -217,7 +201,7 @@ const GroupBalance = ({ balances, transactions }) => {
                           />
                         </Box>
                       }
-                      sx={{ mb: { xs: 1, sm: 0 } }}
+                      sx={{ mb: { xs: 0, sm: 0 } }}
                     />
                   </ListItem>
                 ))}
@@ -298,22 +282,6 @@ const GroupBalance = ({ balances, transactions }) => {
                         }}
                       >
                         <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <Avatar
-                            sx={{
-                              bgcolor: (theme) =>
-                                alpha(theme.palette.error.main, 0.1),
-                              color: "error.main",
-                              width: 36,
-                              height: 36,
-                              mr: 1,
-                              fontSize: "0.9rem",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {getUserDisplayName(transaction.from)
-                              .charAt(0)
-                              .toUpperCase()}
-                          </Avatar>
                           <Typography
                             variant="body1"
                             sx={{
@@ -328,49 +296,7 @@ const GroupBalance = ({ balances, transactions }) => {
                           variant="body2"
                           sx={{ mx: 1, color: "text.secondary" }}
                         >
-                          →
-                        </Typography>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <Avatar
-                            sx={{
-                              bgcolor: (theme) =>
-                                alpha(theme.palette.success.main, 0.1),
-                              color: "success.main",
-                              width: 36,
-                              height: 36,
-                              mr: 1,
-                              fontSize: "0.9rem",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {getUserDisplayName(transaction.to)
-                              .charAt(0)
-                              .toUpperCase()}
-                          </Avatar>
-                          <Typography
-                            variant="body1"
-                            sx={{
-                              fontWeight: 600,
-                              color: "text.primary",
-                            }}
-                          >
-                            {getUserDisplayName(transaction.to)}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    }
-                    secondary={
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "left",
-                        }}
-                      >
-                        <Typography
-                          variant="body2"
-                          sx={{ mt: 0.5, mr: 1, color: "text.secondary" }}
-                        >
-                          Debe pagar
+                          le debe
                         </Typography>
                         <Chip
                           color="primary"
@@ -385,6 +311,17 @@ const GroupBalance = ({ balances, transactions }) => {
                               alpha(theme.palette.primary.main, 0.3),
                           }}
                         />
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              fontWeight: 600,
+                              color: "text.primary",
+                            }}
+                          >
+                            {getUserDisplayName(transaction.to)}
+                          </Typography>
+                        </Box>
                       </Box>
                     }
                     sx={{ mb: { xs: 1, sm: 0 } }}

@@ -12,15 +12,11 @@ import {
   Chip,
   IconButton,
   Tooltip,
-  useMediaQuery,
 } from "@mui/material";
 import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { alpha, useTheme } from "@mui/material/styles";
+import { alpha } from "@mui/material/styles";
 
 const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   return (
     <TableContainer
       component={Paper}
@@ -30,7 +26,10 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
       }}
     >
-      <Table size={isMobile ? "small" : "medium"}>
+      <Table
+        size="small"
+        sx={{ "& .MuiTableCell-root": { py: { xs: 1, sm: 1.5 } } }}
+      >
         <TableHead
           sx={{
             bgcolor: (theme) => alpha(theme.palette.success.main, 0.08),
@@ -38,37 +37,46 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
         >
           <TableRow>
             <TableCell
-              width={isMobile ? "25%" : "20%"}
-              sx={{ px: isMobile ? 1 : 2 }}
+              width={{ xs: "25%", sm: "20%" }}
+              sx={{ px: { xs: 1, sm: 2 } }}
             >
-              <Typography variant={isMobile ? "caption" : "subtitle2"}>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
+              >
                 Fecha
               </Typography>
             </TableCell>
             <TableCell
-              width={isMobile ? "30%" : "40%"}
-              sx={{ px: isMobile ? 1 : 2 }}
+              width={{ xs: "30%", sm: "40%" }}
+              sx={{ px: { xs: 1, sm: 2 } }}
             >
-              <Typography variant={isMobile ? "caption" : "subtitle2"}>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
+              >
                 Descripción
               </Typography>
             </TableCell>
-            <TableCell
-              width={isMobile ? "20%" : "20%"}
-              sx={{ px: isMobile ? 1 : 2 }}
-            >
-              <Typography variant={isMobile ? "caption" : "subtitle2"}>
+            <TableCell width={"20%"} sx={{ px: { xs: 1, sm: 2 } }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
+              >
                 Monto
               </Typography>
             </TableCell>
             <TableCell
-              width={isMobile ? "25%" : "20%"}
+              width={{ xs: "25%", sm: "20%" }}
               sx={{
-                px: isMobile ? 1 : 2,
-                textAlign: isMobile ? "center" : "left",
+                px: { xs: 1, sm: 2 },
+                textAlign: { xs: "center", sm: "left" },
               }}
             >
-              <Typography variant={isMobile ? "caption" : "subtitle2"}>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
+              >
                 Acciones
               </Typography>
             </TableCell>
@@ -85,14 +93,14 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
                 },
               }}
             >
-              <TableCell sx={{ px: isMobile ? 1 : 2, py: isMobile ? 1 : 1.5 }}>
+              <TableCell sx={{ px: { xs: 1, sm: 2, py: { xs: 1, sm: 1.5 } } }}>
                 <Typography variant="body2" color="text.secondary" noWrap>
                   {new Date(
                     expense.createdAt.seconds * 1000
                   ).toLocaleDateString("es-ES")}
                 </Typography>
               </TableCell>
-              <TableCell sx={{ px: isMobile ? 1 : 2, py: isMobile ? 1 : 1.5 }}>
+              <TableCell sx={{ px: { xs: 1, sm: 2, py: { xs: 1, sm: 1.5 } } }}>
                 <Typography
                   variant="body2"
                   color="text.primary"
@@ -107,47 +115,60 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
                   {expense.description}
                 </Typography>
               </TableCell>
-              <TableCell sx={{ px: isMobile ? 1 : 2, py: isMobile ? 1 : 1.5 }}>
+              <TableCell sx={{ px: { xs: 1, sm: 2, py: { xs: 1, sm: 1.5 } } }}>
                 <Chip
                   label={`$${expense.amount}`}
                   size="small"
                   color="success"
                   variant="outlined"
                   sx={{
-                    height: isMobile ? 24 : 28,
-                    fontSize: isMobile ? "0.75rem" : "0.85rem",
-                    fontWeight: 500,
-                    bgcolor: (theme) => alpha(theme.palette.success.main, 0.05),
-                    borderColor: (theme) =>
-                      alpha(theme.palette.success.main, 0.3),
-                    maxWidth: "100%",
+                    height: {
+                      xs: 24,
+                      sm: 28,
+                      fontSize: {
+                        xs: "0.75rem",
+                        sm: "0.85rem",
+                        fontWeight: 500,
+                        bgcolor: (theme) =>
+                          alpha(theme.palette.success.main, 0.05),
+                        borderColor: (theme) =>
+                          alpha(theme.palette.success.main, 0.3),
+                        maxWidth: "100%",
+                      },
+                    },
                   }}
                 />
               </TableCell>
               <TableCell
                 sx={{
-                  px: isMobile ? 1 : 2,
-                  py: isMobile ? 1 : 1.5,
-                  textAlign: isMobile ? "center" : "left",
+                  px: {
+                    xs: 1,
+                    sm: 2,
+                    py: {
+                      xs: 1,
+                      sm: 1.5,
+                      textAlign: { xs: "center", sm: "left" },
+                    },
+                  },
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: isMobile ? "center" : "flex-start",
+                    justifyContent: { xs: "center", sm: "flex-start" },
                   }}
                 >
                   <Tooltip title="Editar gasto">
                     <IconButton
                       edge="end"
                       aria-label="edit"
-                      size={isMobile ? "small" : "medium"}
+                      size="small"
                       onClick={() => onEditExpense(expense.id)}
                       sx={{
-                        mr: isMobile ? 0.5 : 1,
-                        width: isMobile ? 32 : 40,
-                        height: isMobile ? 32 : 40,
-                        p: isMobile ? 0.5 : 1,
+                        mr: { xs: 0.5, sm: 1 },
+                        width: { xs: 32, sm: 40 },
+                        height: { xs: 32, sm: 40 },
+                        p: { xs: 0.5, sm: 1 },
                         bgcolor: (theme) =>
                           alpha(theme.palette.success.main, 0.1),
                         color: "success.main",
@@ -157,7 +178,7 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
                         "&:hover": {
                           bgcolor: (theme) =>
                             alpha(theme.palette.success.main, 0.2),
-                          transform: isMobile ? "scale(1.02)" : "scale(1.05)",
+                          transform: { xs: "scale(1.02)", sm: "scale(1.05)" },
                           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
                         },
                         transition: "all 0.2s ease",
@@ -170,12 +191,12 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      size={isMobile ? "small" : "medium"}
+                      size="small"
                       onClick={() => onDeleteExpense(expense.id)}
                       sx={{
-                        width: isMobile ? 32 : 40,
-                        height: isMobile ? 32 : 40,
-                        p: isMobile ? 0.5 : 1,
+                        width: { xs: 32, sm: 40 },
+                        height: { xs: 32, sm: 40 },
+                        p: { xs: 0.5, sm: 1 },
                         bgcolor: (theme) =>
                           alpha(theme.palette.error.main, 0.1),
                         color: "error.main",
@@ -185,7 +206,7 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
                         "&:hover": {
                           bgcolor: (theme) =>
                             alpha(theme.palette.error.main, 0.2),
-                          transform: isMobile ? "scale(1.02)" : "scale(1.05)",
+                          transform: { xs: "scale(1.02)", sm: "scale(1.05)" },
                           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
                         },
                         transition: "all 0.2s ease",
