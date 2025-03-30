@@ -88,7 +88,7 @@ const GroupBalance = ({ balances, transactions }) => {
               variant="h6"
               sx={{ fontWeight: 700, letterSpacing: 0.2 }}
             >
-              Balance del Grupo
+              Balance
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
               <Typography variant="body2" color="text.secondary" sx={{ mr: 1 }}>
