@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import { Receipt as ReceiptIcon } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
+import { useModal } from "@/application/contexts/ModalContext";
 import ExpensesTable from "@/presentation/components/groups/ExpensesTable";
-import { deleteExpense } from "@/domain/usecases/expenses";
+import { deleteExpense, getExpense } from "@/domain/usecases/expenses";
 
 const ExpensesList = ({ expenses = [], setExpenses }) => {
-  // Log the type of expenses to debug
-
+  const { modalData, setModalData, openExpenseModal } = useModal();
   if (!Array.isArray(expenses)) {
     console.error("Invalid expenses prop: expected an array.");
     return null;
@@ -23,13 +23,14 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
 
   const handleDeleteExpense = async (expenseId) => {
     const data = await deleteExpense(expenseId);
-    console.log("Deleted expense with ID:", expenseId);
-    console.log("Updated expenses:", data);
+
     setExpenses(data);
   };
 
   const handleEditExpense = async (expenseId) => {
-    console.log("Editing expense with ID:", expenseId);
+    const data = await getExpense(expenseId);
+    setModalData(data);
+    openExpenseModal();
   };
 
   return (

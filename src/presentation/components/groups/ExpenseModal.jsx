@@ -15,6 +15,7 @@ import {
   Fade,
   Avatar,
   Alert,
+  Modal,
 } from "@mui/material";
 import {
   Close as CloseIcon,
@@ -22,16 +23,16 @@ import {
 } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
 import { useAuth } from "@/application/contexts/AuthContext";
-import { createExpense, getGroupExpenses } from "@/domain/usecases/expenses";
+import { useModal } from "@/application/contexts/ModalContext";
+import {
+  createExpense,
+  getGroupExpenses,
+  updateExpense,
+} from "@/domain/usecases/expenses";
 
-const ExpenseModal = ({
-  isOpen,
-  onClose,
-  expense = [],
-  membersList,
-  onExpenseAdded,
-}) => {
+const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
   const { user, groupContext } = useAuth();
+  const { modalData } = useModal();
   const [description, setDescription] = useState("");
   const [paidByAmounts, setPaidByAmounts] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -49,13 +50,13 @@ const ExpenseModal = ({
 
   useEffect(() => {
     if (isOpen) {
-      if (expense) {
+      if (modalData) {
         // Edit mode - populate with existing expense data
-        setDescription(expense.description || "");
-        setTotalAmount(expense.totalAmount || 0);
-        setPaidByAmounts(expense.paidByAmounts || []);
-        setDivisionType(expense.divisionType || "equal");
-        setSplitAmounts(expense.splitAmounts || []);
+        setDescription(modalData.description || "");
+        setTotalAmount(modalData.totalAmount || 0);
+        setPaidByAmounts(modalData.paidBy || []);
+        setDivisionType(modalData.splitType || "equal");
+        setSplitAmounts(modalData.splits || []);
       } else {
         // Create mode - initialize with defaults
         setDescription("");
@@ -208,9 +209,11 @@ const ExpenseModal = ({
       splits: splitAmounts,
       active: true,
     };
-
-    // Save expense to Firestore
-    await createExpense(expenseData);
+    if (modalData) {
+      await updateExpense(modalData.id, expenseData);
+    } else {
+      await createExpense(expenseData);
+    }
 
     // Call the callback to update expenses list
     if (onExpenseAdded) {
@@ -276,12 +279,22 @@ const ExpenseModal = ({
             <ReceiptIcon />
           </Avatar>
           <Box>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-            >
-              Añadir Gasto
-            </Typography>
+            {modalData ? (
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 700, letterSpacing: 0.2 }}
+              >
+                Editar Gasto
+              </Typography>
+            ) : (
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 700, letterSpacing: 0.2 }}
+              >
+                Añadir Gasto
+              </Typography>
+            )}
+
             <Typography variant="body2" color="text.secondary">
               Registra un nuevo gasto para dividir entre los miembros del grupo
             </Typography>
@@ -624,30 +637,57 @@ const ExpenseModal = ({
             >
               CANCELAR
             </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{
-                py: 1.5,
-                px: 3,
-                borderRadius: 2,
-                fontWeight: 600,
-                bgcolor: "success.main",
-                boxShadow: (theme) =>
-                  `0 4px 12px ${alpha(theme.palette.success.main, 0.3)}`,
-                "&:hover": {
-                  bgcolor: "success.dark",
+            {modalData ? (
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                sx={{
+                  py: 1.5,
+                  px: 3,
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  bgcolor: "success.main",
                   boxShadow: (theme) =>
-                    `0 6px 16px ${alpha(theme.palette.success.main, 0.4)}`,
-                  transform: "translateY(-2px)",
-                },
-                transition: "all 0.2s ease",
-              }}
-              disableElevation
-            >
-              AÑADIR GASTO
-            </Button>
+                    `0 4px 12px ${alpha(theme.palette.success.main, 0.3)}`,
+                  "&:hover": {
+                    bgcolor: "success.dark",
+                    boxShadow: (theme) =>
+                      `0 6px 16px ${alpha(theme.palette.success.main, 0.4)}`,
+                    transform: "translateY(-2px)",
+                  },
+                  transition: "all 0.2s ease",
+                }}
+                disableElevation
+              >
+                GUARDAR GASTO
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                sx={{
+                  py: 1.5,
+                  px: 3,
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  bgcolor: "success.main",
+                  boxShadow: (theme) =>
+                    `0 4px 12px ${alpha(theme.palette.success.main, 0.3)}`,
+                  "&:hover": {
+                    bgcolor: "success.dark",
+                    boxShadow: (theme) =>
+                      `0 6px 16px ${alpha(theme.palette.success.main, 0.4)}`,
+                    transform: "translateY(-2px)",
+                  },
+                  transition: "all 0.2s ease",
+                }}
+                disableElevation
+              >
+                AÑADIR GASTO
+              </Button>
+            )}
           </Box>
         </Box>
       </DialogContent>

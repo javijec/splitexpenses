@@ -9,9 +9,13 @@ export const ModalProvider = ({ children }) => {
   const [isGroupModalOpen, setGroupModalOpen] = useState(false);
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
   const [isDeleteGroupModalOpen, setDeleteGroupModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
 
   const openExpenseModal = () => setExpenseModalOpen(true);
-  const closeExpenseModal = () => setExpenseModalOpen(false);
+  const closeExpenseModal = () => {
+    setExpenseModalOpen(false);
+    setModalData(null);
+  };
   const openGroupModal = () => setGroupModalOpen(true);
   const closeGroupModal = () => setGroupModalOpen(false);
   const openInviteModal = () => setInviteModalOpen(true);
@@ -19,7 +23,6 @@ export const ModalProvider = ({ children }) => {
   const openDeleteGroupModal = () => setDeleteGroupModalOpen(true);
   const closeDeleteGroupModal = () => setDeleteGroupModalOpen(false);
 
-  // Provide the value to the contex
   const value = {
     isExpenseModalOpen,
     openExpenseModal,
@@ -33,6 +36,8 @@ export const ModalProvider = ({ children }) => {
     isDeleteGroupModalOpen,
     openDeleteGroupModal,
     closeDeleteGroupModal,
+    modalData,
+    setModalData,
   };
 
   return (
