@@ -20,12 +20,15 @@ import { AccountBalance as BalanceIcon } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
 import { getUserName } from "@/domain/usecases/users";
 import { useState, useEffect } from "react";
+import Loading from "../common/Loading";
 
 const GroupBalance = ({ balances, transactions }) => {
   const [userNames, setUserNames] = useState({});
   const [showTransactions, setShowTransactions] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const fetchUserNames = async () => {
       const names = {};
       for (const balance of balances) {
@@ -35,16 +38,22 @@ const GroupBalance = ({ balances, transactions }) => {
         }
       }
       setUserNames(names);
+      setLoading(false);
     };
 
     if (balances && balances.length > 0) {
       fetchUserNames();
+    } else {
+      setLoading(false);
     }
   }, [balances]);
 
   const getUserDisplayName = (userId) => {
     return userNames[userId] || userId;
   };
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Card
@@ -306,11 +315,24 @@ const GroupBalance = ({ balances, transactions }) => {
                             fontSize: "0.85rem",
                             fontWeight: 500,
                             bgcolor: (theme) =>
-                              alpha(theme.palette.primary.main, 0.1),
+                              theme.palette.mode === "dark"
+                                ? alpha(theme.palette.primary.main, 0.2)
+                                : alpha(theme.palette.primary.main, 0.1),
                             borderColor: (theme) =>
-                              alpha(theme.palette.primary.main, 0.3),
+                              theme.palette.mode === "dark"
+                                ? alpha(theme.palette.primary.main, 0.4)
+                                : alpha(theme.palette.primary.main, 0.3),
+                            color: (theme) =>
+                              theme.palette.mode === "dark"
+                                ? theme.palette.primary.light
+                                : theme.palette.primary.main,
                           }}
-                        />
+                        />                         <Typography
+                        variant="body2"
+                        sx={{ mx: 1, color: "text.secondary" }}
+                      >
+                        a
+                      </Typography>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <Typography
                             variant="body1"
