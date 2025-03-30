@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemAvatar,
   Typography,
   Fade,
   Chip,
@@ -68,8 +69,8 @@ const MembersDialog = ({
           bgcolor: "background.paper",
           borderBottom: "1px solid",
           borderColor: "divider",
-          pb: 2,
-          pt: 3,
+          pb: 1,
+          pt: 2,
           px: 3,
         }}
       >
@@ -124,7 +125,7 @@ const MembersDialog = ({
               <ListItem
                 key={member.id}
                 sx={{
-                  py: 2.5,
+                  py: 0.5,
                   px: 3,
                   borderBottom: "1px solid",
                   borderColor: "divider",
@@ -133,9 +134,9 @@ const MembersDialog = ({
                     bgcolor: (theme) => alpha(theme.palette.primary.main, 0.04),
                     transform: "translateY(-2px)",
                   },
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: { xs: "flex-start", sm: "center" },
-                  justifyContent: "space-between",
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "row",
                 }}
                 secondaryAction={
                   isAdmin &&
@@ -159,8 +160,6 @@ const MembersDialog = ({
                             transform: "scale(1.05)",
                           },
                           transition: "all 0.2s ease",
-                          alignSelf: { xs: "flex-end", sm: "center" },
-                          mt: { xs: 1, sm: 0 },
                         }}
                       >
                         <DeleteIcon fontSize="small" />
@@ -169,55 +168,58 @@ const MembersDialog = ({
                   )
                 }
               >
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Avatar
+                <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
+                  <ListItemAvatar>
+                    <Avatar
+                      sx={{
+                        bgcolor: (theme) =>
+                          alpha(theme.palette.primary.main, 0.1),
+                        color: "primary.main",
+                        width: 40,
+                        height: 40,
+                        mr: 2,
+                        fontSize: "1.1rem",
+                        fontWeight: "bold",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+                        border: "2px solid",
+                        borderColor: (theme) =>
+                          alpha(theme.palette.primary.main, 0.2),
+                      }}
+                    >
+                      {member.displayName?.charAt(0).toUpperCase() || "U"}
+                    </Avatar>
+                  </ListItemAvatar>
+
+                  <Typography
                     sx={{
-                      bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, 0.1),
-                      color: "primary.main",
-                      width: 40,
-                      height: 40,
-                      mr: 2,
-                      fontSize: "1.1rem",
-                      fontWeight: "bold",
-                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-                      border: "2px solid",
-                      borderColor: (theme) =>
-                        alpha(theme.palette.primary.main, 0.2),
+                      fontWeight: 500,
+                      fontSize: { xs: "0.875rem", sm: "1rem" },
+                      color: "text.primary",
+                      letterSpacing: 0.2,
                     }}
                   >
-                    {member.displayName?.charAt(0).toUpperCase() || "U"}
-                  </Avatar>
-                  <ListItemText
-                    primary={
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          fontWeight: 600,
-                          mb: 0.5,
-                          color: "text.primary",
-                          letterSpacing: 0.2,
-                        }}
-                      >
-                        {member.displayName}
-                      </Typography>
-                    }
-                    secondary={
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        {member.id === user.uid && (
-                          <Chip size="small" label="Tú" sx={{ mr: 1 }} />
-                        )}
-                        {member.id === group.createdBy.id && (
-                          <Chip
-                            size="small"
-                            color="primary"
-                            label="Administrador"
-                          />
-                        )}
-                      </Box>
-                    }
-                    sx={{ mb: { xs: 1, sm: 0 } }}
-                  />
+                    {member.displayName}
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      ml: 2,
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    {member.id === user.uid && (
+                      <Chip size="small" label="Tú" sx={{ mr: 1 }} />
+                    )}
+                    {member.id === group.createdBy.id &&
+                      member.id !== user.uid && (
+                        <Chip
+                          size="small"
+                          color="primary"
+                          label="Administrador"
+                        />
+                      )}
+                  </Box>
                 </Box>
               </ListItem>
             ))}
@@ -226,7 +228,7 @@ const MembersDialog = ({
       </DialogContent>
       <DialogActions
         sx={{
-          p: 2,
+          p: 1,
           borderTop: "1px solid",
           borderColor: "divider",
           bgcolor: "background.paper",
