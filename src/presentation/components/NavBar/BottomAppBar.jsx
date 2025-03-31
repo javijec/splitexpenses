@@ -20,20 +20,6 @@ import {
 import { Home, Add, Person, Logout } from "@mui/icons-material";
 import ThemeToggle from "./ThemeToggle";
 
-const StyledFab = styled(Fab)({
-  position: "fixed",
-  zIndex: 1000,
-  position: "absolute",
-  left: 0,
-  right: 0,
-  margin: "0 auto",
-  boxShadow: "0 6px 15px rgba(0, 0, 0, 0.2)",
-  transition: "all 0.3s ease",
-  "&:hover": {
-    transform: "translateY(-5px)",
-  },
-});
-
 export default function BottomAppBar() {
   const { user, logoutAccount } = useAuth();
 
@@ -110,10 +96,7 @@ export default function BottomAppBar() {
                   theme.palette.mode === "dark"
                     ? "rgba(255, 255, 255, 0.08)"
                     : "rgba(0, 0, 0, 0.04)",
-                p: 0.8,
-                "&:hover": {
-                  transform: "scale(1.1)",
-                },
+                p: 1.5,
               }}
             >
               <Home fontSize="small" />
@@ -129,65 +112,77 @@ export default function BottomAppBar() {
               arrow
               placement="top"
             >
-              <StyledFab
+              <Fab
+                variant="extended"
                 aria-label="add"
                 onClick={handleAddButtonClick}
                 sx={{
-                  background: "red",
-                  color: "white",
+                  position: "absolute",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  background: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "#d32f2f" // darker red for dark mode
+                      : "#f44336", // lighter red for light mode
+                  color: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "#ffffff" // white text for dark mode
+                      : "#ffffff", // white text for light mode
                   fontWeight: "bold",
-                  width: 60,
-                  height: 60,
-
+                  zIndex: 1000,
                   "&:hover": {
-                    background: "red",
-
-                    transform: "translateY(-3px)",
+                    background: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "#b71c1c" // darker red on hover for dark mode
+                        : "#d32f2f", // darker red on hover for light mode
                   },
                 }}
               >
-                <Add fontSize="small" />
-              </StyledFab>
+                {location.pathname !== "/dashboard" ? (
+                  <Typography>Nuevo Gasto</Typography>
+                ) : (
+                  <Typography>Nuevo Grupo</Typography>
+                )}
+              </Fab>
             </Tooltip>
           )}
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Box sx={{ mx: 1.5, display: "flex", alignItems: "center" }}>
-            <ThemeToggle />
-          </Box>
-
           {location.pathname === "/profile" ? (
-            <Tooltip title="Logout" arrow>
-              <IconButton
-                color="inherit"
-                onClick={handleLogout}
-                sx={{
-                  transition: "all 0.2s ease",
-                  p: 0.8,
-                  bgcolor: (theme) =>
-                    theme.palette.mode === "dark"
-                      ? "rgba(255, 255, 255, 0.08)"
-                      : "rgba(0, 0, 0, 0.04)",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                    bgcolor: (theme) =>
-                      theme.palette.mode === "dark"
-                        ? "rgba(255, 255, 255, 0.15)"
-                        : "rgba(0, 0, 0, 0.08)",
-                  },
-                  ml: 1,
-                }}
-              >
-                <Logout fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          ) : (
             <>
-              <Tooltip title="Mi perfil" arrow>
+              <ThemeToggle />
+              <Tooltip title="Logout" arrow>
                 <IconButton
                   color="inherit"
-                  onClick={handleMenuOpen}
+                  onClick={handleLogout}
+                  sx={{
+                    transition: "all 0.2s ease",
+                    p: 1.5,
+                    bgcolor: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "rgba(255, 0, 0, 0.37)"
+                        : "rgba(0, 0, 0, 0.04)",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      bgcolor: (theme) =>
+                        theme.palette.mode === "dark"
+                          ? "rgba(255, 255, 255, 0.15)"
+                          : "rgba(0, 0, 0, 0.08)",
+                    },
+                    ml: 1,
+                  }}
+                >
+                  <Logout fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </>
+          ) : (
+            <>
+              <Tooltip title="Mi perfil">
+                <IconButton
+                  color="inherit"
+                  onClick={handleProfile}
                   sx={{
                     transition: "all 0.2s ease",
                     p: 0.8,
@@ -251,86 +246,6 @@ export default function BottomAppBar() {
                   </Badge>
                 </IconButton>
               </Tooltip>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-                PaperProps={{
-                  elevation: 5,
-                  sx: {
-                    borderRadius: 3,
-                    minWidth: 200,
-                    overflow: "visible",
-                    mt: 1.5,
-                    boxShadow: (theme) =>
-                      theme.palette.mode === "dark"
-                        ? "0 8px 20px rgba(0, 0, 0, 0.3)"
-                        : "0 8px 20px rgba(0, 0, 0, 0.15)",
-                  },
-                }}
-                transformOrigin={{ horizontal: "right", vertical: "bottom" }}
-                anchorOrigin={{ horizontal: "right", vertical: "top" }}
-                arrow
-              >
-                <MenuItem
-                  sx={{
-                    py: 2,
-                    px: 2.5,
-                    borderBottom: "1px solid",
-                    borderColor: "divider",
-                  }}
-                >
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                      {user ? user.displayName : ""}
-                    </Typography>
-                    {user?.email && (
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ fontSize: "0.8rem" }}
-                      >
-                        {user.email}
-                      </Typography>
-                    )}
-                  </Box>
-                </MenuItem>
-                <MenuItem
-                  onClick={handleProfile}
-                  sx={{
-                    py: 1.5,
-                    px: 2.5,
-                    transition: "all 0.2s",
-                    "&:hover": {
-                      bgcolor: "action.hover",
-                      transform: "translateX(5px)",
-                    },
-                  }}
-                >
-                  <Person sx={{ mr: 1.5, color: "primary.main" }} />
-                  <Typography variant="body1">Perfil</Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={handleLogout}
-                  sx={{
-                    py: 1.5,
-                    px: 2.5,
-                    color: "error.main",
-                    transition: "all 0.2s",
-                    borderTop: "1px solid",
-                    borderColor: "divider",
-                    mt: 1,
-                    "&:hover": {
-                      bgcolor: "error.light",
-                      color: "error.dark",
-                      transform: "translateX(5px)",
-                    },
-                  }}
-                >
-                  <Logout sx={{ mr: 1.5 }} />
-                  <Typography variant="body1">Logout</Typography>
-                </MenuItem>
-              </Menu>
             </>
           )}
         </Toolbar>
