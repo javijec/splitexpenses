@@ -64,17 +64,13 @@ const GroupHeader = ({ group, isAdmin, onDelete }) => {
       </Box>
       {isAdmin && (
         <Button
-          variant="contained"
+          variant="outlined"
           color="error"
           startIcon={<DeleteIcon />}
           size="medium"
           onClick={onDelete}
           sx={{
             mt: { xs: 2, sm: 0 },
-            boxShadow: "0 4px 8px rgba(211, 47, 47, 0.3)",
-            "&:hover": {
-              boxShadow: "0 6px 12px rgba(211, 47, 47, 0.4)",
-            },
           }}
         >
           Eliminar
