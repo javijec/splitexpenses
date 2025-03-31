@@ -122,29 +122,6 @@ const Groups = ({
                   </IconButton>
                 </Tooltip>
               )}
-              <Tooltip title="Crear nuevo grupo" arrow placement="left">
-                <Button
-                  onClick={openGroupModal}
-                  variant="contained"
-                  startIcon={<AddCircleOutline />}
-                  sx={{
-                    fontWeight: 600,
-                    textTransform: "none",
-                    mr: 1,
-                    borderRadius: 2,
-                    px: 2,
-                    boxShadow: (theme) =>
-                      `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
-                    "&:hover": {
-                      boxShadow: (theme) =>
-                        `0 6px 14px ${alpha(theme.palette.primary.main, 0.4)}`,
-                    },
-                  }}
-                  disableElevation
-                >
-                  Nuevo
-                </Button>
-              </Tooltip>
             </Box>
           }
           sx={{
