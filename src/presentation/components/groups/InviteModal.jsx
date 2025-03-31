@@ -83,38 +83,54 @@ const InviteModal = ({
     >
       <DialogTitle
         sx={{
-          p: 3,
+          p: { xs: 2, sm: 3 },
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "flex-start",
+          alignItems: { xs: "center", sm: "flex-start" },
           bgcolor: "background.paper",
           borderBottom: "1px solid",
           borderColor: "divider",
-          pb: 2,
-          pt: 3,
-          px: 3,
+          pb: { xs: 1.5, sm: 2 },
+          pt: { xs: 2, sm: 3 },
+          px: { xs: 2, sm: 3 },
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: { xs: "column", sm: "row" },
+            width: { xs: "calc(100% - 40px)", sm: "auto" },
+          }}
+        >
           <Avatar
             sx={{
               bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
               color: "primary.main",
-              width: 40,
-              height: 40,
-              mr: 1.5,
+              width: { xs: 36, sm: 40 },
+              height: { xs: 36, sm: 40 },
+              mr: { xs: 0, sm: 1.5 },
+              mb: { xs: 1, sm: 0 },
             }}
           >
             <PersonAddIcon />
           </Avatar>
-          <Box>
+          <Box sx={{ textAlign: { xs: "center", sm: "left" } }}>
             <Typography
               variant="h6"
-              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
+              sx={{
+                fontWeight: 700,
+                letterSpacing: 0.2,
+                fontSize: { xs: "1.1rem", sm: "1.25rem" },
+              }}
             >
               Invitar Miembro
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
+            >
               Invita a amigos, familia o compañeros a unirse a este grupo
             </Typography>
           </Box>
@@ -123,6 +139,9 @@ const InviteModal = ({
           onClick={handleClose}
           size="small"
           sx={{
+            position: { xs: "absolute", sm: "relative" },
+            top: { xs: 8, sm: "auto" },
+            right: { xs: 8, sm: "auto" },
             color: "error.main",
             bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
             border: "1px solid",
@@ -137,7 +156,13 @@ const InviteModal = ({
           <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ p: 3, pt: 3, bgcolor: "background.paper" }}>
+      <DialogContent
+        sx={{
+          p: { xs: 2, sm: 3 },
+          pt: { xs: 2, sm: 3 },
+          bgcolor: "background.paper",
+        }}
+      >
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
           <TextField
             margin="normal"
@@ -176,7 +201,15 @@ const InviteModal = ({
               {alertInfo.message}
             </Alert>
           )}
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              justifyContent: "space-between",
+              mt: 4,
+              gap: { xs: 2, sm: 0 },
+            }}
+          >
             <Button
               onClick={handleClose}
               color="inherit"
@@ -189,6 +222,8 @@ const InviteModal = ({
                   bgcolor: (theme) => alpha(theme.palette.grey[500], 0.05),
                 },
                 transition: "all 0.2s ease",
+                width: { xs: "100%", sm: "auto" },
+                order: { xs: 2, sm: 1 },
               }}
             >
               CANCELAR
@@ -199,7 +234,7 @@ const InviteModal = ({
               color="primary"
               disabled={!email || emailError}
               sx={{
-                py: 1.5,
+                py: { xs: 1.2, sm: 1.5 },
                 px: 3,
                 borderRadius: 2,
                 fontWeight: 600,
@@ -212,6 +247,8 @@ const InviteModal = ({
                   transform: "translateY(-2px)",
                 },
                 transition: "all 0.2s ease",
+                width: { xs: "100%", sm: "auto" },
+                order: { xs: 1, sm: 2 },
               }}
               disableElevation
             >
