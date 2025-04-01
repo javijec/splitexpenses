@@ -21,7 +21,16 @@ const calculateBalance = (expenses) => {
         balances[split.id] = 0;
         displayNames[split.id] = split.displayName;
       }
-      balances[split.id] -= split.amount;
+
+      // Si el splitType es percentage, convertir el porcentaje a monto absoluto
+      if (expense.splitType === "percentage") {
+        // split.amount es un porcentaje, convertirlo a monto absoluto
+        const amountToSubtract = (split.amount / 100) * expense.amount;
+        balances[split.id] -= amountToSubtract;
+      } else {
+        // Para splitType 'equal' o 'amount', usar el valor directamente
+        balances[split.id] -= split.amount;
+      }
     });
   });
 
