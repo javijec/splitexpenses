@@ -51,10 +51,7 @@ const Groups = ({
           overflow: "hidden",
           height: "100%",
           transition: "all 0.3s ease",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-          "&:hover": {
-            boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
-          },
+
           position: "relative",
           "&::before": {
             content: '""',
@@ -63,8 +60,7 @@ const Groups = ({
             left: 0,
             width: "100%",
             height: "4px",
-            background: (theme) =>
-              `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+            background: (theme) => ` ${theme.palette.primary.main}`,
           },
         }}
       >
