@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, CircularProgress, Container } from "@mui/material";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
-import { AuthProvider } from "@/application/contexts/AuthContext";
 import Login from "@/presentation/screens/LoginSceen";
 import Main from "@/presentation/screens/MainScreen";
 import ProtectedRoute from "@/presentation/navigation/ProtectedRoute";
@@ -39,11 +38,9 @@ function App() {
     <ThemeProvider>
       <CssBaseline />
       <BrowserRouter>
-        <AuthProvider>
           <ModalProvider>
             <AppRoutes />
           </ModalProvider>
-        </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>
   );
