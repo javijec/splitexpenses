@@ -37,11 +37,8 @@ const UserInfoCard = ({
           transition: "all 0.3s ease",
           background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
           boxShadow: "0 8px 20px rgba(0, 0, 0, 0.08)",
-          "&:hover": {
-            boxShadow: "0 12px 28px rgba(0, 0, 0, 0.15)",
-            transform: "translateY(-4px)",
-          },
-          mb: 4,
+
+          mb: 1,
           border: `1px solid ${theme.palette.divider}`,
           position: "relative",
           "&::before": {
@@ -82,7 +79,7 @@ const UserInfoCard = ({
           }
           sx={{
             bgcolor: "background.paper",
-            pb: 2.5,
+            pb: 1.5,
             pt: 2.5,
             borderBottom: "1px solid",
             borderColor: "divider",
@@ -104,7 +101,7 @@ const UserInfoCard = ({
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              mb: 4,
+              mb: 1,
               position: "relative",
               pt: 1,
             }}
@@ -129,8 +126,8 @@ const UserInfoCard = ({
             >
               <Avatar
                 sx={{
-                  width: 100,
-                  height: 100,
+                  width: 50,
+                  height: 50,
                   border: `4px solid ${theme.palette.background.paper}`,
                   boxShadow: "0 4px 14px rgba(0, 0, 0, 0.15)",
                   zIndex: 1,
@@ -171,88 +168,7 @@ const UserInfoCard = ({
             </Typography>
           </Box>
 
-          <Grid container spacing={3} sx={{ mt: 0.5 }}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  borderRadius: 2,
-                  background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
-                  border: `1px solid ${theme.palette.divider}`,
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-                    borderColor: theme.palette.primary.light,
-                  },
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-                  <FingerprintIcon
-                    sx={{ mr: 1, color: "primary.main", fontSize: 20 }}
-                  />
-                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    ID de Usuario
-                  </Typography>
-                </Box>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{
-                    wordBreak: "break-all",
-                    fontFamily: "monospace",
-                    fontSize: "0.85rem",
-                    p: 1,
-                    borderRadius: 1,
-                    bgcolor: "rgba(0,0,0,0.03)",
-                  }}
-                >
-                  {user.uid}
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  borderRadius: 2,
-                  background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
-                  border: `1px solid ${theme.palette.divider}`,
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-                    borderColor: theme.palette.primary.light,
-                  },
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-                  <VerifiedUserIcon
-                    sx={{ mr: 1, color: "primary.main", fontSize: 20 }}
-                  />
-                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    Email Verificado
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    p: 1,
-                    borderRadius: 1,
-                    bgcolor: user?.emailVerified
-                      ? "rgba(76, 175, 80, 0.08)"
-                      : "rgba(239, 83, 80, 0.08)",
-                    color: user?.emailVerified ? "success.main" : "error.main",
-                  }}
-                >
-                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                    {user?.emailVerified ? "Sí" : "No"}
-                  </Typography>
-                </Box>
-              </Paper>
-            </Grid>
-          </Grid>
+
 
           <Divider
             sx={{
@@ -270,7 +186,7 @@ const UserInfoCard = ({
             }}
           />
           <Box sx={{ mb: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
               <AccountCircleIcon sx={{ mr: 1.5, color: "primary.main" }} />
               <Typography
                 variant="h6"

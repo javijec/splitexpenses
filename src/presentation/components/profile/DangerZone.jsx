@@ -21,24 +21,7 @@ const DangerZone = ({ onDeleteClick }) => {
         sx={{
           borderRadius: 3,
           overflow: "hidden",
-          transition: "all 0.3s ease",
           background: `linear-gradient(145deg, ${theme.palette.error.light} 0%, ${theme.palette.error.main} 100%)`,
-          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.08)",
-          "&:hover": {
-            boxShadow: "0 12px 28px rgba(0, 0, 0, 0.15)",
-            transform: "translateY(-4px)",
-          },
-          border: `1px solid ${theme.palette.divider}`,
-          position: "relative",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "4px",
-            background: `linear-gradient(90deg, ${theme.palette.error.dark}, ${theme.palette.error.main})`,
-          },
         }}
       >
         <CardHeader
@@ -60,26 +43,18 @@ const DangerZone = ({ onDeleteClick }) => {
                   textShadow: "0px 1px 2px rgba(0, 0, 0, 0.2)",
                 }}
               >
-                Zona de Peligro
+                Eliminar mi cuenta
               </Typography>
             </Box>
           }
           sx={{
             bgcolor: "transparent",
             color: "error.contrastText",
-            pb: 2.5,
-            pt: 2.5,
+            pb: 1,
+            pt: 1.5,
             borderBottom: "1px solid",
             borderColor: "divider",
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              bottom: 0,
-              left: "10%",
-              right: "10%",
-              height: "1px",
-              background: `linear-gradient(90deg, transparent, ${theme.palette.divider}, transparent)`,
-            },
+
           }}
         />
         <Divider />
@@ -87,15 +62,15 @@ const DangerZone = ({ onDeleteClick }) => {
           sx={{
             bgcolor: "transparent",
             color: "error.contrastText",
-            pt: 3,
-            pb: 3,
+            pt: 1,
+            pb: 1,
           }}
         >
           <Typography
             variant="body2"
             color="error.contrastText"
             sx={{
-              mb: 3,
+              mb: 1,
               opacity: 0.9,
               textShadow: "0px 1px 1px rgba(0, 0, 0, 0.1)",
               lineHeight: 1.6,

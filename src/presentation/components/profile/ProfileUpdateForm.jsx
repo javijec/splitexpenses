@@ -18,9 +18,7 @@ const ProfileUpdateForm = ({
   return (
     <Fade in={true} timeout={500}>
       <Box component="form" onSubmit={handleUpdateProfile} noValidate>
-        <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 2 }}>
-          Actualiza tu información de perfil
-        </Typography>
+
         <TextField
           margin="normal"
           required
@@ -46,8 +44,8 @@ const ProfileUpdateForm = ({
           variant="contained"
           startIcon={loading ? null : <SaveIcon />}
           sx={{
-            mt: 3,
-            py: 1.2,
+            mt: 1,
+            py: 1,
             fontWeight: "medium",
             textTransform: "none",
             transition: "all 0.3s ease",

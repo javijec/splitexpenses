@@ -56,10 +56,6 @@ const ProfileScreen = () => {
             height: "4px",
             background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
           },
-          "&:hover": {
-            boxShadow: "0 12px 28px rgba(0, 0, 0, 0.15)",
-            transform: "translateY(-2px)",
-          },
         }}
       >
         <ProfileHeader />
