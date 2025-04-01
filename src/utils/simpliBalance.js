@@ -47,7 +47,6 @@ const simplifyBalance = (balances) => {
       j++;
     }
   }
-  console.log(transactions);
   // Devolvemos el array de transacciones simplificadas
   return transactions;
 };
