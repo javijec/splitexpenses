@@ -22,44 +22,45 @@ const Main = () => {
   const [loadingInvitations, setLoadingInvitations] = useState(true);
 
   useEffect(() => {
-    loadInvitations();
-    loadGroups();
-  }, [user]);
-
-  const loadInvitations = async () => {
-    if (!user?.email) return;
-    try {
+    if (user?.email && user?.uid) {
+      // Usar Promise.all para cargar invitaciones y grupos en paralelo
       setLoadingInvitations(true);
-      const invitationsData = await getInvitationbyEmail(user.email);
-      setInvitations(invitationsData || []);
-    } catch (error) {
-      console.error("Error fetching invitations:", error);
-      setInvitations([]);
-    } finally {
-      setLoadingInvitations(false);
-    }
-  };
-
-  const loadGroups = async () => {
-    if (!user?.uid) return;
-    try {
       setLoadingGroups(true);
-      const groupsData = await getGroupsByUser(user.uid);
-      setGroups(groupsData || []);
-    } catch (error) {
-      console.error("Error fetching groups:", error);
-      setGroups([]);
-    } finally {
-      setLoadingGroups(false);
+
+      Promise.all([getInvitationbyEmail(user.email), getGroupsByUser(user.uid)])
+        .then(([invitationsData, groupsData]) => {
+          setInvitations(invitationsData || []);
+          setGroups(groupsData || []);
+        })
+        .catch((error) => {
+          console.error("Error cargando datos:", error);
+          setInvitations([]);
+          setGroups([]);
+        })
+        .finally(() => {
+          setLoadingInvitations(false);
+          setLoadingGroups(false);
+        });
     }
-  };
+  }, [user]);
 
   const handleAcceptInvitation = async (invitationId, groupId) => {
     try {
-      await addMember(groupId, user);
-      await deleteInvitation(invitationId);
-      loadInvitations();
-      loadGroups();
+      // Ejecutar ambas operaciones en paralelo
+      await Promise.all([
+        addMember(groupId, user),
+        deleteInvitation(invitationId),
+      ]);
+
+      // Cargar invitaciones y grupos en paralelo
+      Promise.all([getInvitationbyEmail(user.email), getGroupsByUser(user.uid)])
+        .then(([invitationsData, groupsData]) => {
+          setInvitations(invitationsData || []);
+          setGroups(groupsData || []);
+        })
+        .catch((error) => {
+          console.error("Error cargando datos:", error);
+        });
     } catch (error) {
       console.error("Error accepting invitation:", error);
     }

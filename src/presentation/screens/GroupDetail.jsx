@@ -70,19 +70,21 @@ function GroupDetail() {
 
   const loadInvitations = async () => {
     try {
-      const invitationData = await getGroupInvitations(groupId);
-      const groupData = await getGroupByID(groupId);
-      const expensesData = await getGroupExpenses(groupId);
+      // Usar Promise.all para cargar invitaciones, datos del grupo y gastos en paralelo
+      const [invitationData, groupData, expensesData] = await Promise.all([
+        getGroupInvitations(groupId),
+        getGroupByID(groupId),
+        getGroupExpenses(groupId),
+      ]);
+
       const balanceData = calculateBalance(expensesData);
       const transactions = simplifyBalance(balanceData);
 
       setGroupContext(groupData);
       setInvitations(invitationData);
       updateExpensesAndBalances(expensesData);
-      // Los balances y transacciones ya se actualizan en updateExpensesAndBalances
     } catch (error) {
       console.error("Error fetching:", error);
-    } finally {
     }
   };
 
@@ -90,11 +92,13 @@ function GroupDetail() {
     const load = async () => {
       try {
         setLoading(true);
+        // Cargar datos del grupo y luego ejecutar loadInvitations en paralelo
         const data = await getGroupByID(groupId);
-        await loadInvitations();
         setMembers(data.members);
         setIsAdmin(data.createdBy.id === user.uid);
         setGroup(data);
+
+        await loadInvitations();
       } catch (error) {
         console.error("Error fetching group data:", error);
       } finally {
@@ -118,9 +122,12 @@ function GroupDetail() {
   const handleDeleteMember = async (memberId) => {
     try {
       await removeMember(groupId, memberId);
-      const data = await getGroupByID(groupId);
+      // Cargar datos del grupo y actualizar invitaciones en paralelo
+      const [data] = await Promise.all([
+        getGroupByID(groupId),
+        loadInvitations(),
+      ]);
       setMembers(data.members);
-      loadInvitations();
     } catch (error) {
       console.error("Error deleting member:", error);
     }
