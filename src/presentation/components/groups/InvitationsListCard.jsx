@@ -28,12 +28,10 @@ export const InvitationsListCard = ({
             avatar={<EmailIcon />}
             title={<Typography>Invitaciones Pendientes</Typography>}
           />
-          <Divider />
           <CardContent>
             <List>
               {invitations.map((invitation) => (
                 <ListItem
-                  key={invitation.id}
                   secondaryAction={
                     isAdmin && (
                       <Tooltip title="Eliminar invitación">
@@ -52,15 +50,11 @@ export const InvitationsListCard = ({
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={
-                      <Box>
-                        <Box>
-                          <Typography>{invitation.invitedEmail}</Typography>
-                          <Typography>
-                            {`Invitado por ${invitation.invitedBy}`}
-                          </Typography>
-                        </Box>
-                      </Box>
+                    primary={<Typography>{invitation.invitedEmail}</Typography>}
+                    secondary={
+                      <Typography>
+                        {`Invitado por ${invitation.invitedBy}`}
+                      </Typography>
                     }
                   />
                 </ListItem>

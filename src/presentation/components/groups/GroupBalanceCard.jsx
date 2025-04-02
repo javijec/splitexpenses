@@ -1,7 +1,6 @@
 import {
   Card,
   CardHeader,
-  Divider,
   CardContent,
   List,
   ListItem,
@@ -12,6 +11,7 @@ import {
   Avatar,
   Paper,
   Switch,
+  Container,
 } from "@mui/material";
 
 import { AccountBalance as BalanceIcon } from "@mui/icons-material";
@@ -27,66 +27,57 @@ export const GroupBalanceCard = ({ balances, transactions }) => {
         avatar={<BalanceIcon />}
         title={<Typography>Balance</Typography>}
         action={
-          <Box>
-            <Switch
-              checked={showTransactions}
-              onChange={() => setShowTransactions(!showTransactions)}
-              color="info"
-            />
-            <Typography>
-              {showTransactions ? "Transacciones" : "Balances"}
-            </Typography>
-          </Box>
+          <Switch
+            checked={showTransactions}
+            onChange={() => setShowTransactions(!showTransactions)}
+            color="info"
+            label={showTransactions ? "Transacciones" : "Balances"}
+          />
         }
       />
-      <Divider />
       <CardContent>
         {!showTransactions ? (
           // Mostrar balances individuales
           balances && balances.length > 0 ? (
-            <Box>
-              <List>
-                {balances.map((balance) => (
-                  <ListItem key={balance.id}>
-                    <ListItemText
-                      primary={
-                        <Box>
-                          <Typography>{balance.displayName}</Typography>
-                          <Chip
-                            label={
-                              balance.amount > 0
-                                ? `Recibe: $${Math.abs(balance.amount).toFixed(
-                                    2
-                                  )}`
-                                : balance.amount < 0
-                                ? `Paga: $${Math.abs(balance.amount).toFixed(
-                                    2
-                                  )}`
-                                : "Balance: $0"
-                            }
-                            color={
-                              balance.amount > 0
-                                ? "success"
-                                : balance.amount < 0
-                                ? "error"
-                                : "default"
-                            }
-                          />
-                        </Box>
-                      }
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
+            <List>
+              {balances.map((balance) => (
+                <ListItem>
+                  <ListItemText
+                    primary={
+                      <Container
+                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                      >
+                        <Typography>{balance.displayName}</Typography>
+                        <Chip
+                          label={
+                            balance.amount > 0
+                              ? `Recibe: $${Math.abs(balance.amount).toFixed(
+                                  2
+                                )}`
+                              : balance.amount < 0
+                              ? `Paga: $${Math.abs(balance.amount).toFixed(2)}`
+                              : "Balance: $0"
+                          }
+                          color={
+                            balance.amount > 0
+                              ? "success"
+                              : balance.amount < 0
+                              ? "error"
+                              : "default"
+                          }
+                        />
+                      </Container>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
           ) : (
             <Box>
-              <Paper>
-                <Avatar>
-                  <BalanceIcon />
-                </Avatar>
-                <Typography>No hay balances pendientes</Typography>
-              </Paper>
+              <Avatar>
+                <BalanceIcon />
+              </Avatar>
+              <Typography>No hay balances pendientes</Typography>
             </Box>
           )
         ) : // Mostrar transacciones simplificadas
@@ -97,19 +88,17 @@ export const GroupBalanceCard = ({ balances, transactions }) => {
                 <ListItem key={index}>
                   <ListItemText
                     primary={
-                      <Box>
-                        <Box>
-                          <Typography>{transaction.fromName}</Typography>
-                        </Box>
+                      <Container
+                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                      >
+                        <Typography>{transaction.fromName}</Typography>
                         <Typography>le debe</Typography>
                         <Chip
                           label={`$${transaction.amount.toFixed(2)}`}
                         />{" "}
                         <Typography>a</Typography>
-                        <Box>
-                          <Typography>{transaction.toName}</Typography>
-                        </Box>
-                      </Box>
+                        <Typography>{transaction.toName}</Typography>
+                      </Container>
                     }
                   />
                 </ListItem>
@@ -117,15 +106,11 @@ export const GroupBalanceCard = ({ balances, transactions }) => {
             </List>
           </Box>
         ) : (
-          <Box in={true} timeout={500}>
-            <Box>
-              <Paper>
-                <Avatar>
-                  <BalanceIcon sx={{ fontSize: 30 }} />
-                </Avatar>
-                <Typography>No hay transacciones pendientes</Typography>
-              </Paper>
-            </Box>
+          <Box>
+            <Avatar>
+              <BalanceIcon sx={{ fontSize: 30 }} />
+            </Avatar>
+            <Typography>No hay transacciones pendientes</Typography>
           </Box>
         )}
       </CardContent>

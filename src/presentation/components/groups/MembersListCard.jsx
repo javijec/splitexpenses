@@ -12,7 +12,6 @@ import {
   IconButton,
   Button,
   Typography,
-  Box,
 } from "@mui/material";
 import { Tooltip } from "@mui/material";
 
@@ -43,46 +42,40 @@ export const MembersListCard = ({
           )
         }
       />
-      <Divider />
       <CardContent>
-        <Box>
-          <List>
-            {members.map((member) => (
-              <ListItem
-                key={member.id}
-                secondaryAction={
-                  isAdmin &&
-                  member.id !== group.createdBy.id && (
-                    <Tooltip title="Eliminar miembro">
-                      <IconButton onClick={() => onDeleteMember(member.id)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )
+        <List>
+          {members.map((member) => (
+            <ListItem
+              secondaryAction={
+                isAdmin &&
+                member.id !== group.createdBy.id && (
+                  <Tooltip title="Eliminar miembro">
+                    <IconButton onClick={() => onDeleteMember(member.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                )
+              }
+            >
+              <ListItemAvatar>
+                <Avatar>
+                  {member.displayName?.charAt(0).toUpperCase() || "U"}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={<Typography>{member.displayName}</Typography>}
+                secondary={
+                  <>
+                    {member.id === user.uid && <Chip label="Tú" />}
+                    {member.id === group.createdBy.id && (
+                      <Chip label="Administrador" />
+                    )}
+                  </>
                 }
-              >
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <ListItemAvatar>
-                    <Avatar>
-                      {member.displayName?.charAt(0).toUpperCase() || "U"}
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={<Typography>{member.displayName}</Typography>}
-                    secondary={
-                      <Box>
-                        {member.id === user.uid && <Chip label="Tú" />}
-                        {member.id === group.createdBy.id && (
-                          <Chip label="Administrador" />
-                        )}
-                      </Box>
-                    }
-                  />
-                </Box>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
+              />
+            </ListItem>
+          ))}
+        </List>
       </CardContent>
     </Card>
   );
