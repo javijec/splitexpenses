@@ -54,34 +54,8 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
       })}
     >
       <CardHeader
-        title={
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Avatar
-              sx={(theme) => ({
-                bgcolor: alpha(theme.palette.success.main, 0.1),
-                color: theme.palette.success.main,
-                width: 40,
-                height: 40,
-                mr: 1.5,
-              })}
-            >
-              <ReceiptIcon />
-            </Avatar>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-            >
-              Gastos
-            </Typography>
-          </Box>
-        }
-        sx={(theme) => ({
-          bgcolor: theme.palette.background.paper,
-          pb: 1,
-          pt: 2,
-          px: 3,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        })}
+        avatar={<ReceiptIcon />}
+        title={<Typography>Gastos</Typography>}
       />
       <Divider />
       <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>

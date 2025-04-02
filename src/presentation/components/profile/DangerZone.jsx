@@ -25,37 +25,8 @@ const DangerZone = ({ onDeleteClick }) => {
         }}
       >
         <CardHeader
-          title={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <DeleteIcon
-                sx={{
-                  mr: 1.5,
-                  color: "error.contrastText",
-                  fontSize: 28,
-                  filter: "drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.2))",
-                }}
-              />
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 700,
-                  letterSpacing: 0.5,
-                  textShadow: "0px 1px 2px rgba(0, 0, 0, 0.2)",
-                }}
-              >
-                Eliminar mi cuenta
-              </Typography>
-            </Box>
-          }
-          sx={{
-            bgcolor: "transparent",
-            color: "error.contrastText",
-            pb: 1,
-            pt: 1.5,
-            borderBottom: "1px solid",
-            borderColor: "divider",
-
-          }}
+          avatar={<DeleteIcon />}
+          title={<Typography>Eliminar mi cuenta</Typography>}
         />
         <Divider />
         <CardContent

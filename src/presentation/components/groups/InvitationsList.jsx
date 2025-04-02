@@ -49,36 +49,8 @@ export const InvitationsListDesktop = ({
           }}
         >
           <CardHeader
-            title={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  sx={{
-                    bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
-                    color: "info.main",
-                    width: 40,
-                    height: 40,
-                    mr: 1.5,
-                  }}
-                >
-                  <EmailIcon />
-                </Avatar>
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-                >
-                  Invitaciones Pendientes
-                </Typography>
-              </Box>
-            }
-            sx={{
-              bgcolor: "background.paper",
-              pb: 2,
-              pt: 3,
-              px: 3,
-              borderBottom: "1px solid",
-              borderColor: "divider",
-            }}
-          />
+            avatar={<EmailIcon />}
+            title={<Typography>Invitaciones Pendientes</Typography>} />
           <Divider />
           <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>
             <Fade in={true} timeout={500}>

@@ -54,34 +54,8 @@ const Invitations = ({
         })}
       >
         <CardHeader
-          title={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Avatar
-                sx={(theme) => ({
-                  bgcolor: theme.palette.info.light,
-                  color: theme.palette.info.main,
-                  width: 40,
-                  height: 40,
-                  mr: 1.5,
-                })}
-              >
-                <EmailIcon />
-              </Avatar>
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-              >
-                Invitaciones Pendientes
-              </Typography>
-            </Box>
-          }
-          sx={(theme) => ({
-            bgcolor: theme.palette.background.paper,
-            pb: 2,
-            pt: 3,
-            px: 3,
-            borderBottom: `1px solid ${theme.palette.divider}`,
-          })}
+          avatar={<EmailIcon />}
+          title={<Typography>Invitaciones Pendientes</Typography>}
         />
         <Divider />
         <CardContent>

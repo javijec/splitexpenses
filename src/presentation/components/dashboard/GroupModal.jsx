@@ -66,16 +66,7 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
       TransitionComponent={Fade}
       transitionDuration={500}
     >
-      <DialogTitle
-        sx={(theme) => ({
-          p: 3,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          bgcolor: theme.palette.background.paper,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        })}
-      >
+      <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
             sx={(theme) => ({
@@ -149,7 +140,7 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
           </Box>
         </Box>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 };
 

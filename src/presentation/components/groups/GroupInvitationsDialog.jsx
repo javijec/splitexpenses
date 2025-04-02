@@ -51,16 +51,7 @@ const GroupInvitationsDialog = ({
       TransitionComponent={Fade}
       TransitionProps={{ timeout: 400 }}
     >
-      <DialogTitle
-        sx={{
-          bgcolor: "background.paper",
-          pb: 2,
-          pt: 3,
-          px: 3,
-          borderBottom: "1px solid",
-          borderColor: "divider",
-        }}
-      >
+      <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
             sx={{

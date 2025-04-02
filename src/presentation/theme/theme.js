@@ -102,7 +102,9 @@ const theme = createTheme({
           boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.15)",
         },
       },
+
     },
+
     MuiCard: {
       styleOverrides: {
         root: {

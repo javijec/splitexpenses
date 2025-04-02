@@ -54,27 +54,8 @@ export const MembersListDesktop = ({
       })}
     >
       <CardHeader
-        title={
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Avatar
-              sx={(theme) => ({
-                bgcolor: alpha(theme.palette.primary.main, 0.1),
-                color: theme.palette.primary.main,
-                width: 40,
-                height: 40,
-                mr: 1.5,
-              })}
-            >
-              <PeopleIcon />
-            </Avatar>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-            >
-              Miembros
-            </Typography>
-          </Box>
-        }
+        avatar={<PeopleIcon />}
+        title={<Typography>Miembros</Typography>}
         action={
           isAdmin && (
             <Button
@@ -87,13 +68,6 @@ export const MembersListDesktop = ({
             </Button>
           )
         }
-        sx={(theme) => ({
-          bgcolor: theme.palette.background.paper,
-          pb: 1,
-          pt: 2,
-          px: 3,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        })}
       />
       <Divider />
       <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>

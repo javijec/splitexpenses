@@ -45,45 +45,19 @@ const GroupBalance = ({ balances, transactions }) => {
       }}
     >
       <CardHeader
-        title={
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Avatar
-              sx={{
-                bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
-                color: "info.main",
-                width: 40,
-                height: 40,
-                mr: 1.5,
-              }}
-            >
-              <BalanceIcon />
-            </Avatar>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-            >
-              Balance
-            </Typography>
-            <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-              <Typography variant="body2" color="text.secondary" sx={{ mr: 1 }}>
-                {showTransactions ? "Transacciones" : "Balances"}
-              </Typography>
-              <Switch
-                checked={showTransactions}
-                onChange={() => setShowTransactions(!showTransactions)}
-                color="info"
-              />
-            </Box>
-          </Box>
+        avatar={<BalanceIcon />}
+        title={<Typography>Balance</Typography>
+
         }
-        sx={{
-          bgcolor: "background.paper",
-          pb: 1,
-          pt: 2,
-          px: 3,
-          borderBottom: "1px solid",
-          borderColor: "divider",
-        }}
+        action={<><Typography>
+          {showTransactions ? "Transacciones" : "Balances"}
+        </Typography>
+          <Switch
+            checked={showTransactions}
+            onChange={() => setShowTransactions(!showTransactions)}
+            color="info"
+          /></>}
+
       />
       <Divider />
       <CardContent sx={{ p: 0, m: 0 }}>
@@ -130,20 +104,20 @@ const GroupBalance = ({ balances, transactions }) => {
                             label={
                               balance.amount > 0
                                 ? `Recibe: $${Math.abs(balance.amount).toFixed(
-                                    2
-                                  )}`
+                                  2
+                                )}`
                                 : balance.amount < 0
-                                ? `Paga: $${Math.abs(balance.amount).toFixed(
+                                  ? `Paga: $${Math.abs(balance.amount).toFixed(
                                     2
                                   )}`
-                                : "Balance: $0"
+                                  : "Balance: $0"
                             }
                             color={
                               balance.amount > 0
                                 ? "success"
                                 : balance.amount < 0
-                                ? "error"
-                                : "default"
+                                  ? "error"
+                                  : "default"
                             }
                             sx={{
                               height: 24,
@@ -157,8 +131,8 @@ const GroupBalance = ({ balances, transactions }) => {
                                     balance.amount > 0
                                       ? "success"
                                       : balance.amount < 0
-                                      ? "error"
-                                      : "default"
+                                        ? "error"
+                                        : "default"
                                   ].main,
                                   0.3
                                 ),
@@ -168,8 +142,8 @@ const GroupBalance = ({ balances, transactions }) => {
                                     balance.amount > 0
                                       ? "success"
                                       : balance.amount < 0
-                                      ? "error"
-                                      : "default"
+                                        ? "error"
+                                        : "default"
                                   ].main,
                                   0.3
                                 ),
@@ -230,142 +204,142 @@ const GroupBalance = ({ balances, transactions }) => {
             </Fade>
           )
         ) : // Mostrar transacciones simplificadas
-        transactions && transactions.length > 0 ? (
-          <Fade in={true} timeout={500}>
-            <List sx={{ p: 0, m: 0 }}>
-              {transactions.map((transaction, index) => (
-                <ListItem
-                  key={index}
-                  sx={{
-                    py: 1,
-                    px: 3,
-                    borderBottom: "1px solid",
-                    borderColor: "divider",
-                    transition: "all 0.3s ease",
+          transactions && transactions.length > 0 ? (
+            <Fade in={true} timeout={500}>
+              <List sx={{ p: 0, m: 0 }}>
+                {transactions.map((transaction, index) => (
+                  <ListItem
+                    key={index}
+                    sx={{
+                      py: 1,
+                      px: 3,
+                      borderBottom: "1px solid",
+                      borderColor: "divider",
+                      transition: "all 0.3s ease",
 
-                    flexDirection: { xs: "row" },
-                    alignItems: { xs: "flex-start", sm: "center" },
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <ListItemText
-                    primary={
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <Typography
-                            variant="body1"
-                            sx={{
-                              fontWeight: 600,
-                              color: "text.primary",
-                            }}
-                          >
-                            {transaction.fromName}
-                          </Typography>
-                        </Box>
-                        <Typography
-                          variant="body2"
-                          sx={{ mx: 1, color: "text.secondary" }}
-                        >
-                          le debe
-                        </Typography>
-                        <Chip
-                          color="primary"
-                          label={`$${transaction.amount.toFixed(2)}`}
+                      flexDirection: { xs: "row" },
+                      alignItems: { xs: "flex-start", sm: "center" },
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <ListItemText
+                      primary={
+                        <Box
                           sx={{
-                            height: 28,
-                            fontSize: "0.85rem",
-                            fontWeight: 500,
-                            bgcolor: (theme) =>
-                              theme.palette.mode === "dark"
-                                ? alpha(theme.palette.primary.main, 0.2)
-                                : alpha(theme.palette.primary.main, 0.1),
-                            borderColor: (theme) =>
-                              theme.palette.mode === "dark"
-                                ? alpha(theme.palette.primary.main, 0.4)
-                                : alpha(theme.palette.primary.main, 0.3),
-                            color: (theme) =>
-                              theme.palette.mode === "dark"
-                                ? theme.palette.primary.light
-                                : theme.palette.primary.main,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
                           }}
-                        />{" "}
-                        <Typography
-                          variant="body2"
-                          sx={{ mx: 1, color: "text.secondary" }}
                         >
-                          a
-                        </Typography>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                fontWeight: 600,
+                                color: "text.primary",
+                              }}
+                            >
+                              {transaction.fromName}
+                            </Typography>
+                          </Box>
                           <Typography
-                            variant="body1"
-                            sx={{
-                              fontWeight: 600,
-                              color: "text.primary",
-                            }}
+                            variant="body2"
+                            sx={{ mx: 1, color: "text.secondary" }}
                           >
-                            {transaction.toName}
+                            le debe
                           </Typography>
+                          <Chip
+                            color="primary"
+                            label={`$${transaction.amount.toFixed(2)}`}
+                            sx={{
+                              height: 28,
+                              fontSize: "0.85rem",
+                              fontWeight: 500,
+                              bgcolor: (theme) =>
+                                theme.palette.mode === "dark"
+                                  ? alpha(theme.palette.primary.main, 0.2)
+                                  : alpha(theme.palette.primary.main, 0.1),
+                              borderColor: (theme) =>
+                                theme.palette.mode === "dark"
+                                  ? alpha(theme.palette.primary.main, 0.4)
+                                  : alpha(theme.palette.primary.main, 0.3),
+                              color: (theme) =>
+                                theme.palette.mode === "dark"
+                                  ? theme.palette.primary.light
+                                  : theme.palette.primary.main,
+                            }}
+                          />{" "}
+                          <Typography
+                            variant="body2"
+                            sx={{ mx: 1, color: "text.secondary" }}
+                          >
+                            a
+                          </Typography>
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                fontWeight: 600,
+                                color: "text.primary",
+                              }}
+                            >
+                              {transaction.toName}
+                            </Typography>
+                          </Box>
                         </Box>
-                      </Box>
-                    }
-                    sx={{ mb: { xs: 1, sm: 0 } }}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Fade>
-        ) : (
-          <Fade in={true} timeout={500}>
-            <Box
-              sx={{
-                p: 1,
-                textAlign: "center",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Paper
-                elevation={0}
+                      }
+                      sx={{ mb: { xs: 1, sm: 0 } }}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </Fade>
+          ) : (
+            <Fade in={true} timeout={500}>
+              <Box
                 sx={{
                   p: 1,
-                  borderRadius: 4,
-                  bgcolor: (theme) => alpha(theme.palette.info.main, 0.04),
-                  border: "1px dashed",
-                  borderColor: (theme) => alpha(theme.palette.info.main, 0.2),
+                  textAlign: "center",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <Avatar
+                <Paper
+                  elevation={0}
                   sx={{
-                    width: 60,
-                    height: 60,
-                    bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
-                    color: "info.main",
-                    mb: 2,
-                    mx: "auto",
+                    p: 1,
+                    borderRadius: 4,
+                    bgcolor: (theme) => alpha(theme.palette.info.main, 0.04),
+                    border: "1px dashed",
+                    borderColor: (theme) => alpha(theme.palette.info.main, 0.2),
                   }}
                 >
-                  <BalanceIcon sx={{ fontSize: 30 }} />
-                </Avatar>
-                <Typography
-                  variant="h6"
-                  color="text.primary"
-                  sx={{ mb: 1, fontWeight: 600 }}
-                >
-                  No hay transacciones pendientes
-                </Typography>
-              </Paper>
-            </Box>
-          </Fade>
-        )}
+                  <Avatar
+                    sx={{
+                      width: 60,
+                      height: 60,
+                      bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
+                      color: "info.main",
+                      mb: 2,
+                      mx: "auto",
+                    }}
+                  >
+                    <BalanceIcon sx={{ fontSize: 30 }} />
+                  </Avatar>
+                  <Typography
+                    variant="h6"
+                    color="text.primary"
+                    sx={{ mb: 1, fontWeight: 600 }}
+                  >
+                    No hay transacciones pendientes
+                  </Typography>
+                </Paper>
+              </Box>
+            </Fade>
+          )}
       </CardContent>
     </Card>
   );

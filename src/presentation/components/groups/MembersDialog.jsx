@@ -59,19 +59,7 @@ const MembersDialog = ({
       TransitionComponent={Fade}
       TransitionProps={{ timeout: 400 }}
     >
-      <DialogTitle
-        sx={(theme) => ({
-          p: 3,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          bgcolor: theme.palette.background.paper,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-          pb: 1,
-          pt: 2,
-          px: 3,
-        })}
-      >
+      <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
             sx={(theme) => ({

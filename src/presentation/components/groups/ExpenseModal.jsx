@@ -276,20 +276,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
       TransitionComponent={Fade}
       TransitionProps={{ timeout: 400 }}
     >
-      <DialogTitle
-        sx={{
-          p: 1,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          bgcolor: "background.paper",
-          borderBottom: "1px solid",
-          borderColor: "divider",
-          pb: 1,
-          pt: 2,
-          px: 3,
-        }}
-      >
+      <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
             sx={{

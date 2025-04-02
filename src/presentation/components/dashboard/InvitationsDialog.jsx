@@ -46,15 +46,7 @@ const InvitationsDialog = ({
         }),
       }}
     >
-      <DialogTitle
-        sx={(theme) => ({
-          bgcolor: theme.palette.background.paper,
-          pb: 2,
-          pt: 3,
-          px: 3,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        })}
-      >
+      <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
             sx={(theme) => ({

@@ -34,16 +34,7 @@ const DeleteAccountDialog = ({ open, onClose, onDelete, loading }) => {
       slots={{ transition: Fade }}
       slotsProps={{ transition: { timeout: 400 } }}
     >
-      <DialogTitle
-        sx={{
-          p: 3,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          bgcolor: "error.light",
-          color: "white",
-        }}
-      >
+      <DialogTitle>
         <Box>
           <Typography
             variant="h5"

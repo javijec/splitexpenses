@@ -80,19 +80,7 @@ const InviteModal = ({
       TransitionComponent={Fade}
       TransitionProps={{ timeout: 400 }}
     >
-      <DialogTitle
-        sx={(theme) => ({
-          p: { xs: 2, sm: 3 },
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: { xs: "center", sm: "flex-start" },
-          bgcolor: theme.palette.background.paper,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-          pb: { xs: 1.5, sm: 2 },
-          pt: { xs: 2, sm: 3 },
-          px: { xs: 2, sm: 3 },
-        })}
-      >
+      <DialogTitle>
         <Box
           sx={{
             display: "flex",

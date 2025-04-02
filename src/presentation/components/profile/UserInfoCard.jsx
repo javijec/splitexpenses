@@ -53,46 +53,8 @@ const UserInfoCard = ({
         }}
       >
         <CardHeader
-          title={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <PersonIcon
-                sx={{
-                  mr: 1.5,
-                  color: "primary.main",
-                  fontSize: 28,
-                  filter: "drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.2))",
-                }}
-              />
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 700,
-                  background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  letterSpacing: 0.5,
-                }}
-              >
-                Información de Usuario
-              </Typography>
-            </Box>
-          }
-          sx={{
-            bgcolor: "background.paper",
-            pb: 1.5,
-            pt: 2.5,
-            borderBottom: "1px solid",
-            borderColor: "divider",
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              bottom: 0,
-              left: "10%",
-              right: "10%",
-              height: "1px",
-              background: `linear-gradient(90deg, transparent, ${theme.palette.divider}, transparent)`,
-            },
-          }}
+          avatar={<PersonIcon />}
+          title={<Typography>Información de Usuario</Typography>}
         />
         <Divider />
         <CardContent>
