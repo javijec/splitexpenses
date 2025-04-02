@@ -132,10 +132,7 @@ const UserInfoCard = ({
                   boxShadow: "0 4px 14px rgba(0, 0, 0, 0.15)",
                   zIndex: 1,
                   transition: "all 0.3s ease",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                    boxShadow: "0 6px 20px rgba(0, 0, 0, 0.2)",
-                  },
+
                 }}
                 src={user?.photoURL}
                 alt={user?.displayName || "Usuario"}

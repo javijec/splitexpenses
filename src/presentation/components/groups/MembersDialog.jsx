@@ -40,9 +40,9 @@ const MembersDialog = ({
       maxWidth="sm"
       fullWidth
       PaperProps={{
-        sx: {
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+        sx: (theme) => ({
+          borderRadius: theme.shape.borderRadius,
+          boxShadow: theme.shadows[3],
           overflow: "hidden",
           position: "relative",
           "&::before": {
@@ -52,37 +52,36 @@ const MembersDialog = ({
             left: 0,
             width: "100%",
             height: "4px",
-            background: (theme) => `${theme.palette.primary.main}`,
+            background: theme.palette.primary.main,
           },
           transition: "all 0.3s ease",
-        },
+        }),
       }}
       TransitionComponent={Fade}
       TransitionProps={{ timeout: 400 }}
     >
       <DialogTitle
-        sx={{
+        sx={(theme) => ({
           p: 3,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          bgcolor: "background.paper",
-          borderBottom: "1px solid",
-          borderColor: "divider",
+          bgcolor: theme.palette.background.paper,
+          borderBottom: `1px solid ${theme.palette.divider}`,
           pb: 1,
           pt: 2,
           px: 3,
-        }}
+        })}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
-            sx={{
-              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
-              color: "primary.main",
+            sx={(theme) => ({
+              bgcolor: alpha(theme.palette.primary.main, 0.1),
+              color: theme.palette.primary.main,
               width: 40,
               height: 40,
               mr: 1.5,
-            }}
+            })}
           >
             <PeopleIcon />
           </Avatar>
@@ -99,20 +98,14 @@ const MembersDialog = ({
               e.stopPropagation();
               onInvite();
             }}
-            sx={{
+            sx={(theme) => ({
               fontWeight: 600,
               textTransform: "none",
-              borderRadius: 2,
-              boxShadow: (theme) =>
-                `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
-              "&:hover": {
-                bgcolor: "primary.dark",
-                boxShadow: (theme) =>
-                  `0 6px 16px ${alpha(theme.palette.primary.main, 0.4)}`,
-                transform: "translateY(-2px)",
-              },
+              borderRadius: theme.shape.borderRadius,
+              boxShadow: `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
+
               transition: "all 0.2s ease",
-            }}
+            })}
           >
             Invitar
           </Button>
@@ -130,10 +123,7 @@ const MembersDialog = ({
                   borderBottom: "1px solid",
                   borderColor: "divider",
                   transition: "all 0.3s ease",
-                  "&:hover": {
-                    bgcolor: (theme) => alpha(theme.palette.primary.main, 0.04),
-                    transform: "translateY(-2px)",
-                  },
+
                   display: "flex",
                   alignItems: "center",
                   flexDirection: "row",
@@ -154,11 +144,7 @@ const MembersDialog = ({
                           border: "1px solid",
                           borderColor: (theme) =>
                             alpha(theme.palette.error.main, 0.2),
-                          "&:hover": {
-                            bgcolor: (theme) =>
-                              alpha(theme.palette.error.main, 0.2),
-                            transform: "scale(1.05)",
-                          },
+
                           transition: "all 0.2s ease",
                         }}
                       >

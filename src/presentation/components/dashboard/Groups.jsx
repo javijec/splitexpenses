@@ -46,12 +46,11 @@ const Groups = ({
     <Grid size={{ xs: 12, md: 8 }}>
       <Card
         elevation={3}
-        sx={{
-          borderRadius: 3,
+        sx={(theme) => ({
+          borderRadius: theme.shape.borderRadius,
           overflow: "hidden",
           height: "100%",
           transition: "all 0.3s ease",
-
           position: "relative",
           "&::before": {
             content: '""',
@@ -60,21 +59,21 @@ const Groups = ({
             left: 0,
             width: "100%",
             height: "4px",
-            background: (theme) => ` ${theme.palette.primary.main}`,
+            background: theme.palette.primary.main,
           },
-        }}
+        })}
       >
         <CardHeader
           title={
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Avatar
-                sx={{
-                  bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
-                  color: "primary.main",
+                sx={(theme) => ({
+                  bgcolor: theme.palette.primary.light,
+                  color: theme.palette.primary.main,
                   width: 40,
                   height: 40,
                   mr: 1.5,
-                }}
+                })}
               >
                 <GroupsIcon />
               </Avatar>
@@ -87,47 +86,37 @@ const Groups = ({
             </Box>
           }
           action={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              {invitations.length > 0 && (
-                <Tooltip
-                  title="Ver invitaciones pendientes"
-                  arrow
-                  placement="bottom"
+            invitations.length > 0 && (
+              <Tooltip title="Ver invitaciones pendientes" arrow placement="bottom">
+                <IconButton
+                  onClick={() => setIsInvitationsDialogOpen(true)}
+                  sx={{ mr: 1, position: "relative" }}
                 >
-                  <IconButton
-                    onClick={() => setIsInvitationsDialogOpen(true)}
+                  <Badge
+                    badgeContent={invitations.length}
+                    color="error"
+                    overlap="circular"
                     sx={{
-                      mr: 1,
-                      position: "relative",
+                      "& .MuiBadge-badge": {
+                        fontSize: "0.7rem",
+                        height: 18,
+                        minWidth: 18,
+                      },
                     }}
                   >
-                    <Badge
-                      badgeContent={invitations.length}
-                      color="error"
-                      overlap="circular"
-                      sx={{
-                        "& .MuiBadge-badge": {
-                          fontSize: "0.7rem",
-                          height: 18,
-                          minWidth: 18,
-                        },
-                      }}
-                    >
-                      <NotificationsIcon color="info" />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
-              )}
-            </Box>
+                    <NotificationsIcon color="info" />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+            )
           }
-          sx={{
-            bgcolor: "background.paper",
+          sx={(theme) => ({
+            bgcolor: theme.palette.background.paper,
             pb: 2,
             pt: 3,
             px: 3,
-            borderBottom: "1px solid",
-            borderColor: "divider",
-          }}
+            borderBottom: `1px solid ${theme.palette.divider}`,
+          })}
         />
         <Divider />
         <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>
@@ -150,11 +139,7 @@ const Groups = ({
                       borderBottom: "1px solid",
                       borderColor: "divider",
                       transition: "all 0.3s ease",
-                      "&:hover": {
-                        bgcolor: (theme) =>
-                          alpha(theme.palette.primary.main, 0.04),
-                        transform: "translateY(-2px)",
-                      },
+
                       flexDirection: { xs: "column", sm: "row" },
                       alignItems: { xs: "flex-start", sm: "center" },
                       justifyContent: "space-between",
@@ -191,11 +176,10 @@ const Groups = ({
                             </Typography>
 
                             <Chip
-                              label={`${group.members?.length || 1} ${
-                                (group.members?.length || 1) === 1
-                                  ? "miembro"
-                                  : "miembros"
-                              }`}
+                              label={`${group.members?.length || 1} ${(group.members?.length || 1) === 1
+                                ? "miembro"
+                                : "miembros"
+                                }`}
                               size="small"
                               color="primary"
                               variant="outlined"
@@ -227,10 +211,7 @@ const Groups = ({
                             color: "primary.main",
                             bgcolor: (theme) =>
                               alpha(theme.palette.primary.main, 0.1),
-                            "&:hover": {
-                              bgcolor: (theme) =>
-                                alpha(theme.palette.primary.main, 0.2),
-                            },
+
                           }}
                         >
                           <ArrowForward fontSize="small" />

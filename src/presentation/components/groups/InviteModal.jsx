@@ -61,9 +61,9 @@ const InviteModal = ({
       maxWidth="sm"
       fullWidth
       PaperProps={{
-        sx: {
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+        sx: (theme) => ({
+          borderRadius: theme.shape.borderRadius,
+          boxShadow: theme.shadows[3],
           overflow: "hidden",
           position: "relative",
           "&::before": {
@@ -73,27 +73,26 @@ const InviteModal = ({
             left: 0,
             width: "100%",
             height: "4px",
-            background: (theme) => `${theme.palette.primary.main}`,
+            background: theme.palette.primary.main,
           },
           transition: "all 0.3s ease",
-        },
+        }),
       }}
       TransitionComponent={Fade}
       TransitionProps={{ timeout: 400 }}
     >
       <DialogTitle
-        sx={{
+        sx={(theme) => ({
           p: { xs: 2, sm: 3 },
           display: "flex",
           justifyContent: "space-between",
           alignItems: { xs: "center", sm: "flex-start" },
-          bgcolor: "background.paper",
-          borderBottom: "1px solid",
-          borderColor: "divider",
+          bgcolor: theme.palette.background.paper,
+          borderBottom: `1px solid ${theme.palette.divider}`,
           pb: { xs: 1.5, sm: 2 },
           pt: { xs: 2, sm: 3 },
           px: { xs: 2, sm: 3 },
-        }}
+        })}
       >
         <Box
           sx={{
@@ -104,32 +103,32 @@ const InviteModal = ({
           }}
         >
           <Avatar
-            sx={{
-              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
-              color: "primary.main",
+            sx={(theme) => ({
+              bgcolor: alpha(theme.palette.primary.main, 0.1),
+              color: theme.palette.primary.main,
               width: { xs: 36, sm: 40 },
               height: { xs: 36, sm: 40 },
               mr: { xs: 0, sm: 1.5 },
               mb: { xs: 1, sm: 0 },
-            }}
+            })}
           >
             <PersonAddIcon />
           </Avatar>
           <Box sx={{ textAlign: { xs: "center", sm: "left" } }}>
             <Typography
               variant="h6"
-              sx={{
+              sx={(theme) => ({
                 fontWeight: 700,
                 letterSpacing: 0.2,
                 fontSize: { xs: "1.1rem", sm: "1.25rem" },
-              }}
+              })}
             >
               Invitar Miembro
             </Typography>
             <Typography
               variant="body2"
               color="text.secondary"
-              sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
+              sx={(theme) => ({ fontSize: { xs: "0.8rem", sm: "0.875rem" } })}
             >
               Invita a amigos, familia o compañeros a unirse a este grupo
             </Typography>
@@ -146,10 +145,7 @@ const InviteModal = ({
             bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
             border: "1px solid",
             borderColor: (theme) => alpha(theme.palette.error.main, 0.2),
-            "&:hover": {
-              bgcolor: (theme) => alpha(theme.palette.error.main, 0.2),
-              transform: "scale(1.05)",
-            },
+
             transition: "all 0.2s ease",
           }}
         >
@@ -218,9 +214,7 @@ const InviteModal = ({
                 fontWeight: 500,
                 border: "1px solid",
                 borderColor: (theme) => alpha(theme.palette.grey[500], 0.2),
-                "&:hover": {
-                  bgcolor: (theme) => alpha(theme.palette.grey[500], 0.05),
-                },
+
                 transition: "all 0.2s ease",
                 width: { xs: "100%", sm: "auto" },
                 order: { xs: 2, sm: 1 },
@@ -240,12 +234,7 @@ const InviteModal = ({
                 fontWeight: 600,
                 boxShadow: (theme) =>
                   `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
-                "&:hover": {
-                  bgcolor: "primary.dark",
-                  boxShadow: (theme) =>
-                    `0 6px 16px ${alpha(theme.palette.primary.main, 0.4)}`,
-                  transform: "translateY(-2px)",
-                },
+
                 transition: "all 0.2s ease",
                 width: { xs: "100%", sm: "auto" },
                 order: { xs: 1, sm: 2 },

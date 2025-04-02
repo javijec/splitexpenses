@@ -46,10 +46,10 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
       onClose={onClose}
       maxWidth="sm"
       fullWidth
-      slotProps={{
-        sx: {
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+      PaperProps={{
+        sx: (theme) => ({
+          borderRadius: theme.shape.borderRadius,
+          boxShadow: theme.shadows[3],
           overflow: "hidden",
           position: "relative",
           "&::before": {
@@ -59,48 +59,39 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
             left: 0,
             width: "100%",
             height: "4px",
-            background: (theme) => `${theme.palette.primary.main}`,
+            background: theme.palette.primary.main,
           },
           transition: "all 0.3s ease",
-        },
+        }),
       }}
-      slots={{ transition: Fade }}
-      slotProps={{ transition: { timeout: 500 } }}
+      TransitionComponent={Fade}
+      transitionDuration={500}
     >
       <DialogTitle
-        sx={{
+        sx={(theme) => ({
           p: 3,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          bgcolor: "background.paper",
-          borderBottom: "1px solid",
-          borderColor: "divider",
-          pb: 2,
-          pt: 3,
-          px: 3,
-        }}
+          bgcolor: theme.palette.background.paper,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        })}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
-            sx={{
-              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
-              color: "primary.main",
+            sx={(theme) => ({
+              bgcolor: theme.palette.primary.light,
+              color: theme.palette.primary.main,
               width: 40,
               height: 40,
               mr: 1.5,
-            }}
+            })}
           >
             <GroupAddIcon />
           </Avatar>
-          <Box>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-            >
-              Crear Nuevo Grupo
-            </Typography>
-          </Box>
+          <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 0.2 }}>
+            Crear Nuevo Grupo
+          </Typography>
         </Box>
       </DialogTitle>
       <DialogContent sx={{ p: 3, pt: 3, bgcolor: "background.paper" }}>

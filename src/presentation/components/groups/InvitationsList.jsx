@@ -33,9 +33,7 @@ export const InvitationsListDesktop = ({
             height: "100%",
             transition: "all 0.3s ease",
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-            "&:hover": {
-              boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
-            },
+
             mb: 3,
             position: "relative",
             "&::before": {
@@ -94,11 +92,7 @@ export const InvitationsListDesktop = ({
                       borderBottom: "1px solid",
                       borderColor: "divider",
                       transition: "all 0.3s ease",
-                      "&:hover": {
-                        bgcolor: (theme) =>
-                          alpha(theme.palette.info.main, 0.04),
-                        transform: "translateY(-2px)",
-                      },
+
                       flexDirection: { xs: "column", sm: "row" },
                       alignItems: { xs: "flex-start", sm: "center" },
                       justifyContent: "space-between",
@@ -118,11 +112,7 @@ export const InvitationsListDesktop = ({
                               border: "1px solid",
                               borderColor: (theme) =>
                                 alpha(theme.palette.error.main, 0.2),
-                              "&:hover": {
-                                bgcolor: (theme) =>
-                                  alpha(theme.palette.error.main, 0.2),
-                                transform: "scale(1.05)",
-                              },
+
                               transition: "all 0.2s ease",
                             }}
                           >

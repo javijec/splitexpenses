@@ -40,32 +40,31 @@ const InvitationsDialog = ({
       maxWidth="sm"
       fullWidth
       PaperProps={{
-        sx: {
-          borderRadius: 3,
+        sx: (theme) => ({
+          borderRadius: theme.shape.borderRadius,
           overflow: "hidden",
-          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
-        },
+          boxShadow: theme.shadows[3],
+        }),
       }}
     >
       <DialogTitle
-        sx={{
-          bgcolor: "background.paper",
+        sx={(theme) => ({
+          bgcolor: theme.palette.background.paper,
           pb: 2,
           pt: 3,
           px: 3,
-          borderBottom: "1px solid",
-          borderColor: "divider",
-        }}
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        })}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
-            sx={{
-              bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
-              color: "info.main",
+            sx={(theme) => ({
+              bgcolor: theme.palette.info.light,
+              color: theme.palette.info.main,
               width: 40,
               height: 40,
               mr: 1.5,
-            }}
+            })}
           >
             <EmailIcon />
           </Avatar>
@@ -91,10 +90,7 @@ const InvitationsDialog = ({
                     borderBottom: "1px solid",
                     borderColor: "divider",
                     transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: (theme) => alpha(theme.palette.info.main, 0.04),
-                      transform: "translateY(-2px)",
-                    },
+
                     flexDirection: { xs: "column", sm: "row" },
                     alignItems: { xs: "flex-start", sm: "center" },
                     justifyContent: "space-between",
@@ -164,11 +160,7 @@ const InvitationsDialog = ({
                           border: "1px solid",
                           borderColor: (theme) =>
                             alpha(theme.palette.success.main, 0.2),
-                          "&:hover": {
-                            bgcolor: (theme) =>
-                              alpha(theme.palette.success.main, 0.2),
-                            transform: "scale(1.05)",
-                          },
+
                           transition: "all 0.2s ease",
                         }}
                         onClick={() =>
@@ -191,11 +183,7 @@ const InvitationsDialog = ({
                           border: "1px solid",
                           borderColor: (theme) =>
                             alpha(theme.palette.error.main, 0.2),
-                          "&:hover": {
-                            bgcolor: (theme) =>
-                              alpha(theme.palette.error.main, 0.2),
-                            transform: "scale(1.05)",
-                          },
+
                           transition: "all 0.2s ease",
                         }}
                         onClick={() => onReject(invitation.id)}

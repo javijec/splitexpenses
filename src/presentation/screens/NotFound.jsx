@@ -1,8 +1,10 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router";
 
 function NotFound() {
   const navigate = useNavigate();
+  const theme = useTheme();
+
 
   return (
     <>
@@ -14,6 +16,7 @@ function NotFound() {
           justifyContent: "center",
           height: "70vh",
           textAlign: "center",
+          typography: "body1",
         }}
       >
         <Typography variant="h1" component="h1" gutterBottom>

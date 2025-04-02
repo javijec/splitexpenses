@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid2 as Grid, Box } from "@mui/material";
+import { Grid2 as Grid, Box, useTheme } from "@mui/material";
 import Header from "@/presentation/components/dashboard/Header";
 import Invitations from "@/presentation/components/dashboard/Invitations";
 import Groups from "@/presentation/components/dashboard/Groups";
@@ -13,6 +13,8 @@ import {
 import { useAuth } from "@/application/contexts/AuthContext";
 
 const Main = () => {
+  const theme = useTheme();
+
   const [groups, setGroups] = useState([]);
   const [loadingGroups, setLoadingGroups] = useState(true);
   const { user } = useAuth();
@@ -82,11 +84,11 @@ const Main = () => {
   return (
     <Box
       sx={{
-        borderRadius: 3,
+        borderRadius: theme.shape.borderRadius,
         overflow: "hidden",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.08)",
+        boxShadow: theme.shadows[3],
         bgcolor: "background.paper",
-        p: { xs: 2, sm: 3 },
+        p: { xs: theme.spacing(2), sm: theme.spacing(3) },
         transition: "all 0.3s ease",
       }}
     >

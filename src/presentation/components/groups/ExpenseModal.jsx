@@ -328,10 +328,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
             bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
             border: "1px solid",
             borderColor: (theme) => alpha(theme.palette.error.main, 0.2),
-            "&:hover": {
-              bgcolor: (theme) => alpha(theme.palette.error.main, 0.2),
-              transform: "scale(1.05)",
-            },
+
             transition: "all 0.2s ease",
           }}
         >
@@ -446,10 +443,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                 errors.totalAmount
                   ? alpha(theme.palette.error.main, 0.5)
                   : alpha(theme.palette.success.main, 0.2),
-              "&:hover": {
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.12)",
-                transform: "translateY(-1px)",
-              },
+
               position: "relative",
               my: 0.5,
             }}
@@ -675,9 +669,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                 fontWeight: 500,
                 border: "1px solid",
                 borderColor: (theme) => alpha(theme.palette.grey[500], 0.2),
-                "&:hover": {
-                  bgcolor: (theme) => alpha(theme.palette.grey[500], 0.05),
-                },
+
                 transition: "all 0.2s ease",
                 py: 0.5,
               }}
@@ -698,12 +690,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                   bgcolor: "success.main",
                   boxShadow: (theme) =>
                     `0 2px 8px ${alpha(theme.palette.success.main, 0.3)}`,
-                  "&:hover": {
-                    bgcolor: "success.dark",
-                    boxShadow: (theme) =>
-                      `0 4px 12px ${alpha(theme.palette.success.main, 0.4)}`,
-                    transform: "translateY(-1px)",
-                  },
+
                   transition: "all 0.2s ease",
                 }}
                 disableElevation
@@ -724,12 +711,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                   bgcolor: "success.main",
                   boxShadow: (theme) =>
                     `0 2px 8px ${alpha(theme.palette.success.main, 0.3)}`,
-                  "&:hover": {
-                    bgcolor: "success.dark",
-                    boxShadow: (theme) =>
-                      `0 4px 12px ${alpha(theme.palette.success.main, 0.4)}`,
-                    transform: "translateY(-1px)",
-                  },
+
                   transition: "all 0.2s ease",
                 }}
                 disableElevation

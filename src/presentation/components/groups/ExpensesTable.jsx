@@ -88,9 +88,7 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
               key={expense.id}
               sx={{
                 transition: "all 0.3s ease",
-                "&:hover": {
-                  bgcolor: (theme) => alpha(theme.palette.success.main, 0.06),
-                },
+
               }}
             >
               <TableCell sx={{ px: { xs: 1, sm: 2, py: { xs: 1, sm: 1.5 } } }}>
@@ -175,12 +173,7 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
                         border: "1px solid",
                         borderColor: (theme) =>
                           alpha(theme.palette.success.main, 0.2),
-                        "&:hover": {
-                          bgcolor: (theme) =>
-                            alpha(theme.palette.success.main, 0.2),
-                          transform: { xs: "scale(1.02)", sm: "scale(1.05)" },
-                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-                        },
+
                         transition: "all 0.2s ease",
                       }}
                     >
@@ -203,12 +196,7 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
                         border: "1px solid",
                         borderColor: (theme) =>
                           alpha(theme.palette.error.main, 0.2),
-                        "&:hover": {
-                          bgcolor: (theme) =>
-                            alpha(theme.palette.error.main, 0.2),
-                          transform: { xs: "scale(1.02)", sm: "scale(1.05)" },
-                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-                        },
+
                         transition: "all 0.2s ease",
                       }}
                     >

@@ -35,15 +35,13 @@ const Invitations = ({
     <Grid size={{ xs: 12, md: 4 }}>
       <Card
         elevation={3}
-        sx={{
-          borderRadius: 3,
+        sx={(theme) => ({
+          borderRadius: theme.shape.borderRadius,
           overflow: "hidden",
           height: "100%",
           transition: "all 0.3s ease",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-          "&:hover": {
-            boxShadow: "0 6px 16px rgba(0, 0, 0, 0.12)",
-          },
+          boxShadow: theme.shadows[2],
+
           position: "relative",
           "&::before": {
             content: '""',
@@ -52,22 +50,21 @@ const Invitations = ({
             left: 0,
             width: "100%",
             height: "4px",
-            background: (theme) =>
-              `linear-gradient(90deg, ${theme.palette.info.main}, ${theme.palette.primary.main})`,
+            background: `linear-gradient(90deg, ${theme.palette.info.main}, ${theme.palette.primary.main})`,
           },
-        }}
+        })}
       >
         <CardHeader
           title={
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Avatar
-                sx={{
-                  bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
-                  color: "info.main",
+                sx={(theme) => ({
+                  bgcolor: theme.palette.info.light,
+                  color: theme.palette.info.main,
                   width: 40,
                   height: 40,
                   mr: 1.5,
-                }}
+                })}
               >
                 <EmailIcon />
               </Avatar>
@@ -79,14 +76,13 @@ const Invitations = ({
               </Typography>
             </Box>
           }
-          sx={{
-            bgcolor: "background.paper",
+          sx={(theme) => ({
+            bgcolor: theme.palette.background.paper,
             pb: 2,
             pt: 3,
             px: 3,
-            borderBottom: "1px solid",
-            borderColor: "divider",
-          }}
+            borderBottom: `1px solid ${theme.palette.divider}`,
+          })}
         />
         <Divider />
         <CardContent>
@@ -106,11 +102,7 @@ const Invitations = ({
                       borderBottom: "1px solid",
                       borderColor: "divider",
                       transition: "all 0.3s ease",
-                      "&:hover": {
-                        bgcolor: (theme) =>
-                          alpha(theme.palette.info.main, 0.04),
-                        transform: "translateY(-2px)",
-                      },
+
                       flexDirection: { xs: "column", sm: "row" },
                       alignItems: { xs: "flex-start", sm: "center" },
                       justifyContent: "space-between",
@@ -180,11 +172,7 @@ const Invitations = ({
                             border: "1px solid",
                             borderColor: (theme) =>
                               alpha(theme.palette.success.main, 0.2),
-                            "&:hover": {
-                              bgcolor: (theme) =>
-                                alpha(theme.palette.success.main, 0.2),
-                              transform: "scale(1.05)",
-                            },
+
                             transition: "all 0.2s ease",
                           }}
                           onClick={() =>
@@ -207,11 +195,7 @@ const Invitations = ({
                             border: "1px solid",
                             borderColor: (theme) =>
                               alpha(theme.palette.error.main, 0.2),
-                            "&:hover": {
-                              bgcolor: (theme) =>
-                                alpha(theme.palette.error.main, 0.2),
-                              transform: "scale(1.05)",
-                            },
+
                             transition: "all 0.2s ease",
                           }}
                           onClick={() => onReject(invitation.id)}

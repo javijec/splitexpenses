@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "@/application/contexts/AuthContext";
+
 import { Box, Grid2 as Grid, Fade, useTheme } from "@mui/material";
 
 // Componentes
@@ -40,11 +41,11 @@ const ProfileScreen = () => {
     <Fade in={true} timeout={600}>
       <Box
         sx={{
-          borderRadius: 3,
+          borderRadius: theme.shape.borderRadius,
           overflow: "hidden",
-          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
+          boxShadow: theme.shadows[3],
           bgcolor: "background.paper",
-          p: { xs: 2, sm: 3 },
+          p: { xs: theme.spacing(2), sm: theme.spacing(3) },
           transition: "all 0.3s ease",
           position: "relative",
           "&::before": {
@@ -53,7 +54,7 @@ const ProfileScreen = () => {
             top: 0,
             left: 0,
             right: 0,
-            height: "4px",
+            height: theme.spacing(0.5),
             background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
           },
         }}

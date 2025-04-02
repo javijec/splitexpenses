@@ -50,9 +50,7 @@ const ProfileUpdateForm = ({
             textTransform: "none",
             transition: "all 0.3s ease",
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-            "&:hover": {
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
-            },
+
           }}
           disabled={loading}
         >

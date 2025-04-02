@@ -62,9 +62,7 @@ const DeleteAccountDialog = ({ open, onClose, onDelete, loading }) => {
           sx={{
             color: "white",
             bgcolor: "rgba(255,255,255,0.1)",
-            "&:hover": {
-              bgcolor: "rgba(255,255,255,0.2)",
-            },
+
           }}
         >
           <CloseIcon fontSize="small" />
@@ -101,9 +99,7 @@ const DeleteAccountDialog = ({ open, onClose, onDelete, loading }) => {
             borderRadius: 2,
             fontWeight: 600,
             boxShadow: "0 4px 12px rgba(211, 47, 47, 0.3)",
-            "&:hover": {
-              boxShadow: "0 6px 16px rgba(211, 47, 47, 0.4)",
-            },
+
           }}
           disableElevation
         >

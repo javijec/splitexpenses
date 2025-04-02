@@ -91,11 +91,7 @@ const DangerZone = ({ onDeleteClick }) => {
               py: 1,
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
               transition: "all 0.3s ease",
-              "&:hover": {
-                bgcolor: "error.dark",
-                transform: "translateY(-2px)",
-                boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
-              },
+
               "&:active": {
                 transform: "translateY(0)",
                 boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",

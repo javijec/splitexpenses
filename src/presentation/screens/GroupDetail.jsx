@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { Grid2 as Grid, Box, Button } from "@mui/material";
+import { Grid2 as Grid, Box, Button, useTheme } from "@mui/material";
 import { Group, Email } from "@mui/icons-material";
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";
@@ -33,6 +33,8 @@ import calculateBalance from "@/utils/calculateBalance";
 import simplifyBalance from "@/utils/simpliBalance";
 
 function GroupDetail() {
+  const theme = useTheme();
+
   const { groupId } = useParams();
   const { user, groupContext, setGroupContext } = useAuth();
   const { isExpenseModalOpen, closeExpenseModal } = useModal();
@@ -191,11 +193,11 @@ function GroupDetail() {
   return (
     <Box
       sx={{
-        borderRadius: 3,
+        borderRadius: theme.shape.borderRadius,
         overflow: "hidden",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.08)",
+        boxShadow: theme.shadows[3],
         bgcolor: "background.paper",
-        p: { xs: 2, sm: 3 },
+        p: { xs: theme.spacing(2), sm: theme.spacing(3) },
         transition: "all 0.3s ease",
       }}
     >

@@ -130,12 +130,7 @@ export default function BottomAppBar() {
                       : "#ffffff", // white text for light mode
                   fontWeight: "bold",
                   zIndex: 1000,
-                  "&:hover": {
-                    background: (theme) =>
-                      theme.palette.mode === "dark"
-                        ? "#b71c1c" // darker red on hover for dark mode
-                        : "#d32f2f", // darker red on hover for light mode
-                  },
+
                 }}
               >
                 {location.pathname !== "/dashboard" ? (
@@ -163,13 +158,7 @@ export default function BottomAppBar() {
                       theme.palette.mode === "dark"
                         ? "rgba(255, 0, 0, 0.37)"
                         : "rgba(0, 0, 0, 0.04)",
-                    "&:hover": {
-                      transform: "scale(1.05)",
-                      bgcolor: (theme) =>
-                        theme.palette.mode === "dark"
-                          ? "rgba(255, 255, 255, 0.15)"
-                          : "rgba(0, 0, 0, 0.08)",
-                    },
+
                     ml: 1,
                   }}
                 >
@@ -190,13 +179,7 @@ export default function BottomAppBar() {
                       theme.palette.mode === "dark"
                         ? "rgba(255, 255, 255, 0.08)"
                         : "rgba(0, 0, 0, 0.04)",
-                    "&:hover": {
-                      transform: "scale(1.05)",
-                      bgcolor: (theme) =>
-                        theme.palette.mode === "dark"
-                          ? "rgba(255, 255, 255, 0.15)"
-                          : "rgba(0, 0, 0, 0.08)",
-                    },
+
                     ml: 1,
                   }}
                 >

@@ -36,13 +36,12 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
   return (
     <Card
       elevation={3}
-      sx={{
-        borderRadius: 3,
+      sx={(theme) => ({
+        borderRadius: theme.shape.borderRadius,
         overflow: "hidden",
         height: "100%",
         transition: "all 0.3s ease",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-
+        boxShadow: theme.shadows[2],
         position: "relative",
         "&::before": {
           content: '""',
@@ -51,21 +50,21 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
           left: 0,
           width: "100%",
           height: "4px",
-          background: (theme) => `${theme.palette.success.main}`,
+          background: theme.palette.success.main,
         },
-      }}
+      })}
     >
       <CardHeader
         title={
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Avatar
-              sx={{
-                bgcolor: (theme) => alpha(theme.palette.success.main, 0.1),
-                color: "success.main",
+              sx={(theme) => ({
+                bgcolor: alpha(theme.palette.success.main, 0.1),
+                color: theme.palette.success.main,
                 width: 40,
                 height: 40,
                 mr: 1.5,
-              }}
+              })}
             >
               <ReceiptIcon />
             </Avatar>
@@ -77,14 +76,13 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
             </Typography>
           </Box>
         }
-        sx={{
-          bgcolor: "background.paper",
+        sx={(theme) => ({
+          bgcolor: theme.palette.background.paper,
           pb: 1,
           pt: 2,
           px: 3,
-          borderBottom: "1px solid",
-          borderColor: "divider",
-        }}
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        })}
       />
       <Divider />
       <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>

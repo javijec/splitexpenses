@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { SignInPage } from "@toolpad/core/SignInPage";
 import { useNavigate } from "react-router";
 import { AuthService } from "@/application/services/AuthService";
-import { Alert, Box, Snackbar } from "@mui/material";
+import { Alert, Box, Snackbar, useTheme } from "@mui/material";
 
 export default function Login() {
+  const theme = useTheme();
+
   const authService = new AuthService();
   const providers = [{ id: "google", name: "Google" }];
   const navigate = useNavigate();
@@ -40,8 +42,8 @@ export default function Login() {
         slotProps={{ form: { noValidate: true } }}
         sx={{
           "& form > .MuiStack-root": {
-            marginTop: "2rem",
-            rowGap: "0.5rem",
+            marginTop: theme.spacing(4),
+            rowGap: theme.spacing(1),
           },
         }}
       />

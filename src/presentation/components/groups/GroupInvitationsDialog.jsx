@@ -90,10 +90,7 @@ const GroupInvitationsDialog = ({
                   borderBottom: "1px solid",
                   borderColor: "divider",
                   transition: "all 0.3s ease",
-                  "&:hover": {
-                    bgcolor: (theme) => alpha(theme.palette.info.main, 0.04),
-                    transform: "translateY(-2px)",
-                  },
+
                   flexDirection: { xs: "column", sm: "row" },
                   alignItems: { xs: "flex-start", sm: "center" },
                   justifyContent: "space-between",
@@ -113,11 +110,7 @@ const GroupInvitationsDialog = ({
                           border: "1px solid",
                           borderColor: (theme) =>
                             alpha(theme.palette.error.main, 0.2),
-                          "&:hover": {
-                            bgcolor: (theme) =>
-                              alpha(theme.palette.error.main, 0.2),
-                            transform: "scale(1.05)",
-                          },
+
                           transition: "all 0.2s ease",
                         }}
                       >
