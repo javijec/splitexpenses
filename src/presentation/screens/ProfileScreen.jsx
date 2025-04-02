@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "@/application/contexts/AuthContext";
 
-import { Box, Grid2 as Grid } from "@mui/material";
+import { Box, Container, Grid2 as Grid } from "@mui/material";
 
 // Componentes
 import ProfileHeader from "@/presentation/components/profile/ProfileHeader";
@@ -37,24 +37,18 @@ const ProfileScreen = () => {
   };
 
   return (
-    <Box>
+    <Container>
       <ProfileHeader />
 
-      <Grid>
-        <Grid>
-          <UserInfoCard
-            user={user}
-            displayName={displayName}
-            setDisplayName={setDisplayName}
-            loading={loading}
-            handleUpdateProfile={handleUpdateProfile}
-          />
-        </Grid>
+      <UserInfoCard
+        user={user}
+        displayName={displayName}
+        setDisplayName={setDisplayName}
+        loading={loading}
+        handleUpdateProfile={handleUpdateProfile}
+      />
 
-        <Grid>
-          <DangerZone onDeleteClick={() => setDeleteDialogOpen(true)} />
-        </Grid>
-      </Grid>
+      <DangerZone onDeleteClick={() => setDeleteDialogOpen(true)} />
 
       <DeleteAccountDialog
         open={deleteDialogOpen}
@@ -62,7 +56,7 @@ const ProfileScreen = () => {
         onDelete={handleDeleteAccount}
         loading={deleteLoading}
       />
-    </Box>
+    </Container>
   );
 };
 

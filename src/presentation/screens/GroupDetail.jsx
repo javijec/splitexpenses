@@ -205,46 +205,43 @@ function GroupDetail() {
           openDeleteGroupModal();
         }}
       />
-      <Grid>
-        <Grid>
-          <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <MembersListCard
-              members={members}
-              isAdmin={isAdmin}
-              user={user}
-              group={group}
-              onDeleteMember={handleDeleteMember}
-              onInvite={openInviteModal}
-            />
-            <InvitationsListCard
-              invitations={invitations}
-              isAdmin={isAdmin}
-              onDeleteInvitation={handleDeleteInvitation}
-            />
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <Button onClick={() => setIsMembersDialogOpen(true)}>
-              <Group />
-              Ver Miembros
-            </Button>
-            {invitations.length > 0 && (
-              <Button onClick={() => setIsInvitationsDialogOpen(true)}>
-                <Email />
-                Ver Invitaciones
-              </Button>
-            )}
-          </Box>
 
-          <GroupBalanceCard balances={balances} transactions={transactions} />
-        </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <ExpensesListCard
-            expenses={expenses}
-            user={user}
-            setExpenses={updateExpensesAndBalances}
-          />
-        </Grid>
-      </Grid>
+      <Box sx={{ display: { xs: "none", md: "block" } }}>
+        <MembersListCard
+          members={members}
+          isAdmin={isAdmin}
+          user={user}
+          group={group}
+          onDeleteMember={handleDeleteMember}
+          onInvite={openInviteModal}
+        />
+        <InvitationsListCard
+          invitations={invitations}
+          isAdmin={isAdmin}
+          onDeleteInvitation={handleDeleteInvitation}
+        />
+      </Box>
+      <Box sx={{ display: { xs: "flex", md: "none" } }}>
+        <Button onClick={() => setIsMembersDialogOpen(true)}>
+          <Group />
+          Ver Miembros
+        </Button>
+        {invitations.length > 0 && (
+          <Button onClick={() => setIsInvitationsDialogOpen(true)}>
+            <Email />
+            Ver Invitaciones
+          </Button>
+        )}
+      </Box>
+
+      <GroupBalanceCard balances={balances} transactions={transactions} />
+
+      <ExpensesListCard
+        expenses={expenses}
+        user={user}
+        setExpenses={updateExpensesAndBalances}
+      />
+
       <ExpenseDialog
         isOpen={isExpenseModalOpen}
         onClose={closeExpenseModal}
