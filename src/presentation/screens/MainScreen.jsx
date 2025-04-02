@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Grid2 as Grid, Box, useTheme, Container } from "@mui/material";
-import Header from "@/presentation/components/dashboard/Header";
+import Header from "@/presentation/components/dashboard/HeaderDashboard";
 import Invitations from "@/presentation/components/dashboard/Invitations";
-import Groups from "@/presentation/components/dashboard/Groups";
-import GroupModal from "@/presentation/components/dashboard/GroupModal";
+import Groups from "@/presentation/components/dashboard/GroupsListCard";
+import GroupModal from "@/presentation/components/dashboard/CreateGroupDialog";
 import { useModal } from "@/application/contexts/ModalContext";
 import { addMember, getGroupsByUser } from "@/domain/usecases/groups";
 import {
