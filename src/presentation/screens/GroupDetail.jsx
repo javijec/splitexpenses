@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { Grid2 as Grid, Box, Button, useTheme } from "@mui/material";
+import { Grid2 as Grid, Box, Button, useTheme, Container } from "@mui/material";
 import { Group, Email } from "@mui/icons-material";
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";
@@ -196,7 +196,7 @@ function GroupDetail() {
   }
 
   return (
-    <Box>
+    <Container>
       <HeaderGroupDetails
         group={group}
         isAdmin={isAdmin}
@@ -206,7 +206,7 @@ function GroupDetail() {
         }}
       />
       <Grid>
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid>
           <Box sx={{ display: { xs: "none", md: "block" } }}>
             <MembersListCard
               members={members}
@@ -280,7 +280,7 @@ function GroupDetail() {
         isAdmin={isAdmin}
         onDeleteInvitation={handleDeleteInvitation}
       />
-    </Box>
+    </Container>
   );
 }
 

@@ -30,7 +30,7 @@ export const InvitationsListCard = ({
           />
           <Divider />
           <CardContent>
-            <List sx={{ p: 0 }}>
+            <List>
               {invitations.map((invitation) => (
                 <ListItem
                   key={invitation.id}

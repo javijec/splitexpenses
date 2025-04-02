@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SignInPage } from "@toolpad/core/SignInPage";
 import { useNavigate } from "react-router";
 import { AuthService } from "@/application/services/AuthService";
-import { Alert, Box, Snackbar, useTheme } from "@mui/material";
+import { Alert, Container, Snackbar, useTheme } from "@mui/material";
 
 export default function Login() {
   const theme = useTheme();
@@ -35,7 +35,7 @@ export default function Login() {
   };
 
   return (
-    <Box>
+    <Container>
       <SignInPage
         signIn={handleSignIn}
         providers={providers}
@@ -62,6 +62,6 @@ export default function Login() {
           {error}
         </Alert>
       </Snackbar>
-    </Box>
+    </Container>
   );
 }

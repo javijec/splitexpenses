@@ -1,9 +1,9 @@
-import { Box, Typography, Button, Avatar } from "@mui/material";
+import { Box, Typography, Button, Avatar, Container } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 
 export const HeaderGroupDetails = ({ group, isAdmin, onDelete }) => {
   return (
-    <Box>
+    <Container>
       <Box>
         <Avatar>{group?.name?.charAt(0) || "G"}</Avatar>
         <Box>
@@ -16,6 +16,6 @@ export const HeaderGroupDetails = ({ group, isAdmin, onDelete }) => {
           Eliminar
         </Button>
       )}
-    </Box>
+    </Container>
   );
 };

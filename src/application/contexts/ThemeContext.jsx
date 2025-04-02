@@ -1,9 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import {
-  ThemeProvider as MuiThemeProvider,
-  createTheme,
-} from "@mui/material/styles";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import { useSystemTheme } from "@/application/hooks/useSystemTheme";
+import createAppTheme from "@/presentation/theme/theme.js";
 
 // Crear el contexto para el tema
 const ThemeContext = createContext();
@@ -35,101 +33,8 @@ export const ThemeProvider = ({ children }) => {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   };
 
-  // Crear el tema de Material UI basado en el modo actual
-  const theme = createTheme({
-    palette: {
-      mode,
-      // Mantener los colores primarios y secundarios existentes
-      primary: {
-        main: "#1976d2",
-        light: "#42a5f5",
-        dark: "#0d47a1",
-        contrastText: "#fff",
-      },
-      secondary: {
-        main: "#e91e63",
-        light: "#f48fb1",
-        dark: "#c2185b",
-        contrastText: "#fff",
-      },
-      error: {
-        main: "#d32f2f",
-      },
-      background: {
-        // Ajustar los colores de fondo según el modo
-        default: mode === "light" ? "#f5f5f5" : "#121212",
-        paper: mode === "light" ? "#ffffff" : "#1e1e1e",
-      },
-    },
-    // Mantener la configuración de tipografía existente
-    typography: {
-      fontFamily: ["Roboto", "Arial", "sans-serif"].join(","),
-      h1: {
-        fontSize: "2.5rem",
-        fontWeight: 500,
-      },
-      h2: {
-        fontSize: "2rem",
-        fontWeight: 500,
-      },
-      h3: {
-        fontSize: "1.75rem",
-        fontWeight: 500,
-      },
-      h4: {
-        fontSize: "1.5rem",
-        fontWeight: 500,
-      },
-      h5: {
-        fontSize: "1.25rem",
-        fontWeight: 500,
-      },
-      h6: {
-        fontSize: "1rem",
-        fontWeight: 500,
-      },
-    },
-    // Mantener la configuración de componentes existente
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            textTransform: "none",
-            borderRadius: 8,
-          },
-        },
-      },
-      MuiCard: {
-        styleOverrides: {
-          root: {
-            borderRadius: 12,
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
-          },
-        },
-      },
-      MuiCardHeader: {
-        styleOverrides: {
-          root: {
-            // Fondo más claro en modo oscuro y ligeramente más oscuro en modo claro
-            backgroundColor: mode === "dark" ? "#2a2a2a" : "#f7f7f7",
-            // Mejora del contraste para los títulos
-            "& .MuiTypography-root": {
-              color: mode === "dark" ? "#ffffff" : "#121212",
-            },
-            // Transición suave al cambiar de tema
-            transition: "background-color 0.3s ease, color 0.3s ease",
-          },
-        },
-      },
-      MuiTextField: {
-        styleOverrides: {
-          root: {
-            marginBottom: 16,
-          },
-        },
-      },
-    },
-  });
+  // Crear el tema de Material UI basado en el modo actual usando la función unificada
+  const theme = createAppTheme(mode);
 
   // Proporcionar el contexto y el proveedor de tema de Material UI
   return (
