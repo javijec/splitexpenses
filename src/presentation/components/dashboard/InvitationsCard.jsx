@@ -23,7 +23,7 @@ import {
 } from "@mui/icons-material";
 import Loading from "../common/Loading";
 
-const Invitations = ({
+const InvitationsCard = ({
   onAccept,
   onReject,
   invitations,
@@ -100,4 +100,4 @@ const Invitations = ({
   );
 };
 
-export default Invitations;
+export default InvitationsCard;
