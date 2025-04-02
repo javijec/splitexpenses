@@ -49,14 +49,14 @@ const GroupBalance = ({ balances, transactions }) => {
         title={<Typography>Balance</Typography>
 
         }
-        action={<><Typography>
-          {showTransactions ? "Transacciones" : "Balances"}
-        </Typography>
+        action={<>
           <Switch
             checked={showTransactions}
             onChange={() => setShowTransactions(!showTransactions)}
             color="info"
-          /></>}
+          /><Typography>
+            {showTransactions ? "Transacciones" : "Balances"}
+          </Typography></>}
 
       />
       <Divider />

@@ -250,45 +250,9 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      maxWidth="sm"
-      fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          overflow: "hidden",
-          position: "relative",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "4px",
-            background: (theme) => `${theme.palette.success.main}`,
-          },
-          transition: "all 0.3s ease",
-        },
-      }}
-      TransitionComponent={Fade}
-      TransitionProps={{ timeout: 400 }}
-    >
+    <Dialog open={isOpen} onClose={onClose}>
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar
-            sx={{
-              bgcolor: (theme) => alpha(theme.palette.success.main, 0.1),
-              color: "success.main",
-              width: 40,
-              height: 40,
-              mr: 1.5,
-            }}
-          >
-            <ReceiptIcon />
-          </Avatar>
           <Box>
             {modalData ? (
               <Typography

@@ -34,31 +34,7 @@ const MembersDialog = ({
   onInvite,
 }) => {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="sm"
-      fullWidth
-      PaperProps={{
-        sx: (theme) => ({
-          borderRadius: theme.shape.borderRadius,
-          overflow: "hidden",
-          position: "relative",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "4px",
-            background: theme.palette.primary.main,
-          },
-          transition: "all 0.3s ease",
-        }),
-      }}
-      TransitionComponent={Fade}
-      TransitionProps={{ timeout: 400 }}
-    >
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar

@@ -191,15 +191,7 @@ function GroupDetail() {
   }
 
   return (
-    <Box
-      sx={{
-        borderRadius: theme.shape.borderRadius,
-        overflow: "hidden",
-        bgcolor: "background.paper",
-        p: { xs: theme.spacing(2), sm: theme.spacing(3) },
-        transition: "all 0.3s ease",
-      }}
-    >
+    <Box>
       <GroupHeader
         group={group}
         isAdmin={isAdmin}
@@ -208,9 +200,9 @@ function GroupDetail() {
           openDeleteGroupModal();
         }}
       />
-      <Grid container spacing={3}>
+      <Grid>
         <Grid size={{ xs: 12, md: 4 }}>
-          <Box sx={{ display: { xs: "none", md: "block" }, mb: 3 }}>
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
             <MembersListDesktop
               members={members}
               isAdmin={isAdmin}
@@ -225,41 +217,20 @@ function GroupDetail() {
               onDeleteInvitation={handleDeleteInvitation}
             />
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" }, mb: 3, gap: 2 }}>
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={() => setIsMembersDialogOpen(true)}
-              sx={{
-                borderRadius: 2,
-                py: 1.5,
-                fontWeight: 600,
-                textTransform: "none",
-              }}
-            >
-              <Group sx={{ mr: 1 }} />
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <Button onClick={() => setIsMembersDialogOpen(true)}>
+              <Group />
               Ver Miembros
             </Button>
             {invitations.length > 0 && (
-              <Button
-                variant="outlined"
-                fullWidth
-                onClick={() => setIsInvitationsDialogOpen(true)}
-                sx={{
-                  borderRadius: 2,
-                  py: 1.5,
-                  fontWeight: 600,
-                  textTransform: "none",
-                }}
-              >
-                <Email sx={{ mr: 1 }} />
+              <Button onClick={() => setIsInvitationsDialogOpen(true)}>
+                <Email />
                 Ver Invitaciones
               </Button>
             )}
           </Box>
-          <Box>
-            <GroupBalance balances={balances} transactions={transactions} />
-          </Box>
+
+          <GroupBalance balances={balances} transactions={transactions} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <ExpensesList

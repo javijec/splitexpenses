@@ -19,45 +19,11 @@ import {
 
 const DeleteAccountDialog = ({ open, onClose, onDelete, loading }) => {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="sm"
-      fullWidth
-      slotProps={{
-        sx: {
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          overflow: "hidden",
-        },
-      }}
-      slots={{ transition: Fade }}
-      slotsProps={{ transition: { timeout: 400 } }}
-    >
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        <Box>
-          <Typography
-            variant="h5"
-            gutterBottom
-            sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
-          >
-            <DeleteIcon sx={{ mr: 1 }} /> Eliminar Cuenta
-          </Typography>
-          <Typography variant="body2" sx={{ opacity: 0.9, maxWidth: "90%" }}>
-            Esta acción eliminará permanentemente tu cuenta y todos tus datos
-          </Typography>
-        </Box>
-        <IconButton
-          onClick={onClose}
-          size="small"
-          sx={{
-            color: "white",
-            bgcolor: "rgba(255,255,255,0.1)",
-
-          }}
-        >
-          <CloseIcon fontSize="small" />
-        </IconButton>
+        <Typography>
+          Esta acción eliminará permanentemente tu cuenta y todos tus datos
+        </Typography>
       </DialogTitle>
       <DialogContent sx={{ p: 3, pt: 3, m: 2 }}>
         <DialogContentText sx={{ mb: 1 }}>
@@ -90,7 +56,6 @@ const DeleteAccountDialog = ({ open, onClose, onDelete, loading }) => {
             borderRadius: 2,
             fontWeight: 600,
             boxShadow: "0 4px 12px rgba(211, 47, 47, 0.3)",
-
           }}
           disableElevation
         >

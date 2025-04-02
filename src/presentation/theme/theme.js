@@ -81,53 +81,6 @@ const theme = createTheme({
       lineHeight: 1.43,
     },
   },
-  shape: {
-    borderRadius: 8, // Unify border radius
-  },
-
-  spacing: 8, // Base spacing unit
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: "none",
-          borderRadius: 8,
-          padding: "8px 16px",
-        },
-      },
-    },
-    MuiDialog: {
-      styleOverrides: {
-        paper: {
-          boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.15)",
-        },
-      },
-
-    },
-
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        },
-      },
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          marginBottom: 16,
-        },
-      },
-    },
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          color: "#333333", // Unified text color
-        },
-      },
-    },
-  },
 });
 
 export default theme;

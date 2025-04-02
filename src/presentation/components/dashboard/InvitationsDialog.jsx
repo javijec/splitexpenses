@@ -34,37 +34,11 @@ const InvitationsDialog = ({
   loadingInvitations,
 }) => {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="sm"
-      fullWidth
-      PaperProps={{
-        sx: (theme) => ({
-          borderRadius: theme.shape.borderRadius,
-          overflow: "hidden",
-        }),
-      }}
-    >
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar
-            sx={(theme) => ({
-              bgcolor: theme.palette.info.light,
-              color: theme.palette.info.main,
-              width: 40,
-              height: 40,
-              mr: 1.5,
-            })}
-          >
-            <EmailIcon />
-          </Avatar>
-          <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 0.2 }}>
-            Invitaciones Pendientes
-          </Typography>
-        </Box>
+        <Typography>Invitaciones Pendientes</Typography>
       </DialogTitle>
-      <DialogContent sx={{ p: 0 }}>
+      <DialogContent>
         {loadingInvitations ? (
           <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
             <CircularProgress size={40} thickness={4} />

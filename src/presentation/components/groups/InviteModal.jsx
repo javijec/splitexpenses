@@ -55,31 +55,7 @@ const InviteModal = ({
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={handleClose}
-      maxWidth="sm"
-      fullWidth
-      PaperProps={{
-        sx: (theme) => ({
-          borderRadius: theme.shape.borderRadius,
-          overflow: "hidden",
-          position: "relative",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "4px",
-            background: theme.palette.primary.main,
-          },
-          transition: "all 0.3s ease",
-        }),
-      }}
-      TransitionComponent={Fade}
-      TransitionProps={{ timeout: 400 }}
-    >
+    <Dialog open={isOpen} onClose={handleClose}>
       <DialogTitle>
         <Box
           sx={{

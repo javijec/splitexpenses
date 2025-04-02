@@ -25,32 +25,7 @@ const GroupInvitationsDialog = ({
   onDeleteInvitation,
 }) => {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="sm"
-      fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          overflow: "hidden",
-          position: "relative",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "4px",
-            background: (theme) => `${theme.palette.primary.main}`,
-          },
-          transition: "all 0.3s ease",
-        },
-      }}
-      TransitionComponent={Fade}
-      TransitionProps={{ timeout: 400 }}
-    >
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Avatar
