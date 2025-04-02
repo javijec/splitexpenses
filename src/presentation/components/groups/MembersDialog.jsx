@@ -5,10 +5,8 @@ import {
   Box,
   List,
   ListItem,
-  ListItemText,
   ListItemAvatar,
   Typography,
-  Fade,
   Chip,
   IconButton,
   Tooltip,
@@ -54,146 +52,54 @@ const MembersDialog = ({
         </Box>
         {isAdmin && (
           <Button
-            variant="contained"
             startIcon={<PersonAddIcon />}
-            size="small"
             onClick={(e) => {
               e.stopPropagation();
               onInvite();
             }}
-            sx={(theme) => ({
-              fontWeight: 600,
-              textTransform: "none",
-              borderRadius: theme.shape.borderRadius,
-              boxShadow: `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
-
-              transition: "all 0.2s ease",
-            })}
           >
             Invitar
           </Button>
         )}
       </DialogTitle>
-      <DialogContent sx={{ p: 0, bgcolor: "background.paper" }}>
-        <Fade in={true} timeout={500}>
-          <List dense={true}>
+      <DialogContent>
+        <Box>
+          <List>
             {members.map((member) => (
               <ListItem
                 key={member.id}
-                sx={{
-                  py: 0.5,
-                  px: 3,
-                  borderBottom: "1px solid",
-                  borderColor: "divider",
-                  transition: "all 0.3s ease",
-
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}
                 secondaryAction={
                   isAdmin &&
                   member.id !== group.createdBy.id && (
-                    <Tooltip title="Eliminar miembro" placement="top">
-                      <IconButton
-                        size="small"
-                        onClick={() => onDeleteMember(member.id)}
-                        sx={{
-                          width: 36,
-                          height: 36,
-                          bgcolor: (theme) =>
-                            alpha(theme.palette.error.main, 0.1),
-                          color: "error.main",
-                          border: "1px solid",
-                          borderColor: (theme) =>
-                            alpha(theme.palette.error.main, 0.2),
-
-                          transition: "all 0.2s ease",
-                        }}
-                      >
-                        <DeleteIcon fontSize="small" />
+                    <Tooltip title="Eliminar miembro">
+                      <IconButton onClick={() => onDeleteMember(member.id)}>
+                        <DeleteIcon />
                       </IconButton>
                     </Tooltip>
                   )
                 }
               >
-                <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
+                <Box>
                   <ListItemAvatar>
-                    <Avatar
-                      sx={{
-                        bgcolor: (theme) =>
-                          alpha(theme.palette.primary.main, 0.1),
-                        color: "primary.main",
-                        width: 40,
-                        height: 40,
-                        mr: 2,
-                        fontSize: "1.1rem",
-                        fontWeight: "bold",
-                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-                        border: "2px solid",
-                        borderColor: (theme) =>
-                          alpha(theme.palette.primary.main, 0.2),
-                      }}
-                    >
+                    <Avatar>
                       {member.displayName?.charAt(0).toUpperCase() || "U"}
                     </Avatar>
                   </ListItemAvatar>
 
-                  <Typography
-                    sx={{
-                      fontWeight: 500,
-                      fontSize: { xs: "0.875rem", sm: "1rem" },
-                      color: "text.primary",
-                      letterSpacing: 0.2,
-                    }}
-                  >
-                    {member.displayName}
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      ml: 2,
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    {member.id === user.uid && (
-                      <Chip size="small" label="Tú" sx={{ mr: 1 }} />
-                    )}
+                  <Typography>{member.displayName}</Typography>
+                  <Box>
+                    {member.id === user.uid && <Chip label="Tú" />}
                     {member.id === group.createdBy.id &&
-                      member.id !== user.uid && (
-                        <Chip
-                          size="small"
-                          color="primary"
-                          label="Administrador"
-                        />
-                      )}
+                      member.id !== user.uid && <Chip label="Administrador" />}
                   </Box>
                 </Box>
               </ListItem>
             ))}
           </List>
-        </Fade>
+        </Box>
       </DialogContent>
-      <DialogActions
-        sx={{
-          p: 1,
-          borderTop: "1px solid",
-          borderColor: "divider",
-          bgcolor: "background.paper",
-        }}
-      >
-        <Button
-          onClick={onClose}
-          variant="contained"
-          sx={{
-            borderRadius: 2,
-            fontWeight: 600,
-            textTransform: "none",
-          }}
-        >
-          Cerrar
-        </Button>
+      <DialogActions>
+        <Button onClick={onClose}>Cerrar</Button>
       </DialogActions>
     </Dialog>
   );

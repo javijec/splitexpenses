@@ -27,60 +27,26 @@ const GroupInvitationsDialog = ({
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar
-            sx={{
-              bgcolor: (theme) => alpha(theme.palette.info.main, 0.1),
-              color: "info.main",
-              width: 40,
-              height: 40,
-              mr: 1.5,
-            }}
-          >
+        <Box>
+          <Avatar>
             <EmailIcon />
           </Avatar>
-          <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 0.2 }}>
-            Invitaciones Pendientes
-          </Typography>
+          <Typography>Invitaciones Pendientes</Typography>
         </Box>
       </DialogTitle>
-      <DialogContent sx={{ p: 0, bgcolor: "background.paper" }}>
-        <Fade in={true} timeout={500}>
-          <List sx={{ p: 0 }} dense={true}>
+      <DialogContent>
+        <Fade>
+          <List>
             {invitations.map((invitation) => (
               <ListItem
                 key={invitation.id}
-                sx={{
-                  py: 2.5,
-                  px: 3,
-                  borderBottom: "1px solid",
-                  borderColor: "divider",
-                  transition: "all 0.3s ease",
-
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: { xs: "flex-start", sm: "center" },
-                  justifyContent: "space-between",
-                }}
                 secondaryAction={
                   isAdmin && (
-                    <Tooltip title="Eliminar invitación" placement="top">
+                    <Tooltip title="Eliminar invitación">
                       <IconButton
-                        size="small"
                         onClick={() => onDeleteInvitation(invitation.id)}
-                        sx={{
-                          width: 36,
-                          height: 36,
-                          bgcolor: (theme) =>
-                            alpha(theme.palette.error.main, 0.1),
-                          color: "error.main",
-                          border: "1px solid",
-                          borderColor: (theme) =>
-                            alpha(theme.palette.error.main, 0.2),
-
-                          transition: "all 0.2s ease",
-                        }}
                       >
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon />
                       </IconButton>
                     </Tooltip>
                   )
@@ -88,69 +54,26 @@ const GroupInvitationsDialog = ({
               >
                 <ListItemText
                   primary={
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Avatar
-                        sx={{
-                          bgcolor: (theme) =>
-                            alpha(theme.palette.info.main, 0.1),
-                          color: "info.main",
-                          width: 36,
-                          height: 36,
-                          mr: 2,
-                          fontSize: "1rem",
-                          fontWeight: "bold",
-                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-                          border: "2px solid",
-                          borderColor: (theme) =>
-                            alpha(theme.palette.info.main, 0.2),
-                        }}
-                      >
+                    <Box>
+                      <Avatar>
                         {invitation.invitedEmail.charAt(0).toUpperCase()}
                       </Avatar>
                       <Box>
-                        <Typography
-                          variant="h6"
-                          sx={{
-                            fontWeight: 600,
-                            mb: 0.5,
-                            color: "text.primary",
-                            letterSpacing: 0.2,
-                          }}
-                        >
-                          {invitation.invitedEmail}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography>{invitation.invitedEmail}</Typography>
+                        <Typography>
                           {`Invitado por ${invitation.invitedBy}`}
                         </Typography>
                       </Box>
                     </Box>
                   }
-                  sx={{ mb: { xs: 1, sm: 0 } }}
                 />
               </ListItem>
             ))}
           </List>
         </Fade>
       </DialogContent>
-      <DialogActions
-        sx={{
-          p: 2,
-          borderTop: "1px solid",
-          borderColor: "divider",
-          bgcolor: "background.paper",
-        }}
-      >
-        <Button
-          onClick={onClose}
-          variant="contained"
-          sx={{
-            borderRadius: 2,
-            fontWeight: 600,
-            textTransform: "none",
-          }}
-        >
-          Cerrar
-        </Button>
+      <DialogActions>
+        <Button onClick={onClose}>Cerrar</Button>
       </DialogActions>
     </Dialog>
   );

@@ -34,49 +34,23 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
   };
 
   return (
-    <Card
-      elevation={3}
-      sx={(theme) => ({
-        borderRadius: theme.shape.borderRadius,
-        overflow: "hidden",
-        height: "100%",
-        transition: "all 0.3s ease",
-        position: "relative",
-        "&::before": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "4px",
-          background: theme.palette.success.main,
-        },
-      })}
-    >
+    <Card>
       <CardHeader
         avatar={<ReceiptIcon />}
         title={<Typography>Gastos</Typography>}
       />
       <Divider />
-      <CardContent sx={{ p: 0, height: "calc(100% - 70px)" }}>
+      <CardContent>
         {expenses.length > 0 ? (
-          <Fade in={expenses.length > 0} timeout={500}>
-            <Box>
-              <ExpensesTable
-                expenses={expenses}
-                onEditExpense={handleEditExpense}
-                onDeleteExpense={handleDeleteExpense}
-              />
-            </Box>
-          </Fade>
+          <Box>
+            <ExpensesTable
+              expenses={expenses}
+              onEditExpense={handleEditExpense}
+              onDeleteExpense={handleDeleteExpense}
+            />
+          </Box>
         ) : (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textAlign: "center", mt: 2 }}
-          >
-            No hay gastos para mostrar.
-          </Typography>
+          <Typography>No hay gastos para mostrar.</Typography>
         )}
       </CardContent>
     </Card>

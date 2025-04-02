@@ -252,105 +252,40 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <DialogTitle>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box>
           <Box>
             {modalData ? (
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-              >
-                Editar Gasto
-              </Typography>
+              <Typography>Editar Gasto</Typography>
             ) : (
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, letterSpacing: 0.2 }}
-              >
-                Añadir Gasto
-              </Typography>
+              <Typography>Añadir Gasto</Typography>
             )}
           </Box>
         </Box>
-        <IconButton
-          onClick={onClose}
-          size="small"
-          sx={{
-            color: "error.main",
-            bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
-            border: "1px solid",
-            borderColor: (theme) => alpha(theme.palette.error.main, 0.2),
-
-            transition: "all 0.2s ease",
-          }}
-        >
-          <CloseIcon fontSize="small" />
+        <IconButton onClick={onClose}>
+          <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ p: 3, bgcolor: "background.paper" }}>
-        <Box
-          component="form"
-          noValidate
-          sx={{ mt: 0, gap: 0.5, display: "flex", flexDirection: "column" }}
-          onSubmit={handleSubmit}
-        >
-          {formError && (
-            <Alert severity="error" sx={{ mb: 1, py: 0.5 }}>
-              {formError}
-            </Alert>
-          )}
-          {/* Description field */}
+      <DialogContent>
+        <Box component="form" onSubmit={handleSubmit}>
+          {formError && <Alert severity="error">{formError}</Alert>}
           <TextField
-            margin="dense"
-            size="small"
-            fullWidth
             id="description"
             label="Descripción *"
             name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            autoFocus
-            variant="outlined"
             placeholder="Ej: Cena, Supermercado, Entradas al cine..."
             required
             error={!!errors.description}
             helperText={errors.description}
-            slotProps={{
-              sx: {
-                borderRadius: 2,
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: (theme) =>
-                    alpha(theme.palette.success.main, 0.5),
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "success.main",
-                },
-              },
-            }}
           />
 
           {/* Paid by section */}
-          <Typography
-            variant="subtitle2"
-            sx={{ fontWeight: 400, mt: 0.5, mb: 0 }}
-          >
-            Pagado por
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 1,
-              mt: 0.5,
-              mb: 0.5,
-              pb: 0,
-            }}
-          >
+          <Typography>Pagado por</Typography>
+          <Box>
             {members?.map((member) => (
               <Box key={member.id}>
                 <TextField
-                  margin="dense"
-                  size="small"
-                  fullWidth
                   label={member.displayName || member.email}
                   type="number"
                   value={
@@ -360,21 +295,10 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                   onChange={(e) =>
                     handlePaidByChange(member.id, e.target.value)
                   }
-                  variant="outlined"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">$</InputAdornment>
                     ),
-                    sx: {
-                      borderRadius: 2,
-                      "&:hover .MuiOutlinedInput-notchedOutline": {
-                        borderColor: (theme) =>
-                          alpha(theme.palette.success.main, 0.5),
-                      },
-                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "success.main",
-                      },
-                    },
                   }}
                 />
               </Box>
@@ -382,80 +306,18 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           </Box>
 
           {/* Total amount - calculated from paid by amounts */}
-          <Box
-            sx={{
-              p: 0.5, // Reduced padding
-              bgcolor: (theme) => alpha(theme.palette.success.main, 0.1),
-              borderRadius: 2,
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-              transition: "all 0.3s ease",
-              border: "1px solid",
-              borderColor: (theme) =>
-                errors.totalAmount
-                  ? alpha(theme.palette.error.main, 0.5)
-                  : alpha(theme.palette.success.main, 0.2),
-
-              position: "relative",
-              my: 0.5,
-            }}
-          >
-            <Typography
-              variant="subtitle2"
-              sx={{
-                position: "absolute",
-                top: -10,
-                left: 10,
-                px: 1,
-                fontWeight: 500,
-              }}
-            >
-              Monto Total
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 600,
-                color: errors.totalAmount ? "error.main" : "success.main",
-                textAlign: "center",
-                my: 0.5, // Reduced vertical margin
-              }}
-            >
-              ${totalAmount.toFixed(2)}
-            </Typography>
+          <Box>
+            <Typography>Monto Total</Typography>
+            <Typography>${totalAmount.toFixed(2)}</Typography>
             {errors.totalAmount && (
-              <Typography
-                variant="caption"
-                color="error"
-                sx={{ display: "block", textAlign: "center", mt: 0.5 }} // Reduced top margin
-              >
-                {errors.totalAmount}
-              </Typography>
+              <Typography>{errors.totalAmount}</Typography>
             )}
           </Box>
 
           {/* Division type selector */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "nowrap",
-              gap: 1,
-              mt: 0.5,
-              mb: 1,
-              overflowX: "auto",
-              pb: 0,
-            }}
-          >
-            <Box
-              sx={{
-                flex: {
-                  xs: "1 1 100%",
-                  sm: "1 1 calc(50% - 16px)",
-                  md: "1 1 calc(33.33% - 16px)",
-                },
-              }}
-            >
-              <FormControl fullWidth margin="dense" size="small">
+          <Box>
+            <Box>
+              <FormControl>
                 <Select
                   value={divisionType}
                   onChange={(e) => {
@@ -480,18 +342,7 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                       setSplitAmounts([]);
                     }
                   }}
-                  displayEmpty
                   labelId="division-type-select-label"
-                  sx={{
-                    borderRadius: 2,
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: (theme) =>
-                        alpha(theme.palette.success.main, 0.5),
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "success.main",
-                    },
-                  }}
                 >
                   <MenuItem value="equal">Partes Iguales</MenuItem>
                   <MenuItem value="amount">Por Montos</MenuItem>
@@ -504,28 +355,10 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           {/* Division of expense section - changes based on division type */}
           {divisionType !== "equal" && (
             <>
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mt: 0.5 }}
-              >
-                <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-                  División del Gasto
-                </Typography>
+              <Box>
+                <Typography>División del Gasto</Typography>
                 {/* Show remaining amount or percentage */}
-                <Typography
-                  variant="body2"
-                  color={formError ? "error" : "text.secondary"}
-                  sx={{
-                    bgcolor: formError
-                      ? alpha("#f44336", 0.1)
-                      : "rgba(0, 0, 0, 0.03)",
-                    borderRadius: 1,
-                    display: "inline-block",
-                    border: formError ? "1px solid" : "none",
-                    borderColor: formError
-                      ? alpha("#f44336", 0.5)
-                      : "transparent",
-                  }}
-                >
+                <Typography>
                   Restante:{" "}
                   {divisionType === "amount"
                     ? `$${remaining.toFixed(2)}`
@@ -533,33 +366,10 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                 </Typography>
               </Box>
               {/* Member split inputs */}
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  flexWrap: "nowrap",
-                  gap: 1,
-                  mt: 0.5,
-                  mb: 0.5,
-                  overflowX: "auto",
-                  pb: 0,
-                }}
-              >
+              <Box>
                 {members.map((member) => (
-                  <Box
-                    key={member.id}
-                    sx={{
-                      flex: {
-                        xs: "1 1 100%",
-                        sm: "1 1 calc(50% - 16px)",
-                        md: "1 1 calc(33.33% - 16px)",
-                      },
-                    }}
-                  >
+                  <Box key={member.id}>
                     <TextField
-                      margin="dense"
-                      size="small"
-                      fullWidth
                       label={member.displayName || member.email}
                       type="number"
                       value={
@@ -573,26 +383,15 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
                           handleSplitAmountChange(member, value);
                         }
                       }}
-                      variant="outlined"
                       InputProps={{
                         endAdornment: (
-                          <InputAdornment position="end">
+                          <InputAdornment>
                             {divisionType === "amount" ? "$" : "%"}
                           </InputAdornment>
                         ),
                         inputProps: {
                           min: 0,
                           step: "0.01",
-                        },
-                        sx: {
-                          borderRadius: 2,
-                          "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: (theme) =>
-                              alpha(theme.palette.success.main, 0.5),
-                          },
-                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "success.main",
-                          },
                         },
                       }}
                     />
@@ -603,72 +402,12 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
           )}
 
           {/* Action buttons */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              p: 0,
-              mt: 1,
-            }}
-          >
-            <Button
-              onClick={onClose}
-              color="inherit"
-              size="small"
-              sx={{
-                borderRadius: 2,
-                fontWeight: 500,
-                border: "1px solid",
-                borderColor: (theme) => alpha(theme.palette.grey[500], 0.2),
-
-                transition: "all 0.2s ease",
-                py: 0.5,
-              }}
-            >
-              CANCELAR
-            </Button>
+          <Box>
+            <Button>CANCELAR</Button>
             {modalData ? (
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                size="small"
-                sx={{
-                  py: 0.5,
-                  px: 2,
-                  borderRadius: 2,
-                  fontWeight: 600,
-                  bgcolor: "success.main",
-                  boxShadow: (theme) =>
-                    `0 2px 8px ${alpha(theme.palette.success.main, 0.3)}`,
-
-                  transition: "all 0.2s ease",
-                }}
-                disableElevation
-              >
-                GUARDAR GASTO
-              </Button>
+              <Button type="submit">GUARDAR GASTO</Button>
             ) : (
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                size="small"
-                sx={{
-                  py: 0.5,
-                  px: 2,
-                  borderRadius: 2,
-                  fontWeight: 600,
-                  bgcolor: "success.main",
-                  boxShadow: (theme) =>
-                    `0 2px 8px ${alpha(theme.palette.success.main, 0.3)}`,
-
-                  transition: "all 0.2s ease",
-                }}
-                disableElevation
-              >
-                AÑADIR GASTO
-              </Button>
+              <Button type="submit">AÑADIR GASTO</Button>
             )}
           </Box>
         </Box>
