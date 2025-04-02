@@ -3,14 +3,27 @@ import { Delete as DeleteIcon } from "@mui/icons-material";
 
 export const HeaderGroupDetails = ({ group, isAdmin, onDelete }) => {
   return (
-    <Container>
-      <Box>
-        <Avatar>{group?.name?.charAt(0) || "G"}</Avatar>
+    <Container
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 2,
+        justifyContent: "space-between",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+        }}
+      >
+        <Avatar>{group?.name?.charAt(0)}</Avatar>
         <Box>
           <Typography>{group?.name}</Typography>
           <Typography>Gestionar grupo</Typography>
         </Box>
       </Box>
+
       {isAdmin && (
         <Button startIcon={<DeleteIcon />} onClick={onDelete}>
           Eliminar
