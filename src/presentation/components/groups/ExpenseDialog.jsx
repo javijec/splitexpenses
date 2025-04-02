@@ -24,7 +24,12 @@ import {
   updateExpense,
 } from "@/domain/usecases/expenses";
 
-const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
+export const ExpenseDialog = ({
+  isOpen,
+  onClose,
+  membersList,
+  onExpenseAdded,
+}) => {
   const { user, groupContext } = useAuth();
   const { modalData } = useModal();
   const [description, setDescription] = useState("");
@@ -410,5 +415,3 @@ const ExpenseModal = ({ isOpen, onClose, membersList, onExpenseAdded }) => {
     </Dialog>
   );
 };
-
-export default ExpenseModal;

@@ -15,7 +15,11 @@ import {
 } from "@mui/material";
 import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 
-const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
+export const ExpensesListTable = ({
+  expenses,
+  onEditExpense,
+  onDeleteExpense,
+}) => {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -72,5 +76,3 @@ const ExpensesTable = ({ expenses, onEditExpense, onDeleteExpense }) => {
     </TableContainer>
   );
 };
-
-export default ExpensesTable;

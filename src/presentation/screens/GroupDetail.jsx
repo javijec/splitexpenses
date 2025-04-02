@@ -4,11 +4,7 @@ import { Grid2 as Grid, Box, Button, useTheme } from "@mui/material";
 import { Group, Email } from "@mui/icons-material";
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";
-import ExpenseModal from "@/presentation/components/groups/ExpenseModal";
-import InviteModal from "@/presentation/components/groups/InviteModal";
-import DeleteGroupModal from "@/presentation/components/groups/DeleteGroupModal";
-import MembersDialog from "@/presentation/components/groups/MembersDialog";
-import GroupInvitationsDialog from "@/presentation/components/groups/GroupInvitationsDialog";
+
 import {
   getGroupByID,
   removeMember,
@@ -24,13 +20,22 @@ import {
 import { getGroupExpenses } from "@/domain/usecases/expenses";
 
 import Loading from "@/presentation/components/common/Loading";
-import GroupHeader from "@/presentation/components/groups/GroupHeader";
-import { MembersListDesktop } from "@/presentation/components/groups/MembersList";
-import GroupBalance from "@/presentation/components/groups/GroupBalance";
-import ExpensesList from "@/presentation/components/groups/ExpensesList";
-import { InvitationsListDesktop } from "@/presentation/components/groups/InvitationsList";
+
 import calculateBalance from "@/utils/calculateBalance";
 import simplifyBalance from "@/utils/simpliBalance";
+
+import {
+  ExpenseDialog,
+  InviteMemberModal,
+  DeleteGroupDialog,
+  MembersListDialog,
+  InvitationsListDialog,
+  HeaderGroupDetails,
+  MembersListCard,
+  GroupBalanceCard,
+  ExpensesListCard,
+  InvitationsListCard,
+} from "@/presentation/components/groups";
 
 function GroupDetail() {
   const theme = useTheme();
@@ -192,7 +197,7 @@ function GroupDetail() {
 
   return (
     <Box>
-      <GroupHeader
+      <HeaderGroupDetails
         group={group}
         isAdmin={isAdmin}
         onDelete={() => {
@@ -203,7 +208,7 @@ function GroupDetail() {
       <Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <MembersListDesktop
+            <MembersListCard
               members={members}
               isAdmin={isAdmin}
               user={user}
@@ -211,7 +216,7 @@ function GroupDetail() {
               onDeleteMember={handleDeleteMember}
               onInvite={openInviteModal}
             />
-            <InvitationsListDesktop
+            <InvitationsListCard
               invitations={invitations}
               isAdmin={isAdmin}
               onDeleteInvitation={handleDeleteInvitation}
@@ -230,23 +235,23 @@ function GroupDetail() {
             )}
           </Box>
 
-          <GroupBalance balances={balances} transactions={transactions} />
+          <GroupBalanceCard balances={balances} transactions={transactions} />
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
-          <ExpensesList
+          <ExpensesListCard
             expenses={expenses}
             user={user}
             setExpenses={updateExpensesAndBalances}
           />
         </Grid>
       </Grid>
-      <ExpenseModal
+      <ExpenseDialog
         isOpen={isExpenseModalOpen}
         onClose={closeExpenseModal}
         membersList={groupContext?.members}
         onExpenseAdded={updateExpensesAndBalances} // Usar la nueva función que actualiza balances
       />
-      <InviteModal
+      <InviteMemberModal
         isOpen={isInviteModalOpen}
         onClose={closeInviteModal}
         handleSendInvitation={handleSendInvitation}
@@ -254,11 +259,11 @@ function GroupDetail() {
         validateEmail={validateEmail}
         setAlertInfo={setAlertInfo}
       />
-      <DeleteGroupModal
+      <DeleteGroupDialog
         isOpen={isDeleteGroupModalOpen}
         onClose={closeDeleteGroupModal}
       />
-      <MembersDialog
+      <MembersListDialog
         open={isMembersDialogOpen}
         onClose={() => setIsMembersDialogOpen(false)}
         members={members}
@@ -268,7 +273,7 @@ function GroupDetail() {
         onDeleteMember={handleDeleteMember}
         onInvite={openInviteModal}
       />
-      <GroupInvitationsDialog
+      <InvitationsListDialog
         open={isInvitationsDialogOpen}
         onClose={() => setIsInvitationsDialogOpen(false)}
         invitations={invitations}

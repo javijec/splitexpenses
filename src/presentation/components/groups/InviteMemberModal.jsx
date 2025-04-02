@@ -16,7 +16,7 @@ import {
   PersonAdd as PersonAddIcon,
 } from "@mui/icons-material";
 
-const InviteModal = ({
+export const InviteMemberModal = ({
   isOpen,
   onClose,
   handleSendInvitation,
@@ -101,5 +101,3 @@ const InviteModal = ({
     </Dialog>
   );
 };
-
-export default InviteModal;

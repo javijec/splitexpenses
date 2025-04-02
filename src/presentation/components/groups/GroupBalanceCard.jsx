@@ -18,7 +18,7 @@ import { AccountBalance as BalanceIcon } from "@mui/icons-material";
 
 import { useState } from "react";
 
-const GroupBalance = ({ balances, transactions }) => {
+export const GroupBalanceCard = ({ balances, transactions }) => {
   const [showTransactions, setShowTransactions] = useState(true);
 
   return (
@@ -132,5 +132,3 @@ const GroupBalance = ({ balances, transactions }) => {
     </Card>
   );
 };
-
-export default GroupBalance;

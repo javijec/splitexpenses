@@ -1,7 +1,7 @@
 import { Box, Typography, Button, Avatar } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 
-const GroupHeader = ({ group, isAdmin, onDelete }) => {
+export const HeaderGroupDetails = ({ group, isAdmin, onDelete }) => {
   return (
     <Box>
       <Box>
@@ -19,5 +19,3 @@ const GroupHeader = ({ group, isAdmin, onDelete }) => {
     </Box>
   );
 };
-
-export default GroupHeader;

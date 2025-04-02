@@ -22,7 +22,7 @@ import {
   People as PeopleIcon,
 } from "@mui/icons-material";
 
-export const MembersListDesktop = ({
+export const MembersListCard = ({
   members,
   isAdmin,
   user,

@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { Delete as DeleteIcon, Email as EmailIcon } from "@mui/icons-material";
 
-const GroupInvitationsDialog = ({
+export const InvitationsListDialog = ({
   open,
   onClose,
   invitations,
@@ -74,5 +74,3 @@ const GroupInvitationsDialog = ({
     </Dialog>
   );
 };
-
-export default GroupInvitationsDialog;

@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { Delete as DeleteIcon, Email as EmailIcon } from "@mui/icons-material";
 
-export const InvitationsListDesktop = ({
+export const InvitationsListCard = ({
   invitations,
   isAdmin,
   onDeleteInvitation,

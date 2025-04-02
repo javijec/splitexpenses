@@ -7,12 +7,11 @@ import {
   Box,
 } from "@mui/material";
 import { Receipt as ReceiptIcon } from "@mui/icons-material";
-import { alpha } from "@mui/material/styles";
 import { useModal } from "@/application/contexts/ModalContext";
-import ExpensesTable from "@/presentation/components/groups/ExpensesTable";
+import { ExpensesListTable } from "@/presentation/components/groups/ExpensesListTable";
 import { deleteExpense, getExpense } from "@/domain/usecases/expenses";
 
-const ExpensesList = ({ expenses = [], setExpenses }) => {
+export const ExpensesListCard = ({ expenses = [], setExpenses }) => {
   const { setModalData, openExpenseModal } = useModal();
   if (!Array.isArray(expenses)) {
     console.error("Invalid expenses prop: expected an array.");
@@ -41,7 +40,7 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
       <CardContent>
         {expenses.length > 0 ? (
           <Box>
-            <ExpensesTable
+            <ExpensesListTable
               expenses={expenses}
               onEditExpense={handleEditExpense}
               onDeleteExpense={handleDeleteExpense}
@@ -54,5 +53,3 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
     </Card>
   );
 };
-
-export default ExpensesList;

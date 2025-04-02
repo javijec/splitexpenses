@@ -15,7 +15,7 @@ import {
   useTheme,
 } from "@mui/material";
 
-const DeleteGroupModal = ({ isOpen, onClose }) => {
+export const DeleteGroupDialog = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { groupContext } = useAuth();
 
@@ -61,5 +61,3 @@ const DeleteGroupModal = ({ isOpen, onClose }) => {
     </Dialog>
   );
 };
-
-export default DeleteGroupModal;

@@ -21,7 +21,7 @@ import {
 } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
 
-const MembersDialog = ({
+export const MembersListDialog = ({
   open,
   onClose,
   members,
@@ -104,5 +104,3 @@ const MembersDialog = ({
     </Dialog>
   );
 };
-
-export default MembersDialog;
