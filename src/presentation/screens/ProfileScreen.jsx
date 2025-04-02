@@ -43,7 +43,6 @@ const ProfileScreen = () => {
         sx={{
           borderRadius: theme.shape.borderRadius,
           overflow: "hidden",
-          boxShadow: theme.shadows[3],
           bgcolor: "background.paper",
           p: { xs: theme.spacing(2), sm: theme.spacing(3) },
           transition: "all 0.3s ease",

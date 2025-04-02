@@ -43,7 +43,6 @@ const InvitationsDialog = ({
         sx: (theme) => ({
           borderRadius: theme.shape.borderRadius,
           overflow: "hidden",
-          boxShadow: theme.shadows[3],
         }),
       }}
     >

@@ -84,12 +84,7 @@ const theme = createTheme({
   shape: {
     borderRadius: 8, // Unify border radius
   },
-  shadows: [
-    "none",
-    "0px 2px 4px rgba(0, 0, 0, 0.05)",
-    "0px 4px 8px rgba(0, 0, 0, 0.1)",
-    "0px 8px 16px rgba(0, 0, 0, 0.15)",
-  ],
+
   spacing: 8, // Base spacing unit
   components: {
     MuiButton: {
@@ -101,11 +96,18 @@ const theme = createTheme({
         },
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.15)",
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
           borderRadius: 12,
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
         },
       },
     },

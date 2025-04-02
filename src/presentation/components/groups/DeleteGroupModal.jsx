@@ -49,7 +49,6 @@ const DeleteGroupModal = ({ isOpen, onClose }) => {
       PaperProps={{
         sx: (theme) => ({
           borderRadius: theme.shape.borderRadius,
-          boxShadow: theme.shadows[3],
           overflow: "hidden",
           position: "relative",
           "&::before": {

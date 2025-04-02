@@ -41,7 +41,6 @@ const ExpensesList = ({ expenses = [], setExpenses }) => {
         overflow: "hidden",
         height: "100%",
         transition: "all 0.3s ease",
-        boxShadow: theme.shadows[2],
         position: "relative",
         "&::before": {
           content: '""',
