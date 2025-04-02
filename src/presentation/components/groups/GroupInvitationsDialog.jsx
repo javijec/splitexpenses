@@ -7,7 +7,6 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  Fade,
   IconButton,
   Tooltip,
   Avatar,
@@ -15,7 +14,6 @@ import {
   Button,
 } from "@mui/material";
 import { Delete as DeleteIcon, Email as EmailIcon } from "@mui/icons-material";
-import { alpha } from "@mui/material/styles";
 
 const GroupInvitationsDialog = ({
   open,
@@ -35,42 +33,40 @@ const GroupInvitationsDialog = ({
         </Box>
       </DialogTitle>
       <DialogContent>
-        <Fade>
-          <List>
-            {invitations.map((invitation) => (
-              <ListItem
-                key={invitation.id}
-                secondaryAction={
-                  isAdmin && (
-                    <Tooltip title="Eliminar invitación">
-                      <IconButton
-                        onClick={() => onDeleteInvitation(invitation.id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )
-                }
-              >
-                <ListItemText
-                  primary={
+        <List>
+          {invitations.map((invitation) => (
+            <ListItem
+              key={invitation.id}
+              secondaryAction={
+                isAdmin && (
+                  <Tooltip title="Eliminar invitación">
+                    <IconButton
+                      onClick={() => onDeleteInvitation(invitation.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                )
+              }
+            >
+              <ListItemText
+                primary={
+                  <Box>
+                    <Avatar>
+                      {invitation.invitedEmail.charAt(0).toUpperCase()}
+                    </Avatar>
                     <Box>
-                      <Avatar>
-                        {invitation.invitedEmail.charAt(0).toUpperCase()}
-                      </Avatar>
-                      <Box>
-                        <Typography>{invitation.invitedEmail}</Typography>
-                        <Typography>
-                          {`Invitado por ${invitation.invitedBy}`}
-                        </Typography>
-                      </Box>
+                      <Typography>{invitation.invitedEmail}</Typography>
+                      <Typography>
+                        {`Invitado por ${invitation.invitedBy}`}
+                      </Typography>
                     </Box>
-                  }
-                />
-              </ListItem>
-            ))}
-          </List>
-        </Fade>
+                  </Box>
+                }
+              />
+            </ListItem>
+          ))}
+        </List>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cerrar</Button>

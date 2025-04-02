@@ -6,16 +6,11 @@ import {
   CardContent,
   CardHeader,
   Avatar,
-  Grid2 as Grid,
   Divider,
-  Fade,
-  Paper,
   useTheme,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import ProfileUpdateForm from "@/presentation/components/profile/ProfileUpdateForm";
 
 const UserInfoCard = ({
@@ -25,137 +20,30 @@ const UserInfoCard = ({
   loading,
   handleUpdateProfile,
 }) => {
-  const theme = useTheme();
   return (
-    <Fade in={true} timeout={500}>
-      <Card
-        elevation={3}
-        sx={{
-          borderRadius: 3,
-          overflow: "hidden",
-          height: "100%",
-          transition: "all 0.3s ease",
-          background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
-          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.08)",
-
-          mb: 1,
-          border: `1px solid ${theme.palette.divider}`,
-          position: "relative",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "4px",
-            background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
-          },
-        }}
-      >
+    <Box>
+      <Card>
         <CardHeader
           avatar={<PersonIcon />}
           title={<Typography>Información de Usuario</Typography>}
         />
         <Divider />
         <CardContent>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              mb: 1,
-              position: "relative",
-              pt: 1,
-            }}
-          >
-            <Box
-              sx={{
-                position: "relative",
-                mb: 2.5,
-                "&::before": {
-                  content: '""',
-                  position: "absolute",
-                  top: -5,
-                  left: -5,
-                  right: -5,
-                  bottom: -5,
-                  borderRadius: "50%",
-                  background: `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.primary.main})`,
-                  opacity: 0.15,
-                  zIndex: 0,
-                },
-              }}
-            >
-              <Avatar
-                sx={{
-                  width: 50,
-                  height: 50,
-                  border: `4px solid ${theme.palette.background.paper}`,
-                  boxShadow: "0 4px 14px rgba(0, 0, 0, 0.15)",
-                  zIndex: 1,
-                  transition: "all 0.3s ease",
-
-                }}
-                src={user?.photoURL}
-                alt={user?.displayName || "Usuario"}
-              >
+          <Box>
+            <Box>
+              <Avatar src={user?.photoURL} alt={user?.displayName || "Usuario"}>
                 {user?.displayName?.charAt(0) || "U"}
               </Avatar>
             </Box>
-            <Typography
-              variant="h5"
-              sx={{
-                fontWeight: 600,
-                mb: 0.5,
-                letterSpacing: 0.5,
-              }}
-            >
-              {user?.displayName || "Usuario"}
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{
-                fontWeight: 500,
-                opacity: 0.9,
-                pb: 1,
-                borderBottom: `1px dashed ${theme.palette.divider}`,
-                px: 3,
-              }}
-            >
-              {user?.email}
-            </Typography>
+            <Typography>{user?.displayName || "Usuario"}</Typography>
+            <Typography>{user?.email}</Typography>
           </Box>
 
-
-
-          <Divider
-            sx={{
-              my: 4,
-              position: "relative",
-              "&::before": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: "10%",
-                right: "10%",
-                height: "1px",
-                background: `linear-gradient(90deg, transparent, ${theme.palette.divider}, transparent)`,
-              },
-            }}
-          />
-          <Box sx={{ mb: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-              <AccountCircleIcon sx={{ mr: 1.5, color: "primary.main" }} />
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 600,
-                  fontSize: "1.1rem",
-                }}
-              >
-                Actualiza tu información de perfil
-              </Typography>
+          <Divider />
+          <Box>
+            <Box>
+              <AccountCircleIcon />
+              <Typography>Actualiza tu información de perfil</Typography>
             </Box>
           </Box>
           <ProfileUpdateForm
@@ -166,7 +54,7 @@ const UserInfoCard = ({
           />
         </CardContent>
       </Card>
-    </Fade>
+    </Box>
   );
 };
 

@@ -9,14 +9,12 @@ import {
   Typography,
   Alert,
   IconButton,
-  Fade,
   Avatar,
 } from "@mui/material";
 import {
   Close as CloseIcon,
   PersonAdd as PersonAddIcon,
 } from "@mui/icons-material";
-import { alpha } from "@mui/material/styles";
 
 const InviteModal = ({
   isOpen,

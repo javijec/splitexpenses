@@ -5,8 +5,6 @@ import {
   CardContent,
   Typography,
   Box,
-  Fade,
-  Avatar,
 } from "@mui/material";
 import { Receipt as ReceiptIcon } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";

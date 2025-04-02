@@ -9,14 +9,13 @@ import {
   Chip,
   Typography,
   Box,
-  Fade,
   Avatar,
   Paper,
   Switch,
 } from "@mui/material";
 
 import { AccountBalance as BalanceIcon } from "@mui/icons-material";
-import { alpha } from "@mui/material/styles";
+
 import { useState } from "react";
 
 const GroupBalance = ({ balances, transactions }) => {
@@ -45,7 +44,7 @@ const GroupBalance = ({ balances, transactions }) => {
         {!showTransactions ? (
           // Mostrar balances individuales
           balances && balances.length > 0 ? (
-            <Fade>
+            <Box>
               <List>
                 {balances.map((balance) => (
                   <ListItem key={balance.id}>
@@ -79,18 +78,16 @@ const GroupBalance = ({ balances, transactions }) => {
                   </ListItem>
                 ))}
               </List>
-            </Fade>
+            </Box>
           ) : (
-            <Fade>
-              <Box>
-                <Paper>
-                  <Avatar>
-                    <BalanceIcon />
-                  </Avatar>
-                  <Typography>No hay balances pendientes</Typography>
-                </Paper>
-              </Box>
-            </Fade>
+            <Box>
+              <Paper>
+                <Avatar>
+                  <BalanceIcon />
+                </Avatar>
+                <Typography>No hay balances pendientes</Typography>
+              </Paper>
+            </Box>
           )
         ) : // Mostrar transacciones simplificadas
         transactions && transactions.length > 0 ? (

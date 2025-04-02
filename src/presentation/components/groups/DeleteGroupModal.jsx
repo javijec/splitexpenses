@@ -12,15 +12,12 @@ import {
   Box,
   Typography,
   Button,
-  Fade,
   useTheme,
 } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 
 const DeleteGroupModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { groupContext } = useAuth();
-  const theme = useTheme();
 
   const handleDeleteGroup = async () => {
     try {

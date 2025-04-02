@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "@/application/contexts/AuthContext";
 
-import { Box, Grid2 as Grid, Fade, useTheme } from "@mui/material";
+import { Box, Grid2 as Grid } from "@mui/material";
 
 // Componentes
 import ProfileHeader from "@/presentation/components/profile/ProfileHeader";
@@ -15,7 +15,6 @@ const ProfileScreen = () => {
   const [loading, setLoading] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const theme = useTheme();
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -38,52 +37,32 @@ const ProfileScreen = () => {
   };
 
   return (
-    <Fade in={true} timeout={600}>
-      <Box
-        sx={{
-          borderRadius: theme.shape.borderRadius,
-          overflow: "hidden",
-          bgcolor: "background.paper",
-          p: { xs: theme.spacing(2), sm: theme.spacing(3) },
-          transition: "all 0.3s ease",
-          position: "relative",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: theme.spacing(0.5),
-            background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
-          },
-        }}
-      >
-        <ProfileHeader />
+    <Box>
+      <ProfileHeader />
 
-        <Grid container spacing={3} sx={{ mt: 1 }}>
-          <Grid size={{ xs: 12 }}>
-            <UserInfoCard
-              user={user}
-              displayName={displayName}
-              setDisplayName={setDisplayName}
-              loading={loading}
-              handleUpdateProfile={handleUpdateProfile}
-            />
-          </Grid>
-
-          <Grid size={{ xs: 12 }}>
-            <DangerZone onDeleteClick={() => setDeleteDialogOpen(true)} />
-          </Grid>
+      <Grid>
+        <Grid>
+          <UserInfoCard
+            user={user}
+            displayName={displayName}
+            setDisplayName={setDisplayName}
+            loading={loading}
+            handleUpdateProfile={handleUpdateProfile}
+          />
         </Grid>
 
-        <DeleteAccountDialog
-          open={deleteDialogOpen}
-          onClose={() => setDeleteDialogOpen(false)}
-          onDelete={handleDeleteAccount}
-          loading={deleteLoading}
-        />
-      </Box>
-    </Fade>
+        <Grid>
+          <DangerZone onDeleteClick={() => setDeleteDialogOpen(true)} />
+        </Grid>
+      </Grid>
+
+      <DeleteAccountDialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onDelete={handleDeleteAccount}
+        loading={deleteLoading}
+      />
+    </Box>
   );
 };
 

@@ -1,17 +1,12 @@
 import {
   Dialog,
-  DialogTitle,
-  DialogContent,
   Box,
   Button,
   TextField,
   Typography,
-  IconButton,
-  Fade,
-  Avatar,
   Card,
   CardHeader,
-  CardContent
+  CardContent,
 } from "@mui/material";
 import {
   Close as CloseIcon,
@@ -48,11 +43,7 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
       <Card>
         <CardHeader
           avatar={<GroupAddIcon />}
-          title={
-            <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
-              Crear Nuevo Grupo
-            </Typography>
-          }
+          title={<Typography>Crear Nuevo Grupo</Typography>}
         />
         <CardContent>
           <Box component="form" onSubmit={handleSubmit}>
@@ -62,22 +53,16 @@ const GroupModal = ({ isOpen, onClose, onGroupCreated }) => {
               label="Nombre del Grupo"
               name="groupName"
               placeholder="Ej: Viaje a la playa, Gastos del apartamento..."
-
             />
             <Box>
               <Button onClick={onClose}>CANCELAR</Button>
-              <Button
-                type="submit"
-                color="primary"
-              >
+              <Button type="submit" color="primary">
                 CREAR GRUPO
               </Button>
             </Box>
           </Box>
         </CardContent>
       </Card>
-
-
     </Dialog>
   );
 };

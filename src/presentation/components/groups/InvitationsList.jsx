@@ -10,7 +10,6 @@ import {
   ListItemAvatar,
   IconButton,
   Box,
-  Fade,
   Avatar,
   Tooltip,
 } from "@mui/material";

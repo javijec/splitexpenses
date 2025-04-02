@@ -12,15 +12,10 @@ import {
   InputAdornment,
   FormControl,
   IconButton,
-  Fade,
-  Avatar,
   Alert,
 } from "@mui/material";
-import {
-  Close as CloseIcon,
-  Receipt as ReceiptIcon,
-} from "@mui/icons-material";
-import { alpha } from "@mui/material/styles";
+import { Close as CloseIcon } from "@mui/icons-material";
+
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";
 import {
