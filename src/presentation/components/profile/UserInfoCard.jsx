@@ -27,9 +27,14 @@ const UserInfoCard = ({
           avatar={<PersonIcon />}
           title={<Typography>Información de Usuario</Typography>}
         />
-        <Divider />
         <CardContent>
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
+            }}
+          >
             <Box>
               <Avatar src={user?.photoURL} alt={user?.displayName || "Usuario"}>
                 {user?.displayName?.charAt(0) || "U"}
@@ -39,12 +44,16 @@ const UserInfoCard = ({
             <Typography>{user?.email}</Typography>
           </Box>
 
-          <Divider />
-          <Box>
-            <Box>
-              <AccountCircleIcon />
-              <Typography>Actualiza tu información de perfil</Typography>
-            </Box>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
+              py: 3,
+            }}
+          >
+            <AccountCircleIcon />
+            <Typography>Actualiza tu información de perfil</Typography>
           </Box>
           <ProfileUpdateForm
             displayName={displayName}

@@ -3,7 +3,6 @@ import { useModal } from "@/application/contexts/ModalContext";
 import { useNavigate, useLocation } from "react-router"; // Importa useLocation
 import { useAuth } from "@/application/contexts/AuthContext";
 
-import { styled } from "@mui/material/styles";
 import {
   AppBar,
   Box,
@@ -11,13 +10,11 @@ import {
   IconButton,
   Fab,
   Avatar,
-  Menu,
-  MenuItem,
   Typography,
   Badge,
   Tooltip,
 } from "@mui/material";
-import { Home, Add, Person, Logout } from "@mui/icons-material";
+import { Home, Logout } from "@mui/icons-material";
 import ThemeToggle from "./ThemeToggle";
 
 export default function BottomAppBar() {
@@ -26,10 +23,6 @@ export default function BottomAppBar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const location = useLocation(); // Obtén el path actual
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -92,10 +85,7 @@ export default function BottomAppBar() {
               onClick={handleDashboard}
               sx={{
                 transition: "all 0.2s ease",
-                bgcolor: (theme) =>
-                  theme.palette.mode === "dark"
-                    ? "rgba(255, 255, 255, 0.08)"
-                    : "rgba(0, 0, 0, 0.04)",
+
                 p: 1.5,
               }}
             >
@@ -112,27 +102,7 @@ export default function BottomAppBar() {
               arrow
               placement="top"
             >
-              <Fab
-                variant="extended"
-                aria-label="add"
-                onClick={handleAddButtonClick}
-                sx={{
-                  position: "absolute",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  background: (theme) =>
-                    theme.palette.mode === "dark"
-                      ? "#d32f2f" // darker red for dark mode
-                      : "#f44336", // lighter red for light mode
-                  color: (theme) =>
-                    theme.palette.mode === "dark"
-                      ? "#ffffff" // white text for dark mode
-                      : "#ffffff", // white text for light mode
-                  fontWeight: "bold",
-                  zIndex: 1000,
-
-                }}
-              >
+              <Fab variant="extended" onClick={handleAddButtonClick}>
                 {location.pathname !== "/dashboard" ? (
                   <Typography>Nuevo Gasto</Typography>
                 ) : (

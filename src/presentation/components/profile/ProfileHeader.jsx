@@ -6,13 +6,16 @@ const ProfileHeader = () => {
   const { user } = useAuth();
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        gap: 2,
+      }}
+    >
+      <Avatar>{user?.displayName?.charAt(0) || "U"}</Avatar>
       <Box>
-        <Avatar>{user?.displayName?.charAt(0) || "U"}</Avatar>
-        <Box>
-          <Typography>Información de la Cuenta</Typography>
-          <Typography>Gestiona tu perfil y configuración personal</Typography>
-        </Box>
+        <Typography>Información de la Cuenta</Typography>
+        <Typography>Gestiona tu perfil y configuración personal</Typography>
       </Box>
     </Box>
   );
