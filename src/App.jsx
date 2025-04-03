@@ -19,7 +19,7 @@ function App() {
 
   if (loading) {
     return (
-      <ThemeProvider>
+      <>
         <CssBaseline />
         <Box
           sx={{
@@ -31,18 +31,18 @@ function App() {
         >
           <CircularProgress />
         </Box>
-      </ThemeProvider>
+      </>
     );
   }
   return (
-    <ThemeProvider>
+    <>
       <CssBaseline />
       <BrowserRouter>
-          <ModalProvider>
-            <AppRoutes />
-          </ModalProvider>
+        <ModalProvider>
+          <AppRoutes />
+        </ModalProvider>
       </BrowserRouter>
-    </ThemeProvider>
+    </>
   );
 }
 

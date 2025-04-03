@@ -282,7 +282,7 @@ const createAppTheme = (mode) =>
     ],
     // Forma según Material Design 3
     shape: {
-      borderRadius: 16,
+      borderRadius: 4,
     },
   });
 
