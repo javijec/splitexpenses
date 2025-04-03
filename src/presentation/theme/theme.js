@@ -101,7 +101,7 @@ const createAppTheme = (mode) =>
           root: {
             borderRadius: 12,
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
-            margin: "16px",
+            margin: "4px",
           },
         },
       },
@@ -116,13 +116,6 @@ const createAppTheme = (mode) =>
             },
             // Transición suave al cambiar de tema
             transition: "background-color 0.3s ease, color 0.3s ease",
-          },
-        },
-      },
-      MuiTextField: {
-        styleOverrides: {
-          root: {
-            marginBottom: 16,
           },
         },
       },

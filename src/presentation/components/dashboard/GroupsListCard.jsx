@@ -19,7 +19,6 @@ import {
 import {
   Groups as GroupsIcon,
   AddCircleOutline,
-  ArrowForward,
   Notifications as NotificationsIcon,
 } from "@mui/icons-material";
 import { useModal } from "@/application/contexts/ModalContext";

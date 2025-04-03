@@ -7,6 +7,7 @@ import {
   Card,
   CardHeader,
   CardContent,
+  DialogTitle,
 } from "@mui/material";
 import { GroupAdd as GroupAddIcon } from "@mui/icons-material";
 import { createGroup } from "@/domain/usecases/groups";
@@ -36,29 +37,32 @@ const CreateGroupDialog = ({ isOpen, onClose, onGroupCreated }) => {
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <Card>
-        <CardHeader
-          avatar={<GroupAddIcon />}
-          title={<Typography>Crear Nuevo Grupo</Typography>}
-        />
-        <CardContent>
-          <Box component="form" onSubmit={handleSubmit}>
-            <TextField
-              required
-              id="groupName"
-              label="Nombre del Grupo"
-              name="groupName"
-              placeholder="Ej: Viaje a la playa, Gastos del apartamento..."
-            />
-            <Box>
-              <Button onClick={onClose}>CANCELAR</Button>
-              <Button type="submit" color="primary">
-                CREAR GRUPO
-              </Button>
-            </Box>
+      <DialogTitle
+        sx={{
+          display: "flex",
+          gap: 2,
+        }}
+      >
+        <GroupAddIcon />
+        <Typography>Crear Nuevo Grupo</Typography>
+      </DialogTitle>
+      <CardContent>
+        <Box component="form" onSubmit={handleSubmit}>
+          <TextField
+            required
+            id="groupName"
+            label="Nombre del Grupo"
+            name="groupName"
+            placeholder="Ej: Viaje a la playa, Gastos del apartamento..."
+          />
+          <Box>
+            <Button onClick={onClose}>CANCELAR</Button>
+            <Button type="submit" color="primary">
+              CREAR GRUPO
+            </Button>
           </Box>
-        </CardContent>
-      </Card>
+        </Box>
+      </CardContent>
     </Dialog>
   );
 };

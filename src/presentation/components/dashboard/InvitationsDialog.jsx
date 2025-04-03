@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemAvatar,
   Typography,
   Chip,
   IconButton,
@@ -39,39 +40,38 @@ const InvitationsDialog = ({
         {loadingInvitations ? (
           <Loading />
         ) : invitations.length > 0 ? (
-          <Box in={true} timeout={500}>
+          <Box>
             <List>
               {invitations.map((invitation) => (
-                <ListItem key={invitation.id}>
+                <ListItem
+                  secondaryAction={
+                    <Box>
+                      <Tooltip title="Aceptar invitación">
+                        <IconButton
+                          onClick={() =>
+                            onAccept(invitation.id, invitation.groupId)
+                          }
+                        >
+                          <CheckIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Rechazar invitación">
+                        <IconButton onClick={() => onReject(invitation.id)}>
+                          <CloseIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  }
+                >
+                  <ListItemAvatar>
+                    <Avatar>
+                      {invitation.groupName.charAt(0).toUpperCase()}
+                    </Avatar>
+                  </ListItemAvatar>
                   <ListItemText
-                    primary={
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Avatar>
-                          {invitation.groupName.charAt(0).toUpperCase()}
-                        </Avatar>
-                        <Box>
-                          <Typography>{invitation.groupName}</Typography>
-                          <Chip label={`De: ${invitation.invitedBy}`} />
-                        </Box>
-                      </Box>
-                    }
+                    primary={<Typography>{invitation.groupName}</Typography>}
+                    secondary={<Chip label={`De: ${invitation.invitedBy}`} />}
                   />
-                  <Box>
-                    <Tooltip title="Aceptar invitación">
-                      <IconButton
-                        onClick={() =>
-                          onAccept(invitation.id, invitation.groupId)
-                        }
-                      >
-                        <CheckIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Rechazar invitación">
-                      <IconButton onClick={() => onReject(invitation.id)}>
-                        <CloseIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
                 </ListItem>
               ))}
             </List>
