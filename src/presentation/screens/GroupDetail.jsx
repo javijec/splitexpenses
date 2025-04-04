@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { Grid2 as Grid, Box, Button, useTheme, Container } from "@mui/material";
+import { Grid, Box, Button, useTheme, Container } from "@mui/material";
 import { Group, Email } from "@mui/icons-material";
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";

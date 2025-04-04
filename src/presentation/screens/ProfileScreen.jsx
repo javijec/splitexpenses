@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "@/application/contexts/AuthContext";
 
-import { Box, Container, Grid2 as Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 
 // Componentes
 import ProfileHeader from "@/presentation/components/profile/ProfileHeader";
