@@ -2,6 +2,7 @@
 import { createTheme } from "@mui/material/styles";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /**
  * Función que genera un tema de Material UI basado en el modo (claro u oscuro)
  * siguiendo las pautas de Material Design 3
@@ -71,6 +72,16 @@ const createAppTheme = (mode) =>
       outline: {
         main: mode === "light" ? "#79747E" : "#938F99",
       },
+=======
+// Función para crear el tema que acepta un modo (light/dark)
+export const createMd3Theme = (mode) => {
+  // Paleta de colores para modo claro (predeterminado)
+  const lightColors = {
+    primary: {
+      main: "#6750A4",
+      light: "#B69DF8",
+      dark: "#4F378B",
+      contrastText: "#FFFFFF",
 =======
 // Función para crear el tema que acepta un modo (light/dark)
 export const createMd3Theme = (mode) => {
@@ -204,11 +215,137 @@ export const createMd3Theme = (mode) => {
       borderRadius: 16,
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
     },
+    secondary: {
+      main: "#625B71",
+      light: "#958DA5",
+      dark: "#393649",
+      contrastText: "#FFFFFF",
+    },
+    tertiary: {
+      main: "#7D5260",
+      light: "#B58392",
+      dark: "#5B3E4C",
+      contrastText: "#FFFFFF",
+    },
+    error: {
+      main: "#B3261E",
+      light: "#F2B8B5",
+      dark: "#8C1D18",
+      contrastText: "#FFFFFF",
+    },
+    neutral: {
+      main: "#79747E",
+      light: "#E7E0EC",
+      dark: "#49454F",
+      contrastText: "#FFFFFF",
+    },
+    background: {
+      default: "#FFFBFE",
+      paper: "#FFFBFE",
+      surface: "#FFFBFE",
+      surfaceVariant: "#E7E0EC",
+    },
+    text: {
+      primary: "#1C1B1F",
+      secondary: "#49454F",
+      disabled: "#1C1B1F70",
+    },
+    divider: "#79747E4D",
+  };
+
+  // Paleta de colores para modo oscuro
+  const darkColors = {
+    primary: {
+      main: "#D0BCFF",
+      light: "#E8DDFF",
+      dark: "#9A82DB",
+      contrastText: "#381E72",
+    },
+    secondary: {
+      main: "#CCC2DC",
+      light: "#E8DEF8",
+      dark: "#9A91AC",
+      contrastText: "#332D41",
+    },
+    tertiary: {
+      main: "#EFB8C8",
+      light: "#FFD8E4",
+      dark: "#B9889B",
+      contrastText: "#4A2532",
+    },
+    error: {
+      main: "#F2B8B5",
+      light: "#F9DEDC",
+      dark: "#B3261E",
+      contrastText: "#601410",
+    },
+    neutral: {
+      main: "#C4C0C9",
+      light: "#E6E1E5",
+      dark: "#938F99",
+      contrastText: "#1D1A22",
+    },
+    background: {
+      default: "#141218",
+      paper: "#1C1B1F",
+      surface: "#1C1B1F",
+      surfaceVariant: "#49454F",
+    },
+    text: {
+      primary: "#E6E1E5",
+      secondary: "#CAC4D0",
+      disabled: "#E6E1E570",
+    },
+    divider: "#CAC4D04D",
+  };
+
+  // Seleccionar la paleta según el modo
+  const colors = mode === "dark" ? darkColors : lightColors;
+
+  // Sistema de elevación (sombras) según Material Design 3
+  // En modo oscuro, las sombras pueden tener un efecto más sutil
+  const shadowOpacity = mode === "dark" ? 0.5 : 1;
+  const shadows = [
+    "none",
+    `0px 1px 2px rgba(0, 0, 0, ${
+      0.3 * shadowOpacity
+    }), 0px 1px 3px 1px rgba(0, 0, 0, ${0.15 * shadowOpacity})`,
+    `0px 1px 2px rgba(0, 0, 0, ${
+      0.3 * shadowOpacity
+    }), 0px 2px 6px 2px rgba(0, 0, 0, ${0.15 * shadowOpacity})`,
+    `0px 4px 8px 3px rgba(0, 0, 0, ${
+      0.15 * shadowOpacity
+    }), 0px 1px 3px rgba(0, 0, 0, ${0.3 * shadowOpacity})`,
+    `0px 6px 10px 4px rgba(0, 0, 0, ${
+      0.15 * shadowOpacity
+    }), 0px 2px 3px rgba(0, 0, 0, ${0.3 * shadowOpacity})`,
+    `0px 8px 12px 6px rgba(0, 0, 0, ${
+      0.15 * shadowOpacity
+    }), 0px 4px 4px rgba(0, 0, 0, ${0.3 * shadowOpacity})`,
+    // El resto son los shadows por defecto de Material UI
+    ...Array(19).fill("none"),
+  ];
+
+  // Crear y devolver el tema
+  return createTheme({
+    palette: {
+      mode,
+      ...colors,
+    },
+    shadows,
+    shape: {
+      borderRadius: 16,
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+    },
     // Tipografía según Material Design 3
     typography: {
 <<<<<<< HEAD
+<<<<<<< HEAD
       fontFamily: ["Roboto", "Arial", "sans-serif"].join(","),
       // Títulos según MD3
+=======
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
       fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
@@ -217,7 +354,11 @@ export const createMd3Theme = (mode) => {
         fontWeight: 400,
         lineHeight: 1.2,
 <<<<<<< HEAD
+<<<<<<< HEAD
         letterSpacing: "-0.015625em",
+=======
+        letterSpacing: "-0.01562em",
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         letterSpacing: "-0.01562em",
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
@@ -226,7 +367,11 @@ export const createMd3Theme = (mode) => {
         fontSize: "2rem",
         fontWeight: 400,
 <<<<<<< HEAD
+<<<<<<< HEAD
         lineHeight: 1.3,
+=======
+        lineHeight: 1.2,
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         lineHeight: 1.2,
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
@@ -236,7 +381,11 @@ export const createMd3Theme = (mode) => {
         fontSize: "1.75rem",
         fontWeight: 400,
 <<<<<<< HEAD
+<<<<<<< HEAD
         lineHeight: 1.4,
+=======
+        lineHeight: 1.2,
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         lineHeight: 1.2,
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
@@ -246,7 +395,11 @@ export const createMd3Theme = (mode) => {
         fontSize: "1.5rem",
         fontWeight: 400,
 <<<<<<< HEAD
+<<<<<<< HEAD
         lineHeight: 1.5,
+=======
+        lineHeight: 1.2,
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         lineHeight: 1.2,
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
@@ -255,8 +408,13 @@ export const createMd3Theme = (mode) => {
       h5: {
         fontSize: "1.25rem",
 <<<<<<< HEAD
+<<<<<<< HEAD
         fontWeight: 400,
         lineHeight: 1.6,
+=======
+        fontWeight: 500,
+        lineHeight: 1.2,
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         fontWeight: 500,
         lineHeight: 1.2,
@@ -273,11 +431,22 @@ export const createMd3Theme = (mode) => {
         fontSize: "1rem",
         fontWeight: 500,
 <<<<<<< HEAD
+<<<<<<< HEAD
         lineHeight: 1.7,
         letterSpacing: "0.0125em",
 =======
         lineHeight: 1.5,
         letterSpacing: "0.00938em",
+=======
+        lineHeight: 1.5,
+        letterSpacing: "0.00938em",
+      },
+      subtitle2: {
+        fontSize: "0.875rem",
+        fontWeight: 500,
+        lineHeight: 1.57,
+        letterSpacing: "0.00714em",
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
       },
       subtitle2: {
         fontSize: "0.875rem",
@@ -292,7 +461,11 @@ export const createMd3Theme = (mode) => {
         fontWeight: 400,
         lineHeight: 1.5,
 <<<<<<< HEAD
+<<<<<<< HEAD
         letterSpacing: "0.03125em",
+=======
+        letterSpacing: "0.00938em",
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         letterSpacing: "0.00938em",
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
@@ -301,6 +474,7 @@ export const createMd3Theme = (mode) => {
         fontSize: "0.875rem",
         fontWeight: 400,
         lineHeight: 1.43,
+<<<<<<< HEAD
 <<<<<<< HEAD
         letterSpacing: "0.0178571em",
       },
@@ -311,6 +485,8 @@ export const createMd3Theme = (mode) => {
         lineHeight: 1.43,
         letterSpacing: "0.0892857em",
 =======
+=======
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
         letterSpacing: "0.01071em",
       },
       button: {
@@ -318,12 +494,16 @@ export const createMd3Theme = (mode) => {
         fontWeight: 500,
         lineHeight: 1.75,
         letterSpacing: "0.02857em",
+<<<<<<< HEAD
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
         textTransform: "none",
       },
       caption: {
         fontSize: "0.75rem",
         fontWeight: 400,
+<<<<<<< HEAD
 <<<<<<< HEAD
         lineHeight: 1.33,
         letterSpacing: "0.0333333em",
@@ -334,6 +514,8 @@ export const createMd3Theme = (mode) => {
         lineHeight: 1.33,
         letterSpacing: "0.1666667em",
 =======
+=======
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
         lineHeight: 1.66,
         letterSpacing: "0.03333em",
       },
@@ -342,6 +524,9 @@ export const createMd3Theme = (mode) => {
         fontWeight: 500,
         lineHeight: 2.66,
         letterSpacing: "0.08333em",
+<<<<<<< HEAD
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
         textTransform: "uppercase",
       },
@@ -356,6 +541,7 @@ export const createMd3Theme = (mode) => {
             padding: "10px 24px",
             boxShadow: "none",
             textTransform: "none",
+<<<<<<< HEAD
 <<<<<<< HEAD
             borderRadius: 20, // Más redondeado según MD3
             padding: "10px 24px",
@@ -372,13 +558,58 @@ export const createMd3Theme = (mode) => {
           // Variante outlined según MD3
           outlined: {
             borderWidth: "1px",
+=======
+          },
+          contained: {
+            boxShadow: "none",
+            "&:hover": {
+              boxShadow: shadows[1],
+            },
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
           },
         },
+        variants: [
+          {
+            props: { variant: "elevated" },
+            style: {
+              backgroundColor: colors.background.surface,
+              color: colors.text.primary,
+              boxShadow: shadows[1],
+              "&:hover": {
+                boxShadow: shadows[2],
+                backgroundColor: mode === "dark" ? "#2C2B30" : "#F4EFF4",
+              },
+            },
+          },
+          {
+            props: { variant: "filled" },
+            style: {
+              backgroundColor: colors.primary.main,
+              color: mode === "dark" ? colors.primary.contrastText : "#FFFFFF",
+              "&:hover": {
+                backgroundColor:
+                  mode === "dark" ? colors.primary.light : colors.primary.dark,
+              },
+            },
+          },
+          {
+            props: { variant: "tonal" },
+            style: {
+              backgroundColor: colors.secondary.light,
+              color: colors.secondary.dark,
+              "&:hover": {
+                backgroundColor: colors.secondary.main,
+                color: colors.secondary.contrastText,
+              },
+            },
+          },
+        ],
       },
       // Tarjetas con estilo MD3
       MuiCard: {
         styleOverrides: {
           root: {
+<<<<<<< HEAD
             borderRadius: 16, // Más redondeado según MD3
             boxShadow:
               mode === "light"
@@ -396,10 +627,26 @@ export const createMd3Theme = (mode) => {
             padding: "16px 16px 0 16px",
             "& .MuiTypography-root": {
               fontWeight: 500,
+=======
+            borderRadius: 16,
+            padding: 16,
+            backgroundColor: colors.background.surface,
+            boxShadow: shadows[1],
+          },
+        },
+      },
+      MuiCardContent: {
+        styleOverrides: {
+          root: {
+            padding: 16,
+            "&:last-child": {
+              paddingBottom: 16,
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
             },
           },
         },
       },
+<<<<<<< HEAD
       // Contenido de tarjeta con estilo MD3
       MuiCardContent: {
         styleOverrides: {
@@ -534,6 +781,8 @@ export const createMd3Theme = (mode) => {
           },
         },
       },
+=======
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
       MuiTextField: {
         styleOverrides: {
           root: {
@@ -889,6 +1138,9 @@ export const createMd3Theme = (mode) => {
           root: {
             backgroundColor: colors.primary.main,
             color: colors.primary.contrastText,
+<<<<<<< HEAD
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
           },
         },
