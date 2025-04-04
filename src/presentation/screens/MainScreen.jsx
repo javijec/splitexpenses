@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
 <<<<<<< HEAD
+<<<<<<< HEAD
   Grid,
 =======
   Grid2 as Grid,
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+  Grid,
+>>>>>>> 3d930b3 (refactor: update MUI Grid imports and bump dependencies)
   Box,
   useTheme,
   Container,
