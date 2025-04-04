@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { useModal } from "@/application/contexts/ModalContext";
 import { useNavigate, useLocation } from "react-router"; // Importa useLocation
 import { useAuth } from "@/application/contexts/AuthContext";
@@ -13,6 +13,7 @@ import {
   Typography,
   Badge,
   Tooltip,
+  Container,
 } from "@mui/material";
 import { Home, Logout } from "@mui/icons-material";
 import ThemeToggle from "./ThemeToggle";
@@ -52,23 +53,17 @@ export default function BottomAppBar() {
   };
 
   return (
-    <Fragment>
+    <Container>
       <AppBar
         position="fixed"
-        color="primary"
         elevation={3}
         sx={{
           top: "auto",
           bottom: 0,
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
+
           overflow: "hidden",
-          boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(15px)",
           height: "auto",
-          backgroundColor: (theme) => theme.palette.primary, // Color del tema Material UI
-          border: "1px solid",
-          borderColor: (theme) => theme.palette.divider,
         }}
       >
         <Toolbar
@@ -102,7 +97,30 @@ export default function BottomAppBar() {
               arrow
               placement="top"
             >
+<<<<<<< HEAD
               <Fab variant="extended" onClick={handleAddButtonClick}>
+=======
+              <Fab
+                variant="extended"
+                aria-label="add"
+                onClick={handleAddButtonClick}
+                sx={{
+                  position: "absolute",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  background: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "#d32f2f" // darker red for dark mode
+                      : "#f44336", // lighter red for light mode
+                  color: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "#ffffff" // white text for dark mode
+                      : "#ffffff", // white text for light mode
+                  fontWeight: "bold",
+                  zIndex: 1000,
+                }}
+              >
+>>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
                 {location.pathname !== "/dashboard" ? (
                   <Typography>Nuevo Gasto</Typography>
                 ) : (
@@ -203,6 +221,6 @@ export default function BottomAppBar() {
           )}
         </Toolbar>
       </AppBar>
-    </Fragment>
+    </Container>
   );
 }

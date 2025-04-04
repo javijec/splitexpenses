@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import { useSystemTheme } from "@/application/hooks/useSystemTheme";
-import createAppTheme from "@/presentation/theme/theme.js";
+import { lightTheme, darkTheme } from "@/presentation/theme/theme";
 
 // Crear el contexto para el tema
 const ThemeContext = createContext();
@@ -33,8 +33,8 @@ export const ThemeProvider = ({ children }) => {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   };
 
-  // Crear el tema de Material UI basado en el modo actual usando la función unificada
-  const theme = createAppTheme(mode);
+  // Seleccionar el tema preconfigurado según el modo actual
+  const theme = mode === "light" ? lightTheme : darkTheme;
 
   // Proporcionar el contexto y el proveedor de tema de Material UI
   return (
