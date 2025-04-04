@@ -39,7 +39,7 @@ const GroupsListCard = ({
   const [isInvitationsDialogOpen, setIsInvitationsDialogOpen] = useState(false);
 
   return (
-    <Grid>
+    <>
       <Card>
         <CardHeader
           avatar={<GroupsIcon />}
@@ -55,6 +55,7 @@ const GroupsListCard = ({
               </Tooltip>
             )
           }
+          sx={{}}
         />
         <CardContent>
           {loadingGroups ? (
@@ -72,7 +73,11 @@ const GroupsListCard = ({
                     <Avatar>{group.name.charAt(0).toUpperCase()}</Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={<Typography>{group.name}</Typography>}
+                    primary={
+                      <Typography variant="h3" color="text.primary">
+                        {group.name}
+                      </Typography>
+                    }
                     secondary={
                       <Chip
                         label={`${group.members?.length || 1} ${
@@ -110,7 +115,7 @@ const GroupsListCard = ({
         onAccept={onAccept}
         onReject={onReject}
       />
-    </Grid>
+    </>
   );
 };
 

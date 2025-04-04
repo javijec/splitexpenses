@@ -1,9 +1,8 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { useModal } from "@/application/contexts/ModalContext";
 import { useNavigate, useLocation } from "react-router"; // Importa useLocation
 import { useAuth } from "@/application/contexts/AuthContext";
 
-import { styled } from "@mui/material/styles";
 import {
   AppBar,
   Box,
@@ -11,13 +10,12 @@ import {
   IconButton,
   Fab,
   Avatar,
-  Menu,
-  MenuItem,
   Typography,
   Badge,
   Tooltip,
+  Container,
 } from "@mui/material";
-import { Home, Add, Person, Logout } from "@mui/icons-material";
+import { Home, Logout } from "@mui/icons-material";
 import ThemeToggle from "./ThemeToggle";
 
 export default function BottomAppBar() {
@@ -59,23 +57,17 @@ export default function BottomAppBar() {
   };
 
   return (
-    <Fragment>
+    <Container>
       <AppBar
         position="fixed"
-        color="primary"
         elevation={3}
         sx={{
           top: "auto",
           bottom: 0,
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
+
           overflow: "hidden",
-          boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(15px)",
           height: "auto",
-          backgroundColor: (theme) => theme.palette.primary, // Color del tema Material UI
-          border: "1px solid",
-          borderColor: (theme) => theme.palette.divider,
         }}
       >
         <Toolbar
@@ -130,7 +122,6 @@ export default function BottomAppBar() {
                       : "#ffffff", // white text for light mode
                   fontWeight: "bold",
                   zIndex: 1000,
-
                 }}
               >
                 {location.pathname !== "/dashboard" ? (
@@ -233,6 +224,6 @@ export default function BottomAppBar() {
           )}
         </Toolbar>
       </AppBar>
-    </Fragment>
+    </Container>
   );
 }

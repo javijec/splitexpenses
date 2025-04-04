@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Grid2 as Grid, Box, useTheme, Container } from "@mui/material";
+import {
+  Grid2 as Grid,
+  Box,
+  useTheme,
+  Container,
+  Paper,
+  Typography,
+  Stack,
+  Divider,
+} from "@mui/material";
 import Header from "@/presentation/components/dashboard/HeaderDashboard";
 import Invitations from "@/presentation/components/dashboard/InvitationsCard";
 import Groups from "@/presentation/components/dashboard/GroupsListCard";
@@ -22,6 +31,32 @@ const Main = () => {
 
   const [invitations, setInvitations] = useState([]);
   const [loadingInvitations, setLoadingInvitations] = useState(true);
+
+  const loadInvitations = async () => {
+    try {
+      setLoadingInvitations(true);
+      const invitationsData = await getInvitationbyEmail(user.email);
+      setInvitations(invitationsData || []);
+    } catch (error) {
+      console.error("Error cargando invitaciones:", error);
+      setInvitations([]);
+    } finally {
+      setLoadingInvitations(false);
+    }
+  };
+
+  const loadGroups = async () => {
+    try {
+      setLoadingGroups(true);
+      const groupsData = await getGroupsByUser(user.uid);
+      setGroups(groupsData || []);
+    } catch (error) {
+      console.error("Error cargando grupos:", error);
+      setGroups([]);
+    } finally {
+      setLoadingGroups(false);
+    }
+  };
 
   useEffect(() => {
     if (user?.email && user?.uid) {
@@ -82,17 +117,20 @@ const Main = () => {
   };
 
   return (
-    <Container>
-      <Header />
-
-      <Groups
-        groups={groups}
-        loadingGroups={loadingGroups}
-        invitations={invitations}
-        loadingInvitations={loadingInvitations}
-        onAccept={handleAcceptInvitation}
-        onReject={handleRejectInvitation}
-      />
+    <Container maxWidth="lg">
+      <Box sx={{ py: 3 }}>
+        <Header />
+      </Box>
+      <Box>
+        <Groups
+          groups={groups}
+          loadingGroups={loadingGroups}
+          invitations={invitations}
+          loadingInvitations={loadingInvitations}
+          onAccept={handleAcceptInvitation}
+          onReject={handleRejectInvitation}
+        />
+      </Box>
 
       <GroupModal
         isOpen={isGroupModalOpen}
