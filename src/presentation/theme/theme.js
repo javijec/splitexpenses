@@ -213,7 +213,11 @@ export const createMd3Theme = (mode) => {
     shadows,
     shape: {
       borderRadius: 16,
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
     },
     secondary: {
       main: "#625B71",
@@ -348,7 +352,11 @@ export const createMd3Theme = (mode) => {
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
       fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
       h1: {
         fontSize: "2.5rem",
         fontWeight: 400,
@@ -361,7 +369,11 @@ export const createMd3Theme = (mode) => {
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         letterSpacing: "-0.01562em",
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
       },
       h2: {
         fontSize: "2rem",
@@ -374,7 +386,11 @@ export const createMd3Theme = (mode) => {
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         lineHeight: 1.2,
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
         letterSpacing: "-0.00833em",
       },
       h3: {
@@ -388,7 +404,11 @@ export const createMd3Theme = (mode) => {
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         lineHeight: 1.2,
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
         letterSpacing: "0em",
       },
       h4: {
@@ -402,7 +422,11 @@ export const createMd3Theme = (mode) => {
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         lineHeight: 1.2,
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
         letterSpacing: "0.00735em",
       },
       h5: {
@@ -418,7 +442,11 @@ export const createMd3Theme = (mode) => {
 =======
         fontWeight: 500,
         lineHeight: 1.2,
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
         letterSpacing: "0em",
       },
       h6: {
@@ -446,7 +474,11 @@ export const createMd3Theme = (mode) => {
         fontWeight: 500,
         lineHeight: 1.57,
         letterSpacing: "0.00714em",
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
       },
       subtitle2: {
         fontSize: "0.875rem",
@@ -468,7 +500,11 @@ export const createMd3Theme = (mode) => {
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
         letterSpacing: "0.00938em",
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
       },
       body2: {
         fontSize: "0.875rem",
@@ -486,7 +522,11 @@ export const createMd3Theme = (mode) => {
         letterSpacing: "0.0892857em",
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
         letterSpacing: "0.01071em",
       },
       button: {
@@ -495,9 +535,14 @@ export const createMd3Theme = (mode) => {
         lineHeight: 1.75,
         letterSpacing: "0.02857em",
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
+=======
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
         textTransform: "none",
       },
       caption: {
@@ -515,7 +560,11 @@ export const createMd3Theme = (mode) => {
         letterSpacing: "0.1666667em",
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
         lineHeight: 1.66,
         letterSpacing: "0.03333em",
       },
@@ -525,9 +574,14 @@ export const createMd3Theme = (mode) => {
         lineHeight: 2.66,
         letterSpacing: "0.08333em",
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
+=======
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
         textTransform: "uppercase",
       },
     },
@@ -565,7 +619,11 @@ export const createMd3Theme = (mode) => {
             "&:hover": {
               boxShadow: shadows[1],
             },
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
           },
         },
         variants: [
@@ -641,7 +699,11 @@ export const createMd3Theme = (mode) => {
             padding: 16,
             "&:last-child": {
               paddingBottom: 16,
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
             },
           },
         },
@@ -782,7 +844,11 @@ export const createMd3Theme = (mode) => {
         },
       },
 =======
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
       MuiTextField: {
         styleOverrides: {
           root: {
@@ -1139,9 +1205,14 @@ export const createMd3Theme = (mode) => {
             backgroundColor: colors.primary.main,
             color: colors.primary.contrastText,
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
 =======
+=======
+>>>>>>> e6334cf1cce223eb28f61df1e17b5d343a8f5ee0
 >>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
+=======
+>>>>>>> 3d930b383829a0738d35d51030b0f9fb5ff2cd13
           },
         },
       },
