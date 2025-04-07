@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React from "react";
 import { useModal } from "@/application/contexts/ModalContext";
-import { useNavigate, useLocation } from "react-router"; // Importa useLocation
+import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "@/application/contexts/AuthContext";
 
 import {
@@ -11,209 +11,226 @@ import {
   Fab,
   Avatar,
   Typography,
-  Badge,
   Tooltip,
   Container,
+  alpha,
+  Zoom,
+  Slide,
 } from "@mui/material";
-import { Home, Logout } from "@mui/icons-material";
+import {
+  Home as HomeIcon,
+  Logout as LogoutIcon,
+  Add as AddIcon,
+  Person as PersonIcon,
+  Receipt as ReceiptIcon,
+  Group as GroupIcon,
+} from "@mui/icons-material";
 import ThemeToggle from "@/presentation/components/common/ThemeToggle";
 
 export default function BottomAppBar() {
   const { user, logoutAccount } = useAuth();
 
-  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // Obtén el path actual
+  const location = useLocation();
+  const { openExpenseModal, openGroupModal } = useModal();
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  // Determinar si estamos en la página de dashboard
+  const isDashboard = location.pathname === "/dashboard";
+  // Determinar si estamos en la página de perfil
+  const isProfile = location.pathname.startsWith("/profile");
+  // Determinar si estamos en la página de un grupo
+  const isGroup = location.pathname.startsWith("/group");
 
-  const handleDashboard = async () => {
-    navigate("/dashboard");
-  };
+  // Navegar al dashboard
+  const handleDashboard = () => navigate("/dashboard");
+
+  // Navegar al perfil
+  const handleProfile = () => navigate("/profile");
+
+  // Cerrar sesión
   const handleLogout = async () => {
-    handleMenuClose();
     await logoutAccount();
     navigate("/login");
   };
-  const handleProfile = async () => {
-    handleMenuClose();
-    navigate("/profile");
-  };
 
-  const { openExpenseModal, openGroupModal } = useModal();
-
+  // Manejar el clic en el botón de acción principal
   const handleAddButtonClick = () => {
-    if (location.pathname.startsWith("/group")) {
-      openExpenseModal(); // Abre el modal usando el contexto
-    } else if (location.pathname === "/dashboard") {
-      openGroupModal(); // Abre el modal usando el contexto
+    if (isGroup) {
+      openExpenseModal(); // Abrir modal de gasto en página de grupo
+    } else if (isDashboard) {
+      openGroupModal(); // Abrir modal de grupo en dashboard
     }
   };
 
+  // Obtener el texto del botón de acción principal
+  const getActionButtonText = () => {
+    if (isDashboard) return "Nuevo Grupo";
+    if (isGroup) return "Nuevo Gasto";
+    return "";
+  };
+
+  // Obtener el icono del botón de acción principal
+  const getActionButtonIcon = () => {
+    if (isDashboard) return <GroupIcon sx={{ mr: 1 }} />;
+    if (isGroup) return <ReceiptIcon sx={{ mr: 1 }} />;
+    return <AddIcon sx={{ mr: 1 }} />;
+  };
+
   return (
-    <Container>
+    <Slide direction="up" in={true} mountOnEnter unmountOnExit>
       <AppBar
         position="fixed"
-        elevation={3}
+        color="inherit"
+        elevation={0}
         sx={{
           top: "auto",
           bottom: 0,
-
-          overflow: "hidden",
-          backdropFilter: "blur(15px)",
-          height: "auto",
+          bgcolor: (theme) => alpha(theme.palette.background.paper, 0.8),
+          backdropFilter: "blur(10px)",
+          borderTop: "1px solid",
+          borderColor: (theme) => alpha(theme.palette.divider, 0.1),
+          boxShadow: (theme) =>
+            `0 -4px 20px ${alpha(theme.palette.common.black, 0.05)}`,
         }}
       >
-        <Toolbar
-          sx={{
-            padding: { xs: 0.8, sm: 1.5 },
-            minHeight: 0,
-            justifyContent: "space-between",
-          }}
-        >
-          {location.pathname !== "/dashboard" && (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDashboard}
-              sx={{
-                transition: "all 0.2s ease",
-
-                p: 1.5,
-              }}
-            >
-              <Home fontSize="small" />
-            </IconButton>
-          )}
-          {!location.pathname.startsWith("/profile") && (
-            <Tooltip
-              title={
-                location.pathname === "/dashboard"
-                  ? "Crear grupo"
-                  : "Añadir gasto"
-              }
-              arrow
-              placement="top"
-            >
-              <Fab
-                variant="extended"
-                aria-label="add"
-                onClick={handleAddButtonClick}
-                sx={{
-                  position: "absolute",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  background: (theme) =>
-                    theme.palette.mode === "dark"
-                      ? "#d32f2f" // darker red for dark mode
-                      : "#f44336", // lighter red for light mode
-                  color: "#ffffff", // white text for both modes
-                  fontWeight: "bold",
-                  zIndex: 1000,
-                }}
-              >
-                {location.pathname !== "/dashboard" ? (
-                  <Typography>Nuevo Gasto</Typography>
-                ) : (
-                  <Typography>Nuevo Grupo</Typography>
-                )}
-              </Fab>
-            </Tooltip>
-          )}
-
-          <Box sx={{ flexGrow: 1 }} />
-
-          {location.pathname === "/profile" ? (
-            <>
-              <ThemeToggle />
-              <Tooltip title="Logout" arrow>
-                <IconButton
-                  color="inherit"
-                  onClick={handleLogout}
-                  sx={{
-                    transition: "all 0.2s ease",
-                    p: 1.5,
-                    bgcolor: (theme) =>
-                      theme.palette.mode === "dark"
-                        ? "rgba(255, 0, 0, 0.37)"
-                        : "rgba(0, 0, 0, 0.04)",
-
-                    ml: 1,
-                  }}
-                >
-                  <Logout fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </>
-          ) : (
-            <>
-              <Tooltip title="Mi perfil">
-                <IconButton
-                  color="inherit"
-                  onClick={handleProfile}
-                  sx={{
-                    transition: "all 0.2s ease",
-                    p: 0.8,
-                    bgcolor: (theme) =>
-                      theme.palette.mode === "dark"
-                        ? "rgba(255, 255, 255, 0.08)"
-                        : "rgba(0, 0, 0, 0.04)",
-
-                    ml: 1,
-                  }}
-                >
-                  <Badge
-                    overlap="circular"
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                    variant="dot"
-                    color="secondary"
-                    invisible={!user}
-                    sx={{
-                      "& .MuiBadge-badge": {
-                        width: 8,
-                        height: 8,
-                        borderRadius: "50%",
-                        boxShadow: (theme) =>
-                          theme.palette.mode === "dark"
-                            ? "0 0 0 2px rgba(30, 30, 35, 0.99)"
-                            : "0 0 0 2px white",
+        <Container maxWidth="lg">
+          <Toolbar
+            sx={{
+              padding: { xs: 1, sm: 1.5 },
+              minHeight: { xs: 64, sm: 70 },
+              justifyContent: "space-between",
+            }}
+          >
+            {/* Botón de inicio - visible cuando no estamos en dashboard */}
+            <Zoom in={!isDashboard} timeout={500}>
+              <Box>
+                {!isDashboard && (
+                  <Tooltip title="Ir al inicio" arrow placement="top">
+                    <IconButton
+                      onClick={handleDashboard}
+                      sx={{
                         bgcolor: (theme) =>
-                          theme.palette.mode === "dark"
-                            ? theme.palette.secondary.light
-                            : theme.palette.secondary.main,
+                          alpha(theme.palette.primary.main, 0.1),
+                        color: "primary.main",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          bgcolor: (theme) =>
+                            alpha(theme.palette.primary.main, 0.2),
+                          transform: "translateY(-3px)",
+                        },
+                        width: 44,
+                        height: 44,
+                      }}
+                    >
+                      <HomeIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Box>
+            </Zoom>
+
+            {/* Espacio flexible para centrar el botón de acción */}
+            <Box sx={{ flexGrow: 1 }} />
+
+            {/* Botón de acción principal - no visible en perfil */}
+            {!isProfile && (
+              <Zoom in={!isProfile} timeout={700}>
+                <Fab
+                  variant="extended"
+                  color="primary"
+                  aria-label={isDashboard ? "crear grupo" : "añadir gasto"}
+                  onClick={handleAddButtonClick}
+                  sx={{
+                    position: "fixed",
+                    bottom: 10,
+                    left: "45%",
+                    transform: "translateX(-50%)",
+                    width: "auto",
+                    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
+                    px: 3,
+                    py: 1.5,
+                    fontWeight: 600,
+                    textTransform: "none",
+                    letterSpacing: 0.5,
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      boxShadow: "0 6px 25px rgba(0, 0, 0, 0.2)",
+                      transform: "translateX(-50%) translateY(-3px)",
+                    },
+                    zIndex: 1100,
+                  }}
+                >
+                  {getActionButtonIcon()}
+                  <Typography variant="button" fontWeight="600">
+                    {getActionButtonText()}
+                  </Typography>
+                </Fab>
+              </Zoom>
+            )}
+
+            {/* Espacio flexible para centrar el botón de acción */}
+            <Box sx={{ flexGrow: 1 }} />
+
+            {/* Botones de la derecha */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              {/* Selector de tema siempre visible */}
+              <ThemeToggle />
+
+              {/* Botón de perfil o logout dependiendo de la página */}
+              {isProfile ? (
+                <Tooltip title="Cerrar sesión" arrow placement="top">
+                  <IconButton
+                    onClick={handleLogout}
+                    sx={{
+                      bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
+                      color: "error.main",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        bgcolor: (theme) =>
+                          alpha(theme.palette.error.main, 0.2),
+                        transform: "translateY(-3px)",
+                      },
+                      width: 44,
+                      height: 44,
+                    }}
+                  >
+                    <LogoutIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Tooltip title="Mi perfil" arrow placement="top">
+                  <IconButton
+                    onClick={handleProfile}
+                    sx={{
+                      p: 0.5,
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-3px)",
                       },
                     }}
                   >
                     <Avatar
-                      src={user ? user.photoURL : ""}
+                      src={user?.photoURL || ""}
                       sx={{
-                        width: 32,
-                        height: 32,
+                        width: 38,
+                        height: 38,
                         border: "2px solid",
                         borderColor: (theme) =>
-                          theme.palette.mode === "dark"
-                            ? "rgba(255, 255, 255, 0.2)"
-                            : "rgba(255, 255, 255, 0.9)",
-                        boxShadow: (theme) =>
-                          theme.palette.mode === "dark"
-                            ? "0 3px 10px rgba(0, 0, 0, 0.3)"
-                            : "0 3px 10px rgba(0, 0, 0, 0.15)",
-                        transition: "all 0.2s ease",
+                          alpha(theme.palette.primary.main, 0.3),
+                        boxShadow: "0 3px 10px rgba(0, 0, 0, 0.15)",
                         bgcolor: (theme) =>
-                          theme.palette.mode === "dark"
-                            ? "rgba(255, 255, 255, 0.1)"
-                            : "rgba(0, 0, 0, 0.04)",
+                          alpha(theme.palette.primary.main, 0.1),
                       }}
-                    />
-                  </Badge>
-                </IconButton>
-              </Tooltip>
-            </>
-          )}
-        </Toolbar>
+                    >
+                      {!user?.photoURL && <PersonIcon />}
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Box>
+          </Toolbar>
+        </Container>
       </AppBar>
-    </Container>
+    </Slide>
   );
 }
