@@ -10,9 +10,9 @@ import {
   Divider,
 } from "@mui/material";
 import Header from "@/presentation/components/dashboard/HeaderDashboard";
-import Invitations from "@/presentation/components/dashboard/InvitationsCard";
-import Groups from "@/presentation/components/dashboard/GroupsListCard";
-import GroupModal from "@/presentation/components/dashboard/CreateGroupDialog";
+import InvitationsCard from "@/presentation/components/dashboard/InvitationsCard";
+import GroupsListCard from "@/presentation/components/dashboard/GroupsListCard";
+import CreateGroupDialog from "@/presentation/components/dashboard/CreateGroupDialog";
 import { useModal } from "@/application/contexts/ModalContext";
 import { addMember, getGroupsByUser } from "@/domain/usecases/groups";
 import {
@@ -122,7 +122,7 @@ const Main = () => {
         <Header />
       </Box>
       <Box>
-        <Groups
+        <GroupsListCard
           groups={groups}
           loadingGroups={loadingGroups}
           invitations={invitations}
@@ -132,7 +132,7 @@ const Main = () => {
         />
       </Box>
 
-      <GroupModal
+      <CreateGroupDialog
         isOpen={isGroupModalOpen}
         onClose={closeGroupModal}
         onGroupCreated={handleCreateGroup}
