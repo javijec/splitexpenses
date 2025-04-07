@@ -8,9 +8,11 @@ import {
   Typography,
   Stack,
   Divider,
+  alpha,
+  Fade,
+  useMediaQuery,
 } from "@mui/material";
 import Header from "@/presentation/components/dashboard/HeaderDashboard";
-import InvitationsCard from "@/presentation/components/dashboard/InvitationsCard";
 import GroupsListCard from "@/presentation/components/dashboard/GroupsListCard";
 import CreateGroupDialog from "@/presentation/components/dashboard/CreateGroupDialog";
 import { useModal } from "@/application/contexts/ModalContext";
@@ -23,15 +25,19 @@ import { useAuth } from "@/application/contexts/AuthContext";
 
 const Main = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  // Estados para grupos e invitaciones
   const [groups, setGroups] = useState([]);
   const [loadingGroups, setLoadingGroups] = useState(true);
-  const { user } = useAuth();
-  const { isGroupModalOpen, closeGroupModal } = useModal();
-
   const [invitations, setInvitations] = useState([]);
   const [loadingInvitations, setLoadingInvitations] = useState(true);
 
+  // Contextos
+  const { user } = useAuth();
+  const { isGroupModalOpen, closeGroupModal } = useModal();
+
+  // Función para cargar invitaciones
   const loadInvitations = async () => {
     try {
       setLoadingInvitations(true);
@@ -45,6 +51,7 @@ const Main = () => {
     }
   };
 
+  // Función para cargar grupos
   const loadGroups = async () => {
     try {
       setLoadingGroups(true);
@@ -58,6 +65,7 @@ const Main = () => {
     }
   };
 
+  // Cargar datos cuando el usuario está autenticado
   useEffect(() => {
     if (user?.email && user?.uid) {
       // Usar Promise.all para cargar invitaciones y grupos en paralelo
@@ -81,6 +89,7 @@ const Main = () => {
     }
   }, [user]);
 
+  // Manejar aceptación de invitación
   const handleAcceptInvitation = async (invitationId, groupId) => {
     try {
       // Ejecutar ambas operaciones en paralelo
@@ -103,6 +112,7 @@ const Main = () => {
     }
   };
 
+  // Manejar rechazo de invitación
   const handleRejectInvitation = async (invitationId) => {
     try {
       await deleteInvitation(invitationId);
@@ -112,32 +122,51 @@ const Main = () => {
     }
   };
 
+  // Manejar creación de grupo
   const handleCreateGroup = async () => {
     loadGroups();
   };
 
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ py: 3 }}>
-        <Header />
-      </Box>
-      <Box>
-        <GroupsListCard
-          groups={groups}
-          loadingGroups={loadingGroups}
-          invitations={invitations}
-          loadingInvitations={loadingInvitations}
-          onAccept={handleAcceptInvitation}
-          onReject={handleRejectInvitation}
-        />
-      </Box>
+    <Fade in={true} timeout={800}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          py: { xs: 2, sm: 4 },
+          px: { xs: 2, sm: 3, md: 4 },
+        }}
+      >
+        {/* Encabezado */}
+        <Box sx={{ mb: { xs: 3, sm: 4 } }}>
+          <Header />
+        </Box>
 
-      <CreateGroupDialog
-        isOpen={isGroupModalOpen}
-        onClose={closeGroupModal}
-        onGroupCreated={handleCreateGroup}
-      />
-    </Container>
+        {/* Contenido principal */}
+        <Box
+          sx={{
+            borderRadius: 4,
+            overflow: "hidden",
+            mb: 4,
+          }}
+        >
+          <GroupsListCard
+            groups={groups}
+            loadingGroups={loadingGroups}
+            invitations={invitations}
+            loadingInvitations={loadingInvitations}
+            onAccept={handleAcceptInvitation}
+            onReject={handleRejectInvitation}
+          />
+        </Box>
+
+        {/* Diálogo para crear grupo */}
+        <CreateGroupDialog
+          isOpen={isGroupModalOpen}
+          onClose={closeGroupModal}
+          onGroupCreated={handleCreateGroup}
+        />
+      </Container>
+    </Fade>
   );
 };
 
