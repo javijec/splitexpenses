@@ -10,10 +10,18 @@ import {
   Alert,
   IconButton,
   Avatar,
+  Stack,
+  Divider,
+  alpha,
+  useTheme,
+  Paper,
+  InputAdornment,
 } from "@mui/material";
 import {
   Close as CloseIcon,
   PersonAdd as PersonAddIcon,
+  Email as EmailIcon,
+  Send as SendIcon,
 } from "@mui/icons-material";
 
 export const InviteMemberModal = ({
@@ -24,6 +32,7 @@ export const InviteMemberModal = ({
   validateEmail,
   setAlertInfo,
 }) => {
+  const theme = useTheme();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
 
@@ -53,47 +62,148 @@ export const InviteMemberModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
-      <DialogTitle>
-        <Box>
-          <Avatar>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          maxWidth: 500,
+        },
+      }}
+    >
+      <DialogTitle
+        sx={{
+          p: 3,
+          pb: 1,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+      >
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Avatar
+            sx={{
+              bgcolor: alpha(theme.palette.primary.main, 0.1),
+              color: theme.palette.primary.main,
+              width: 48,
+              height: 48,
+            }}
+          >
             <PersonAddIcon />
           </Avatar>
           <Box>
-            <Typography>Invitar Miembro</Typography>
-            <Typography>
+            <Typography variant="h5" fontWeight="bold" color="text.primary">
+              Invitar Miembro
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
               Invita a amigos, familia o compañeros a unirse a este grupo
             </Typography>
           </Box>
-        </Box>
-        <IconButton onClick={handleClose}>
-          <CloseIcon />
+        </Stack>
+        <IconButton
+          onClick={handleClose}
+          size="small"
+          sx={{ color: "text.secondary" }}
+        >
+          <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
-        <Box component="form" onSubmit={handleSubmit}>
-          <TextField
-            id="email"
-            label="Email"
-            name="email"
-            value={email}
-            onChange={handleEmailChange}
-            error={emailError}
-            helperText={emailError ? "Formato de email inválido" : ""}
-            placeholder="Ingresa el email de la persona que quieres invitar"
-          />
+
+      <Divider sx={{ mx: 3 }} />
+
+      <DialogContent sx={{ p: 3 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <Paper
+            elevation={0}
+            sx={{
+              p: 3,
+              mb: 3,
+              borderRadius: 2,
+              bgcolor: alpha(theme.palette.primary.main, 0.03),
+              border: "1px solid",
+              borderColor: alpha(theme.palette.primary.main, 0.1),
+            }}
+          >
+            <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+              ¿A quién quieres invitar?
+            </Typography>
+
+            <TextField
+              fullWidth
+              id="email"
+              label="Email"
+              name="email"
+              value={email}
+              onChange={handleEmailChange}
+              error={emailError}
+              helperText={emailError ? "Formato de email inválido" : ""}
+              placeholder="Ingresa el email de la persona que quieres invitar"
+              variant="outlined"
+              margin="normal"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <EmailIcon color="primary" />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                mt: 2,
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 2,
+                },
+              }}
+            />
+          </Paper>
+
           {alertInfo.show && (
             <Alert
               severity={alertInfo.severity}
               onClose={() => setAlertInfo({ ...alertInfo, show: false })}
+              sx={{
+                mb: 3,
+                borderRadius: 2,
+              }}
             >
               {alertInfo.message}
             </Alert>
           )}
-          <Box>
-            <Button onClick={handleClose}>CANCELAR</Button>
-            <Button type="submit" disabled={!email || emailError}>
-              ENVIAR INVITACIÓN
+
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+            <Button
+              onClick={handleClose}
+              variant="outlined"
+              sx={{
+                borderRadius: 2,
+                px: 3,
+                py: 1,
+                textTransform: "none",
+                fontWeight: 600,
+              }}
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              disabled={!email || emailError}
+              variant="contained"
+              color="primary"
+              startIcon={<SendIcon />}
+              sx={{
+                borderRadius: 2,
+                px: 3,
+                py: 1,
+                textTransform: "none",
+                fontWeight: 600,
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  boxShadow: "0 6px 16px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              Enviar Invitación
             </Button>
           </Box>
         </Box>
