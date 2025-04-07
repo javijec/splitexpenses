@@ -16,7 +16,7 @@ import {
   Container,
 } from "@mui/material";
 import { Home, Logout } from "@mui/icons-material";
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "@/presentation/components/common/ThemeToggle";
 
 export default function BottomAppBar() {
   const { user, logoutAccount } = useAuth();

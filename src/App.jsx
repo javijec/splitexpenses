@@ -5,7 +5,7 @@ import Login from "@/presentation/screens/LoginSceen";
 import Main from "@/presentation/screens/MainScreen";
 import ProtectedRoute from "@/presentation/navigation/ProtectedRoute";
 import Profile from "@/presentation/screens/ProfileScreen";
-import { ThemeProvider } from "@/application/contexts/ThemeContext";
+import { ThemeProvider } from "@/presentation/theme/ThemeManager";
 import BottomAppBar from "@/presentation/components/NavBar/BottomAppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useAuthStatus } from "@/application/hooks/useAuthStatus";
@@ -35,14 +35,14 @@ function App() {
     );
   }
   return (
-    <>
+    <ThemeProvider>
       <CssBaseline />
       <BrowserRouter>
         <ModalProvider>
           <AppRoutes />
         </ModalProvider>
       </BrowserRouter>
-    </>
+    </ThemeProvider>
   );
 }
 

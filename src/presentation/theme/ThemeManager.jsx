@@ -1,8 +1,16 @@
-// themeWithModes.js
-import { createTheme } from "@mui/material/styles";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { ThemeProvider as MuiThemeProvider, createTheme } from "@mui/material/styles";
 
-// Función para crear el tema que acepta un modo (light/dark)
-export const createMd3Theme = (mode) => {
+// ============================================================================
+// DEFINICIÓN DE TEMAS (Material Design 3)
+// ============================================================================
+
+/**
+ * Función para crear un tema de Material UI basado en Material Design 3
+ * @param {string} mode - El modo del tema ('light' o 'dark')
+ * @returns {object} El tema configurado
+ */
+const createMd3Theme = (mode) => {
   // Paleta de colores para modo claro (predeterminado)
   const lightColors = {
     primary: {
@@ -656,4 +664,149 @@ export const createMd3Theme = (mode) => {
 const lightTheme = createMd3Theme("light");
 const darkTheme = createMd3Theme("dark");
 
+// ============================================================================
+// HOOK PARA DETECTAR EL TEMA DEL SISTEMA
+// ============================================================================
+
+/**
+ * Hook personalizado que detecta el tema del sistema operativo (claro u oscuro)
+ * @returns {string} El tema del sistema ('light' o 'dark')
+ */
+const useSystemTheme = () => {
+  // Estado inicial basado en la preferencia del sistema
+  const [systemTheme, setSystemTheme] = useState(() => {
+    // Verificar si window está disponible (para SSR)
+    if (typeof window !== "undefined") {
+      // Detectar preferencia de tema oscuro del sistema
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+    // Valor por defecto si window no está disponible
+    return "light";
+  });
+
+  useEffect(() => {
+    // Solo ejecutar en el cliente
+    if (typeof window === "undefined") return;
+
+    // Crear media query para detectar cambios en la preferencia del sistema
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    // Función para actualizar el tema cuando cambia la preferencia del sistema
+    const handleChange = (event) => {
+      setSystemTheme(event.matches ? "dark" : "light");
+    };
+
+    // Agregar listener para detectar cambios
+    mediaQuery.addEventListener("change", handleChange);
+
+    // Limpiar listener al desmontar el componente
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
+
+  return systemTheme;
+};
+
+// ============================================================================
+// CONTEXTO Y PROVEEDOR DE TEMA
+// ============================================================================
+
+// Crear el contexto para el tema
+const ThemeContext = createContext();
+
+/**
+ * Hook personalizado para usar el contexto del tema
+ * @returns {object} El contexto del tema con el modo actual y la función para cambiarlo
+ */
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useTheme debe ser usado dentro de un ThemeProvider");
+  }
+  return context;
+};
+
+/**
+ * Proveedor del tema que detecta automáticamente el tema del sistema
+ * y permite cambiarlo manualmente
+ */
+export const ThemeProvider = ({ children }) => {
+  // Obtener el tema del sistema usando nuestro hook personalizado
+  const systemTheme = useSystemTheme();
+
+  // Estado para el modo del tema actual
+  const [mode, setMode] = useState(() => {
+    // Intentar recuperar el tema guardado en localStorage
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        return savedTheme;
+      }
+    }
+    // Si no hay tema guardado, usar el tema del sistema
+    return systemTheme;
+  });
+
+  // Actualizar el modo cuando cambia el tema del sistema, solo si no hay preferencia guardada
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("theme");
+      if (!savedTheme) {
+        setMode(systemTheme);
+      }
+    }
+  }, [systemTheme]);
+
+  // Guardar el tema en localStorage cuando cambia
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", mode);
+    }
+  }, [mode]);
+
+  // Función para alternar manualmente entre temas
+  const toggleTheme = () => {
+    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+  };
+
+  // Función para establecer un tema específico
+  const setTheme = (newMode) => {
+    if (newMode === "light" || newMode === "dark") {
+      setMode(newMode);
+    }
+  };
+
+  // Función para usar el tema del sistema
+  const useSystemPreference = () => {
+    setMode(systemTheme);
+    // Eliminar la preferencia guardada
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("theme");
+    }
+  };
+
+  // Seleccionar el tema preconfigurado según el modo actual
+  const theme = mode === "light" ? lightTheme : darkTheme;
+
+  // Proporcionar el contexto y el proveedor de tema de Material UI
+  return (
+    <ThemeContext.Provider 
+      value={{ 
+        mode, 
+        toggleTheme, 
+        setTheme, 
+        useSystemPreference,
+        systemTheme,
+        isUsingSystemTheme: !localStorage.getItem("theme")
+      }}
+    >
+      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+    </ThemeContext.Provider>
+  );
+};
+
+// Exportar temas preconfigurados para uso directo si es necesario
 export { lightTheme, darkTheme };
