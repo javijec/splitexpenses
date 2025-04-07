@@ -97,9 +97,6 @@ export default function BottomAppBar() {
               arrow
               placement="top"
             >
-<<<<<<< HEAD
-              <Fab variant="extended" onClick={handleAddButtonClick}>
-=======
               <Fab
                 variant="extended"
                 aria-label="add"
@@ -112,15 +109,11 @@ export default function BottomAppBar() {
                     theme.palette.mode === "dark"
                       ? "#d32f2f" // darker red for dark mode
                       : "#f44336", // lighter red for light mode
-                  color: (theme) =>
-                    theme.palette.mode === "dark"
-                      ? "#ffffff" // white text for dark mode
-                      : "#ffffff", // white text for light mode
+                  color: "#ffffff", // white text for both modes
                   fontWeight: "bold",
                   zIndex: 1000,
                 }}
               >
->>>>>>> 00cde42 (refactor(theme): replace createAppTheme with preconfigured light and dark themes)
                 {location.pathname !== "/dashboard" ? (
                   <Typography>Nuevo Gasto</Typography>
                 ) : (
