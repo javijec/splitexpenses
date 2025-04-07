@@ -30,7 +30,7 @@ import { Link } from "react-router";
 import Loading from "../common/Loading";
 
 // Componente para mostrar un grupo individual
-const GroupItem = ({ group }) => {
+const GroupItem = ({ group, isMobile }) => {
   const theme = useTheme();
 
   return (
@@ -39,11 +39,11 @@ const GroupItem = ({ group }) => {
       to={`/group/${group.id}`}
       elevation={0}
       sx={{
-        p: 2,
+        p: { xs: 1.5, sm: 2 },
         mb: 2,
         borderRadius: 3,
         display: "flex",
-        alignItems: "center",
+        alignItems: { xs: "flex-start", sm: "center" },
         justifyContent: "space-between",
         transition: "all 0.3s ease",
         cursor: "pointer",
@@ -55,17 +55,26 @@ const GroupItem = ({ group }) => {
           borderColor: (theme) => alpha(theme.palette.primary.main, 0.3),
           bgcolor: (theme) => alpha(theme.palette.primary.main, 0.02),
         },
+        flexDirection: { xs: "column", sm: "row" },
+        gap: { xs: 1, sm: 0 },
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          width: { xs: "100%", sm: "auto" },
+        }}
+      >
         <Avatar
           sx={{
-            width: 50,
-            height: 50,
+            width: { xs: 45, sm: 50 },
+            height: { xs: 45, sm: 50 },
             bgcolor: (theme) => alpha(theme.palette.primary.main, 0.15),
             color: "primary.main",
             fontWeight: "bold",
-            fontSize: "1.2rem",
+            fontSize: { xs: "1rem", sm: "1.2rem" },
             border: "2px solid",
             borderColor: (theme) => alpha(theme.palette.primary.main, 0.3),
           }}
@@ -73,14 +82,15 @@ const GroupItem = ({ group }) => {
           {group.name.charAt(0).toUpperCase()}
         </Avatar>
 
-        <Box>
+        <Box sx={{ maxWidth: { xs: "calc(100% - 60px)", sm: "auto" } }}>
           <Typography
             variant="h6"
             color="text.primary"
             sx={{
               fontWeight: 600,
               mb: 0.5,
-              fontSize: { xs: "1rem", sm: "1.1rem" },
+              fontSize: { xs: "0.9rem", sm: "1.1rem" },
+              wordBreak: "break-word",
             }}
           >
             {group.name}
@@ -246,6 +256,7 @@ const GroupsListCard = ({
   loadingInvitations,
   onAccept,
   onReject,
+  isMobile,
 }) => {
   const theme = useTheme();
   const { openGroupModal } = useModal();
@@ -337,7 +348,7 @@ const GroupsListCard = ({
           <Fade in={true} timeout={500}>
             <Box>
               {groups.map((group) => (
-                <GroupItem key={group.id} group={group} />
+                <GroupItem key={group.id} group={group} isMobile={isMobile} />
               ))}
             </Box>
           </Fade>

@@ -258,9 +258,11 @@ function GroupDetail() {
         <Box
           sx={{
             display: { xs: "flex", md: "none" },
+            flexDirection: { xs: "column", sm: "row" },
             gap: 2,
             mb: 3,
-            justifyContent: "center",
+            width: "100%",
+            px: { xs: 2, sm: 0 },
           }}
         >
           <Button
@@ -268,11 +270,13 @@ function GroupDetail() {
             color="primary"
             onClick={() => setIsMembersDialogOpen(true)}
             startIcon={<PeopleIcon />}
+            fullWidth
             sx={{
               borderRadius: 2,
               textTransform: "none",
               fontWeight: 600,
-              py: 1,
+              py: 1.5,
+              fontSize: { xs: "0.875rem", sm: "1rem" },
             }}
           >
             Ver Miembros
@@ -281,21 +285,23 @@ function GroupDetail() {
           {invitations.length > 0 && (
             <Button
               variant="outlined"
-              color="info"
+              color="primary"
               onClick={() => setIsInvitationsDialogOpen(true)}
               startIcon={<NotificationsIcon />}
+              fullWidth
               sx={{
                 borderRadius: 2,
                 textTransform: "none",
                 fontWeight: 600,
-                py: 1,
+                py: 1.5,
+                fontSize: { xs: "0.875rem", sm: "1rem" },
               }}
             >
               <Stack direction="row" spacing={1} alignItems="center">
                 <Typography>Ver Invitaciones</Typography>
                 <Chip
                   label={invitations.length}
-                  color="info"
+                  color="primary"
                   size="small"
                   sx={{ height: 20, minWidth: 20, fontSize: "0.7rem" }}
                 />

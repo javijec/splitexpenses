@@ -118,14 +118,21 @@ export const HeaderGroupDetails = ({ group, isAdmin, onDelete }) => {
           )}
         </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2.5 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: { xs: "flex-start", sm: "center" },
+            gap: 2.5,
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
           <Avatar
             sx={{
-              width: 70,
-              height: 70,
+              width: { xs: 60, sm: 70 },
+              height: { xs: 60, sm: 70 },
               bgcolor: (theme) => alpha(theme.palette.primary.main, 0.8),
               color: "white",
-              fontSize: "2rem",
+              fontSize: { xs: "1.5rem", sm: "2rem" },
               fontWeight: "bold",
               boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
               border: "2px solid white",
@@ -134,17 +141,25 @@ export const HeaderGroupDetails = ({ group, isAdmin, onDelete }) => {
             {group?.name?.charAt(0) || <GroupsIcon />}
           </Avatar>
 
-          <Box>
+          <Box sx={{ maxWidth: { xs: "100%", sm: "auto" } }}>
             <Typography
               variant="h4"
               fontWeight="bold"
               color="text.primary"
-              sx={{ mb: 0.5 }}
+              sx={{
+                mb: 0.5,
+                fontSize: { xs: "1.5rem", sm: "2rem" },
+                wordBreak: "break-word",
+              }}
             >
               {group?.name || "Cargando grupo..."}
             </Typography>
 
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1}
+              sx={{ mt: { xs: 1, sm: 0 } }}
+            >
               <Chip
                 icon={<GroupsIcon sx={{ fontSize: "0.9rem !important" }} />}
                 label={`${group?.members?.length || 0} ${

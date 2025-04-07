@@ -126,26 +126,32 @@ const Main = () => {
     loadGroups();
   };
 
+  // Detectar si es un dispositivo móvil
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Fade in={true} timeout={800}>
       <Container
         maxWidth="lg"
         sx={{
           py: { xs: 2, sm: 4 },
-          px: { xs: 2, sm: 3, md: 4 },
+          px: { xs: 1, sm: 3, md: 4 },
+          maxWidth: { xs: "100%", sm: "lg" },
         }}
       >
         {/* Encabezado */}
-        <Box sx={{ mb: { xs: 3, sm: 4 } }}>
+        <Box sx={{ mb: { xs: 2, sm: 4 } }}>
           <Header />
         </Box>
 
         {/* Contenido principal */}
         <Box
           sx={{
-            borderRadius: 4,
+            borderRadius: { xs: 3, sm: 4 },
             overflow: "hidden",
             mb: 4,
+            mx: { xs: -1, sm: 0 }, // Compensar el padding en móviles para usar todo el ancho
+            width: { xs: "calc(100% + 16px)", sm: "100%" }, // Ajustar el ancho en móviles
           }}
         >
           <GroupsListCard
@@ -155,6 +161,7 @@ const Main = () => {
             loadingInvitations={loadingInvitations}
             onAccept={handleAcceptInvitation}
             onReject={handleRejectInvitation}
+            isMobile={isMobile}
           />
         </Box>
 

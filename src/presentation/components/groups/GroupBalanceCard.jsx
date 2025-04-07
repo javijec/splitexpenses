@@ -29,7 +29,7 @@ const BalanceItem = ({ balance }) => {
     <Paper
       elevation={0}
       sx={{
-        p: 2,
+        p: { xs: 1.5, sm: 2 },
         mb: 2,
         borderRadius: 3,
         display: "flex",
@@ -48,6 +48,8 @@ const BalanceItem = ({ balance }) => {
             : balance.amount < 0
             ? alpha(theme.palette.error.main, 0.05)
             : "transparent",
+        flexDirection: { xs: "column", sm: "row" },
+        gap: { xs: 1, sm: 0 },
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -103,14 +105,14 @@ const BalanceItem = ({ balance }) => {
 };
 
 // Componente para mostrar una transacción
-const TransactionItem = ({ transaction, index }) => {
+const TransactionItem = ({ transaction }) => {
   const theme = useTheme();
 
   return (
     <Paper
       elevation={0}
       sx={{
-        p: 2,
+        p: { xs: 1.5, sm: 2 },
         mb: 2,
         borderRadius: 3,
         border: "1px solid",
@@ -123,34 +125,71 @@ const TransactionItem = ({ transaction, index }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: { xs: 2, sm: 0 },
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1.5,
+            width: { xs: "100%", sm: "auto" },
+            justifyContent: { xs: "flex-start", sm: "center" },
+          }}
+        >
           <Avatar
             sx={{
               bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
               color: theme.palette.error.main,
-              width: 40,
-              height: 40,
+              width: { xs: 36, sm: 40 },
+              height: { xs: 36, sm: 40 },
             }}
           >
-            <PersonIcon />
+            <PersonIcon sx={{ fontSize: { xs: "1.2rem", sm: "1.5rem" } }} />
           </Avatar>
 
-          <Typography variant="subtitle1" fontWeight="medium">
+          <Typography
+            variant="subtitle1"
+            fontWeight="medium"
+            sx={{ fontSize: { xs: "0.875rem", sm: "1rem" } }}
+          >
             {transaction.fromName}
           </Typography>
         </Box>
 
-        <ArrowForwardIcon
+        <Box
           sx={{
-            color: (theme) => alpha(theme.palette.text.secondary, 0.5),
-            mx: 1,
+            display: { xs: "flex", sm: "block" },
+            alignItems: "center",
+            justifyContent: "center",
+            width: { xs: "100%", sm: "auto" },
           }}
-        />
+        >
+          <ArrowForwardIcon
+            sx={{
+              color: (theme) => alpha(theme.palette.text.secondary, 0.5),
+              mx: 1,
+              transform: { xs: "rotate(90deg)", sm: "none" },
+              fontSize: { xs: "1.2rem", sm: "1.5rem" },
+            }}
+          />
+        </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-          <Typography variant="subtitle1" fontWeight="medium">
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1.5,
+            width: { xs: "100%", sm: "auto" },
+            justifyContent: { xs: "flex-start", sm: "center" },
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            fontWeight="medium"
+            sx={{ fontSize: { xs: "0.875rem", sm: "1rem" } }}
+          >
             {transaction.toName}
           </Typography>
 
@@ -158,24 +197,27 @@ const TransactionItem = ({ transaction, index }) => {
             sx={{
               bgcolor: (theme) => alpha(theme.palette.success.main, 0.1),
               color: theme.palette.success.main,
-              width: 40,
-              height: 40,
+              width: { xs: 36, sm: 40 },
+              height: { xs: 36, sm: 40 },
             }}
           >
-            <PersonIcon />
+            <PersonIcon sx={{ fontSize: { xs: "1.2rem", sm: "1.5rem" } }} />
           </Avatar>
         </Box>
       </Box>
 
       <Box sx={{ mt: 2, textAlign: "center" }}>
         <Chip
-          icon={<PaymentsIcon />}
+          icon={
+            <PaymentsIcon sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }} />
+          }
           label={`$${transaction.amount.toFixed(2)}`}
           color="primary"
           sx={{
             fontWeight: 600,
-            fontSize: "0.9rem",
+            fontSize: { xs: "0.8rem", sm: "0.9rem" },
             px: 1,
+            height: { xs: 28, sm: 32 },
           }}
         />
       </Box>
