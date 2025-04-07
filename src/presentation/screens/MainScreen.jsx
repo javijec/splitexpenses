@@ -25,7 +25,6 @@ import { useAuth } from "@/application/contexts/AuthContext";
 
 const Main = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Estados para grupos e invitaciones
   const [groups, setGroups] = useState([]);

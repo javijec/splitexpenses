@@ -1,7 +1,20 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { Grid, Box, Button, useTheme, Container } from "@mui/material";
-import { Group, Email } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  useTheme,
+  Container,
+  Typography,
+  Fade,
+  useMediaQuery,
+  Stack,
+  Chip,
+} from "@mui/material";
+import {
+  People as PeopleIcon,
+  Notifications as NotificationsIcon,
+} from "@mui/icons-material";
 import { useAuth } from "@/application/contexts/AuthContext";
 import { useModal } from "@/application/contexts/ModalContext";
 
@@ -85,7 +98,8 @@ function GroupDetail() {
       ]);
 
       const balanceData = calculateBalance(expensesData);
-      const transactions = simplifyBalance(balanceData);
+      const transactionsData = simplifyBalance(balanceData);
+      setTransactions(transactionsData);
 
       setGroupContext(groupData);
       setInvitations(invitationData);
@@ -191,23 +205,136 @@ function GroupDetail() {
     return regex.test(email);
   };
 
+  // Asegurarnos de que todos los hooks se ejecuten en cada renderizado
+  useMediaQuery(theme.breakpoints.down("md")); // No usado pero necesario para mantener el orden de los hooks
+
   if (loading) {
     return <Loading />;
   }
 
   return (
-    <Container>
-      <HeaderGroupDetails
-        group={group}
-        isAdmin={isAdmin}
-        onDelete={() => {
-          setGroupContext(group);
-          openDeleteGroupModal();
+    <Fade in={true} timeout={800}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          py: { xs: 2, sm: 4 },
+          px: { xs: 2, sm: 3, md: 4 },
         }}
-      />
+      >
+        {/* Encabezado del grupo */}
+        <HeaderGroupDetails
+          group={group}
+          isAdmin={isAdmin}
+          onDelete={() => {
+            setGroupContext(group);
+            openDeleteGroupModal();
+          }}
+        />
 
-      <Box sx={{ display: { xs: "none", md: "block" } }}>
-        <MembersListCard
+        {/* Sección de miembros e invitaciones - Versión desktop */}
+        <Box sx={{ display: { xs: "none", md: "block" } }}>
+          <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
+            <Box sx={{ flex: 1 }}>
+              <MembersListCard
+                members={members}
+                isAdmin={isAdmin}
+                user={user}
+                group={group}
+                onDeleteMember={handleDeleteMember}
+                onInvite={openInviteModal}
+              />
+            </Box>
+            <Box sx={{ flex: 1 }}>
+              <InvitationsListCard
+                invitations={invitations}
+                isAdmin={isAdmin}
+                onDeleteInvitation={handleDeleteInvitation}
+              />
+            </Box>
+          </Box>
+        </Box>
+
+        {/* Sección de miembros e invitaciones - Versión móvil */}
+        <Box
+          sx={{
+            display: { xs: "flex", md: "none" },
+            gap: 2,
+            mb: 3,
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setIsMembersDialogOpen(true)}
+            startIcon={<PeopleIcon />}
+            sx={{
+              borderRadius: 2,
+              textTransform: "none",
+              fontWeight: 600,
+              py: 1,
+            }}
+          >
+            Ver Miembros
+          </Button>
+
+          {invitations.length > 0 && (
+            <Button
+              variant="outlined"
+              color="info"
+              onClick={() => setIsInvitationsDialogOpen(true)}
+              startIcon={<NotificationsIcon />}
+              sx={{
+                borderRadius: 2,
+                textTransform: "none",
+                fontWeight: 600,
+                py: 1,
+              }}
+            >
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography>Ver Invitaciones</Typography>
+                <Chip
+                  label={invitations.length}
+                  color="info"
+                  size="small"
+                  sx={{ height: 20, minWidth: 20, fontSize: "0.7rem" }}
+                />
+              </Stack>
+            </Button>
+          )}
+        </Box>
+
+        {/* Sección de balances */}
+        <GroupBalanceCard balances={balances} transactions={transactions} />
+
+        {/* Sección de gastos */}
+        <ExpensesListCard
+          expenses={expenses}
+          user={user}
+          setExpenses={updateExpensesAndBalances}
+        />
+
+        <ExpenseDialog
+          isOpen={isExpenseModalOpen}
+          onClose={closeExpenseModal}
+          membersList={groupContext?.members}
+          onExpenseAdded={updateExpensesAndBalances} // Usar la nueva función que actualiza balances
+        />
+        <InviteMemberModal
+          isOpen={isInviteModalOpen}
+          onClose={closeInviteModal}
+          handleSendInvitation={handleSendInvitation}
+          alertInfo={alertInfo}
+          validateEmail={validateEmail}
+          setAlertInfo={setAlertInfo}
+        />
+        <DeleteGroupDialog
+          isOpen={isDeleteGroupModalOpen}
+          onClose={closeDeleteGroupModal}
+        />
+        <MembersListDialog
+          open={isMembersDialogOpen}
+          onClose={() => setIsMembersDialogOpen(false)}
           members={members}
           isAdmin={isAdmin}
           user={user}
@@ -215,69 +342,15 @@ function GroupDetail() {
           onDeleteMember={handleDeleteMember}
           onInvite={openInviteModal}
         />
-        <InvitationsListCard
+        <InvitationsListDialog
+          open={isInvitationsDialogOpen}
+          onClose={() => setIsInvitationsDialogOpen(false)}
           invitations={invitations}
           isAdmin={isAdmin}
           onDeleteInvitation={handleDeleteInvitation}
         />
-      </Box>
-      <Box sx={{ display: { xs: "flex", md: "none" } }}>
-        <Button onClick={() => setIsMembersDialogOpen(true)}>
-          <Group />
-          Ver Miembros
-        </Button>
-        {invitations.length > 0 && (
-          <Button onClick={() => setIsInvitationsDialogOpen(true)}>
-            <Email />
-            Ver Invitaciones
-          </Button>
-        )}
-      </Box>
-
-      <GroupBalanceCard balances={balances} transactions={transactions} />
-
-      <ExpensesListCard
-        expenses={expenses}
-        user={user}
-        setExpenses={updateExpensesAndBalances}
-      />
-
-      <ExpenseDialog
-        isOpen={isExpenseModalOpen}
-        onClose={closeExpenseModal}
-        membersList={groupContext?.members}
-        onExpenseAdded={updateExpensesAndBalances} // Usar la nueva función que actualiza balances
-      />
-      <InviteMemberModal
-        isOpen={isInviteModalOpen}
-        onClose={closeInviteModal}
-        handleSendInvitation={handleSendInvitation}
-        alertInfo={alertInfo}
-        validateEmail={validateEmail}
-        setAlertInfo={setAlertInfo}
-      />
-      <DeleteGroupDialog
-        isOpen={isDeleteGroupModalOpen}
-        onClose={closeDeleteGroupModal}
-      />
-      <MembersListDialog
-        open={isMembersDialogOpen}
-        onClose={() => setIsMembersDialogOpen(false)}
-        members={members}
-        isAdmin={isAdmin}
-        user={user}
-        group={group}
-        onDeleteMember={handleDeleteMember}
-        onInvite={openInviteModal}
-      />
-      <InvitationsListDialog
-        open={isInvitationsDialogOpen}
-        onClose={() => setIsInvitationsDialogOpen(false)}
-        invitations={invitations}
-        isAdmin={isAdmin}
-        onDeleteInvitation={handleDeleteInvitation}
-      />
-    </Container>
+      </Container>
+    </Fade>
   );
 }
 

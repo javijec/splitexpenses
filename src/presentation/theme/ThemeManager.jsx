@@ -1,5 +1,8 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { ThemeProvider as MuiThemeProvider, createTheme } from "@mui/material/styles";
+import {
+  ThemeProvider as MuiThemeProvider,
+  createTheme,
+} from "@mui/material/styles";
 
 // ============================================================================
 // DEFINICIÓN DE TEMAS (Material Design 3)
@@ -793,14 +796,14 @@ export const ThemeProvider = ({ children }) => {
 
   // Proporcionar el contexto y el proveedor de tema de Material UI
   return (
-    <ThemeContext.Provider 
-      value={{ 
-        mode, 
-        toggleTheme, 
-        setTheme, 
+    <ThemeContext.Provider
+      value={{
+        mode,
+        toggleTheme,
+        setTheme,
         useSystemPreference,
         systemTheme,
-        isUsingSystemTheme: !localStorage.getItem("theme")
+        isUsingSystemTheme: !localStorage.getItem("theme"),
       }}
     >
       <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>

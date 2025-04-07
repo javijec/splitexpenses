@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import {
-  Grid,
-  Card,
-  CardHeader,
-  CardContent,
   Box,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
   Button,
   Typography,
   Chip,
@@ -261,7 +253,7 @@ const GroupsListCard = ({
 
   return (
     <>
-      <Box sx={{ mb: 3 }}>
+      <Box sx={{ m: 3 }}>
         <Box
           sx={{
             display: "flex",
