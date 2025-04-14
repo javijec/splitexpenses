@@ -55,7 +55,7 @@ const GroupItem = ({ group, isMobile }) => {
           borderColor: (theme) => alpha(theme.palette.primary.main, 0.3),
           bgcolor: (theme) => alpha(theme.palette.primary.main, 0.02),
         },
-        flexDirection: { xs: "column", sm: "row" },
+        flexDirection: { xs: "row" },
         gap: { xs: 1, sm: 0 },
       }}
     >
