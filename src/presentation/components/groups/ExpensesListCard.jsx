@@ -67,28 +67,6 @@ const EmptyExpensesState = ({ onAddExpense }) => {
         Registra tu primer gasto para comenzar a dividir los costos con los
         miembros del grupo
       </Typography>
-
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<AddIcon />}
-        onClick={onAddExpense}
-        sx={{
-          borderRadius: 2,
-          textTransform: "none",
-          fontWeight: 600,
-          px: 3,
-          py: 1,
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-          "&:hover": {
-            boxShadow: "0 6px 16px rgba(0, 0, 0, 0.15)",
-            transform: "translateY(-2px)",
-          },
-          transition: "all 0.3s ease",
-        }}
-      >
-        Añadir gasto
-      </Button>
     </Paper>
   );
 };
@@ -133,8 +111,8 @@ export const ExpensesListCard = ({ expenses = [], setExpenses }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          p: 2,
-          pl: 3,
+          py: 2,
+          px: 4,
           borderBottom: "1px solid",
           borderColor: (theme) => alpha(theme.palette.divider, 0.1),
         }}
@@ -154,24 +132,6 @@ export const ExpensesListCard = ({ expenses = [], setExpenses }) => {
             Gastos del grupo
           </Typography>
         </Stack>
-
-        <Button
-          variant="contained"
-          size="small"
-          startIcon={<AddIcon />}
-          onClick={handleAddExpense}
-          sx={{
-            borderRadius: 2,
-            textTransform: "none",
-            fontWeight: 600,
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-            "&:hover": {
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-            },
-          }}
-        >
-          Añadir gasto
-        </Button>
       </Box>
 
       <Box sx={{ p: 2 }}>

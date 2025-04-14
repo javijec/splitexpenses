@@ -75,123 +75,82 @@ export const HeaderGroupDetails = ({ group, isAdmin, onDelete }) => {
         <Box
           sx={{
             display: "flex",
+            alignItems: { xs: "flex-start", sm: "center" },
             justifyContent: "space-between",
-            alignItems: "center",
-            mb: 2,
+            width: "100%",
+            gap: 2.5,
           }}
         >
-          <Tooltip title="Volver al inicio" arrow>
-            <IconButton
-              onClick={handleBack}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2.5 }}>
+            <Avatar
               sx={{
-                bgcolor: (theme) => alpha(theme.palette.background.paper, 0.7),
-                "&:hover": {
-                  bgcolor: (theme) =>
-                    alpha(theme.palette.background.paper, 0.9),
-                },
-                mb: 1,
+                width: { xs: 60, sm: 70 },
+                height: { xs: 60, sm: 70 },
+                bgcolor: (theme) => alpha(theme.palette.primary.main, 0.8),
+                color: "white",
+                fontSize: { xs: "1.5rem", sm: "2rem" },
+                fontWeight: "bold",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                border: "2px solid white",
               }}
             >
-              <ArrowBackIcon />
-            </IconButton>
-          </Tooltip>
+              {group?.name?.charAt(0) || <GroupsIcon />}
+            </Avatar>
 
+            <Box sx={{ maxWidth: { xs: "100%", sm: "auto" } }}>
+              <Typography
+                variant="h4"
+                fontWeight="bold"
+                color="text.primary"
+                sx={{
+                  mb: 0.5,
+                  fontSize: { xs: "1.5rem", sm: "2rem" },
+                  wordBreak: "break-word",
+                }}
+              >
+                {group?.name || "Cargando grupo..."}
+              </Typography>
+
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={1}
+                sx={{ mt: { xs: 1, sm: 0 } }}
+              >
+                <Chip
+                  icon={<GroupsIcon sx={{ fontSize: "0.9rem !important" }} />}
+                  label={`${group?.members?.length || 0} ${
+                    (group?.members?.length || 0) === 1 ? "miembro" : "miembros"
+                  }`}
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                  sx={{
+                    height: 24,
+                    fontSize: "0.75rem",
+                    fontWeight: 500,
+                    bgcolor: (theme) =>
+                      alpha(theme.palette.background.paper, 0.7),
+                  }}
+                />
+              </Stack>
+            </Box>
+          </Box>
           {isAdmin && (
             <Tooltip title="Eliminar grupo" arrow>
               <Button
                 variant="outlined"
                 color="error"
-                startIcon={<DeleteIcon />}
                 onClick={onDelete}
                 sx={{
-                  borderRadius: 2,
-                  textTransform: "none",
-                  fontWeight: 600,
                   "&:hover": {
                     bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
                   },
                 }}
               >
-                Eliminar grupo
+                <DeleteIcon />
               </Button>
             </Tooltip>
           )}
-        </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: { xs: "flex-start", sm: "center" },
-            gap: 2.5,
-            flexDirection: { xs: "column", sm: "row" },
-          }}
-        >
-          <Avatar
-            sx={{
-              width: { xs: 60, sm: 70 },
-              height: { xs: 60, sm: 70 },
-              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.8),
-              color: "white",
-              fontSize: { xs: "1.5rem", sm: "2rem" },
-              fontWeight: "bold",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-              border: "2px solid white",
-            }}
-          >
-            {group?.name?.charAt(0) || <GroupsIcon />}
-          </Avatar>
-
-          <Box sx={{ maxWidth: { xs: "100%", sm: "auto" } }}>
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              color="text.primary"
-              sx={{
-                mb: 0.5,
-                fontSize: { xs: "1.5rem", sm: "2rem" },
-                wordBreak: "break-word",
-              }}
-            >
-              {group?.name || "Cargando grupo..."}
-            </Typography>
-
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              spacing={1}
-              sx={{ mt: { xs: 1, sm: 0 } }}
-            >
-              <Chip
-                icon={<GroupsIcon sx={{ fontSize: "0.9rem !important" }} />}
-                label={`${group?.members?.length || 0} ${
-                  (group?.members?.length || 0) === 1 ? "miembro" : "miembros"
-                }`}
-                size="small"
-                variant="outlined"
-                color="primary"
-                sx={{
-                  height: 24,
-                  fontSize: "0.75rem",
-                  fontWeight: 500,
-                  bgcolor: (theme) =>
-                    alpha(theme.palette.background.paper, 0.7),
-                }}
-              />
-
-              {isAdmin && (
-                <Chip
-                  icon={<EditIcon sx={{ fontSize: "0.9rem !important" }} />}
-                  label="Administrador"
-                  size="small"
-                  color="secondary"
-                  sx={{
-                    height: 24,
-                    fontSize: "0.75rem",
-                    fontWeight: 500,
-                  }}
-                />
-              )}
-            </Stack>
-          </Box>
         </Box>
       </Box>
     </Paper>
