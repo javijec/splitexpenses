@@ -79,7 +79,6 @@ export default function BottomAppBar() {
   return (
     <Slide direction="up" in={true} mountOnEnter unmountOnExit>
       <AppBar
-        position="fixed"
         color="inherit"
         elevation={0}
         sx={{
@@ -93,11 +92,11 @@ export default function BottomAppBar() {
             `0 -4px 20px ${alpha(theme.palette.common.black, 0.05)}`,
         }}
       >
-        <Container maxWidth="lg">
+        <Container>
           <Toolbar
             sx={{
-              padding: { xs: 1, sm: 1.5 },
-              minHeight: { xs: 64, sm: 70 },
+              padding: { xs: 1 },
+              minHeight: { xs: 64 },
               justifyContent: "space-between",
             }}
           >
@@ -141,9 +140,9 @@ export default function BottomAppBar() {
                   aria-label={isDashboard ? "crear grupo" : "añadir gasto"}
                   onClick={handleAddButtonClick}
                   sx={{
-                    position: "fixed",
-                    bottom: 10,
-                    left: "45%",
+                    position: "absolute",
+                    left: { xs: "25%", sm: "35%" },
+                    top: 0,
                     transform: "translateX(-50%)",
                     width: "auto",
                     boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
@@ -174,29 +173,32 @@ export default function BottomAppBar() {
             {/* Botones de la derecha */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               {/* Selector de tema siempre visible */}
-              <ThemeToggle />
 
               {/* Botón de perfil o logout dependiendo de la página */}
               {isProfile ? (
-                <Tooltip title="Cerrar sesión" arrow placement="top">
-                  <IconButton
-                    onClick={handleLogout}
-                    sx={{
-                      bgcolor: (theme) => alpha(theme.palette.error.main, 0.1),
-                      color: "error.main",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
+                <>
+                  <ThemeToggle />
+                  <Tooltip title="Cerrar sesión" arrow placement="top">
+                    <IconButton
+                      onClick={handleLogout}
+                      sx={{
                         bgcolor: (theme) =>
-                          alpha(theme.palette.error.main, 0.2),
-                        transform: "translateY(-3px)",
-                      },
-                      width: 44,
-                      height: 44,
-                    }}
-                  >
-                    <LogoutIcon />
-                  </IconButton>
-                </Tooltip>
+                          alpha(theme.palette.error.main, 0.1),
+                        color: "error.main",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          bgcolor: (theme) =>
+                            alpha(theme.palette.error.main, 0.2),
+                          transform: "translateY(-3px)",
+                        },
+                        width: 44,
+                        height: 44,
+                      }}
+                    >
+                      <LogoutIcon />
+                    </IconButton>
+                  </Tooltip>
+                </>
               ) : (
                 <Tooltip title="Mi perfil" arrow placement="top">
                   <IconButton
