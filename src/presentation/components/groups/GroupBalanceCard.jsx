@@ -125,7 +125,7 @@ const TransactionItem = ({ transaction }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          flexDirection: { xs: "column", sm: "row" },
+          flexDirection: { xs: "row" },
           gap: { xs: 2, sm: 0 },
         }}
       >
@@ -170,7 +170,7 @@ const TransactionItem = ({ transaction }) => {
             sx={{
               color: (theme) => alpha(theme.palette.text.secondary, 0.5),
               mx: 1,
-              transform: { xs: "rotate(90deg)", sm: "none" },
+
               fontSize: { xs: "1.2rem", sm: "1.5rem" },
             }}
           />
