@@ -134,7 +134,7 @@ export const ExpensesListCard = ({ expenses = [], setExpenses }) => {
         </Stack>
       </Box>
 
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: { xs: 2, sm: 5 } }}>
         {expenses.length > 0 ? (
           <Fade in={true} timeout={500}>
             <Box>
