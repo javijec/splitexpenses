@@ -48,7 +48,7 @@ const BalanceItem = ({ balance }) => {
             : balance.amount < 0
             ? alpha(theme.palette.error.main, 0.05)
             : "transparent",
-        flexDirection: { xs: "column", sm: "row" },
+        flexDirection: { xs: "row", sm: "row" },
         gap: { xs: 1, sm: 0 },
       }}
     >
@@ -332,6 +332,7 @@ export const GroupBalanceCard = ({ balances, transactions }) => {
               {showTransactions ? "Ver transacciones" : "Ver balances"}
             </Typography>
           }
+          labelPlacement="start"
           sx={{ mr: 1 }}
         />
       </Box>
