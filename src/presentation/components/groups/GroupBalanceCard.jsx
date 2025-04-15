@@ -289,7 +289,9 @@ export const GroupBalanceCard = ({ balances, transactions }) => {
         border: "1px solid",
         borderColor: (theme) => alpha(theme.palette.divider, 0.1),
         overflow: "hidden",
-        mb: 3,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <Box
@@ -333,11 +335,11 @@ export const GroupBalanceCard = ({ balances, transactions }) => {
             </Typography>
           }
           labelPlacement="start"
-          sx={{ mr: 1 }}
+          sx={{ mr: 1, ml: 0 }}
         />
       </Box>
 
-      <Box sx={{ p: { xs: 2, sm: 4 } }}>
+      <Box sx={{ p: { xs: 2, sm: 4 }, flex: 1, overflow: "auto" }}>
         {!showTransactions ? (
           // Mostrar balances individuales
           balances && balances.length > 0 ? (

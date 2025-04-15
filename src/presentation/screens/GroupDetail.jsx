@@ -47,7 +47,6 @@ import {
   MembersListCard,
   GroupBalanceCard,
   ExpensesListCard,
-  InvitationsListCard,
 } from "@/presentation/components/groups";
 
 function GroupDetail() {
@@ -231,29 +230,6 @@ function GroupDetail() {
           }}
         />
 
-        {/* Sección de miembros e invitaciones - Versión desktop */}
-        <Box sx={{ display: { xs: "none", md: "block" } }}>
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
-            <Box sx={{ flex: 1 }}>
-              <MembersListCard
-                members={members}
-                isAdmin={isAdmin}
-                user={user}
-                group={group}
-                onDeleteMember={handleDeleteMember}
-                onInvite={openInviteModal}
-              />
-            </Box>
-            <Box sx={{ flex: 1 }}>
-              <InvitationsListCard
-                invitations={invitations}
-                isAdmin={isAdmin}
-                onDeleteInvitation={handleDeleteInvitation}
-              />
-            </Box>
-          </Box>
-        </Box>
-
         {/* Sección de miembros e invitaciones - Versión móvil */}
         <Box
           sx={{
@@ -310,8 +286,32 @@ function GroupDetail() {
           )}
         </Box>
 
-        {/* Sección de balances */}
-        <GroupBalanceCard balances={balances} transactions={transactions} />
+        {/* Sección de miembros y balances - Versión desktop */}
+        <Box sx={{ display: { xs: "none", md: "flex" }, gap: 3, mb: 3 }}>
+          {/* Miembros del grupo */}
+          <Box sx={{ flex: 1 }}>
+            <MembersListCard
+              members={members}
+              isAdmin={isAdmin}
+              user={user}
+              group={group}
+              onDeleteMember={handleDeleteMember}
+              onInvite={openInviteModal}
+              invitations={invitations}
+              onViewInvitations={() => setIsInvitationsDialogOpen(true)}
+            />
+          </Box>
+
+          {/* Sección de balances */}
+          <Box sx={{ flex: 1 }}>
+            <GroupBalanceCard balances={balances} transactions={transactions} />
+          </Box>
+        </Box>
+
+        {/* Sección de balances - Versión móvil */}
+        <Box sx={{ display: { xs: "block", md: "none" } }}>
+          <GroupBalanceCard balances={balances} transactions={transactions} />
+        </Box>
 
         {/* Sección de gastos */}
         <ExpensesListCard

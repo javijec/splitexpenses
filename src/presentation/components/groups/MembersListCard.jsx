@@ -28,6 +28,7 @@ import {
   People as PeopleIcon,
   Person as PersonIcon,
   AdminPanelSettings as AdminIcon,
+  Notifications as NotificationsIcon,
 } from "@mui/icons-material";
 
 // Componente para mostrar un miembro individual
@@ -164,6 +165,8 @@ export const MembersListCard = ({
   group,
   onInvite,
   onDeleteMember,
+  invitations = [],
+  onViewInvitations,
 }) => {
   const theme = useTheme();
 
@@ -175,7 +178,9 @@ export const MembersListCard = ({
         border: "1px solid",
         borderColor: (theme) => alpha(theme.palette.divider, 0.1),
         overflow: "hidden",
-        mb: 3,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <Box
@@ -205,28 +210,60 @@ export const MembersListCard = ({
           </Typography>
         </Stack>
 
-        {isAdmin && (
-          <Button
-            variant="contained"
-            size="small"
-            startIcon={<PersonAddIcon />}
-            onClick={onInvite}
-            sx={{
-              borderRadius: 2,
-              textTransform: "none",
-              fontWeight: 600,
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-              "&:hover": {
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-              },
-            }}
-          >
-            Invitar
-          </Button>
-        )}
+        <Stack direction="row" spacing={1}>
+          {isAdmin && (
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<PersonAddIcon />}
+              onClick={onInvite}
+              sx={{
+                borderRadius: 2,
+                textTransform: "none",
+                fontWeight: 600,
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                },
+              }}
+            >
+              Invitar
+            </Button>
+          )}
+          {invitations.length > 0 && (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={onViewInvitations}
+              startIcon={<NotificationsIcon />}
+              size="small"
+              sx={{
+                borderRadius: 2,
+                textTransform: "none",
+                fontWeight: 600,
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                },
+              }}
+            >
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                  Invitaciones
+                </Typography>
+                <Chip
+                  label={invitations.length}
+                  color="primary"
+                  size="small"
+                  sx={{ height: 20, minWidth: 20, fontSize: "0.7rem" }}
+                />
+              </Stack>
+            </Button>
+          )}
+        </Stack>
       </Box>
 
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ p: 3, flex: 1, overflow: "auto" }}>
         <Fade in={true} timeout={500}>
           <Box>
             {members.map((member) => (
