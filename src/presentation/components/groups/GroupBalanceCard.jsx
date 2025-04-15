@@ -166,6 +166,19 @@ const TransactionItem = ({ transaction }) => {
             width: { xs: "100%", sm: "auto" },
           }}
         >
+          <Chip
+            icon={
+              <PaymentsIcon sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }} />
+            }
+            label={`$${transaction.amount.toFixed(2)}`}
+            color="primary"
+            sx={{
+              fontWeight: 600,
+              fontSize: { xs: "0.8rem", sm: "0.9rem" },
+              px: 1,
+              height: { xs: 28, sm: 32 },
+            }}
+          />
           <ArrowForwardIcon
             sx={{
               color: (theme) => alpha(theme.palette.text.secondary, 0.5),
@@ -204,22 +217,6 @@ const TransactionItem = ({ transaction }) => {
             <PersonIcon sx={{ fontSize: { xs: "1.2rem", sm: "1.5rem" } }} />
           </Avatar>
         </Box>
-      </Box>
-
-      <Box sx={{ mt: 2, textAlign: "center" }}>
-        <Chip
-          icon={
-            <PaymentsIcon sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }} />
-          }
-          label={`$${transaction.amount.toFixed(2)}`}
-          color="primary"
-          sx={{
-            fontWeight: 600,
-            fontSize: { xs: "0.8rem", sm: "0.9rem" },
-            px: 1,
-            height: { xs: 28, sm: 32 },
-          }}
-        />
       </Box>
     </Paper>
   );
@@ -339,7 +336,7 @@ export const GroupBalanceCard = ({ balances, transactions }) => {
         />
       </Box>
 
-      <Box sx={{ p: { xs: 2, sm: 5 } }}>
+      <Box sx={{ p: { xs: 2, sm: 4 } }}>
         {!showTransactions ? (
           // Mostrar balances individuales
           balances && balances.length > 0 ? (
