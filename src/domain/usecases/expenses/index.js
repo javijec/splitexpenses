@@ -47,7 +47,14 @@ export const getExpense = async (expenseId) => {
 export const getExpenses = async () => {
   const expenseRepository = new ExpenseRepository();
   try {
-    return await expenseRepository.getExpenses();
+    const expenses = await expenseRepository.getExpenses();
+    // Sort expenses by createdAt in descending order (newest first)
+    return expenses.sort((a, b) => {
+      // Convert Firestore timestamps to milliseconds for comparison
+      const dateA = a.createdAt?.seconds ? a.createdAt.seconds * 1000 : 0;
+      const dateB = b.createdAt?.seconds ? b.createdAt.seconds * 1000 : 0;
+      return dateB - dateA; // Descending order (newest first)
+    });
   } catch (error) {
     console.error("Error fetching expenses:", error);
     return [];
@@ -109,7 +116,15 @@ export const getGroupExpenses = async (groupId) => {
 
   try {
     const expenses = await getExpenses();
-    return expenses.filter((expense) => expense.groupId === groupId);
+    // Filter expenses by groupId and sort by createdAt in descending order (newest first)
+    return expenses
+      .filter((expense) => expense.groupId === groupId)
+      .sort((a, b) => {
+        // Convert Firestore timestamps to milliseconds for comparison
+        const dateA = a.createdAt?.seconds ? a.createdAt.seconds * 1000 : 0;
+        const dateB = b.createdAt?.seconds ? b.createdAt.seconds * 1000 : 0;
+        return dateB - dateA; // Descending order (newest first)
+      });
   } catch (error) {
     console.error("Error fetching group expenses:", error);
     return [];
